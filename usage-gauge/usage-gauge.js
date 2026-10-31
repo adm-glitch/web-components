@@ -1,0 +1,238 @@
+/**
+ * <usage-gauge>: a Claude usage glyph as a Web Component.
+ * No dependencies. Load it once and use the tag anywhere (plain HTML, React, Vue, Svelte…).
+ *
+ *   Load this file as a module script (type="module", src="usage-gauge.js"), then:
+ *   <usage-gauge weekly="41" session="62" reset-minutes="110" pace="57" monogram="M"></usage-gauge>
+ *
+ * Data attributes take percentages USED (0–100), the way the usage numbers come in.
+ * The gauge draws what is LEFT: both rings start full and empty right to left.
+ */
+
+const DATA = ['weekly', 'session', 'pace', 'reset-minutes', 'status'];
+const LOOK = ['monogram', 'monogram-position', 'size', 'sweep', 'ring-width', 'ring-gap',
+  'theme', 'show-tick', 'show-dots', 'warn-at', 'label'];
+const COLORS = ['weekly-color', 'session-color', 'tick-color', 'tick-ahead-color', 'dot-color',
+  'dot-empty-color', 'track-color', 'warn-color', 'critical-color', 'critical-track-color',
+  'idle-color', 'monogram-color', 'monogram-muted-color', 'background'];
+
+// Default palettes. Every value can be overridden by an attribute (weekly-color="…")
+// or a CSS custom property (--ug-weekly-color: …) on the element or any ancestor.
+const PALETTE = {
+  dark: {
+    'weekly-color': '#F4F4F2', 'session-color': '#F4F4F2', 'tick-color': '#8E8E89',
+    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#F4F4F2',
+    'dot-empty-color': 'rgba(244,244,242,0.22)', 'track-color': 'rgba(244,244,242,0.16)',
+    'warn-color': '#F5A524', 'critical-color': '#FF6B5A', 'critical-track-color': 'rgba(255,107,90,0.38)',
+    'idle-color': '#6CB4FF', 'monogram-color': '#F4F4F2', 'monogram-muted-color': '#8E8E89',
+    'background': '#17171A'
+  },
+  light: {
+    'weekly-color': '#26262B', 'session-color': '#26262B', 'tick-color': '#7A7A73',
+    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#26262B',
+    'dot-empty-color': 'rgba(38,38,43,0.22)', 'track-color': 'rgba(38,38,43,0.11)',
+    'warn-color': '#C96A00', 'critical-color': '#D63A2B', 'critical-track-color': 'rgba(214,58,43,0.26)',
+    'idle-color': '#2B7DE9', 'monogram-color': '#26262B', 'monogram-muted-color': '#7A7A73',
+    'background': '#F8F8F6'
+  }
+};
+
+const vars = (p) => COLORS.map((c) => `--_${c}: var(--ug-${c}, ${p[c]});`).join('');
+
+const STYLE = `
+:host { display: inline-flex; align-items: center; vertical-align: middle; line-height: 1;
+  font-family: inherit; ${vars(PALETTE.dark)} }
+:host([theme="light"]) { ${vars(PALETTE.light)} }
+@media (prefers-color-scheme: light) {
+  :host(:not([theme])), :host([theme="auto"]) { ${vars(PALETTE.light)} }
+}
+:host([hidden]) { display: none; }
+.box { position: relative; flex: none; }
+svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+path, circle { fill: none; }
+.track { stroke: var(--_track-color); }
+.track.capped { stroke: var(--_critical-track-color); }
+.weekly { stroke: var(--_weekly-color); }
+.session { stroke: var(--_session-color); }
+.warn { stroke: var(--_warn-color); }
+.crit { stroke: var(--_critical-color); }
+.idle { stroke: var(--_idle-color); }
+.tick { stroke: var(--_tick-color); stroke-linecap: round; }
+.tick.ahead { stroke: var(--_tick-ahead-color); }
+.dot-empty { fill: var(--_dot-empty-color); }
+.dot { fill: var(--_dot-color); }
+.dot.idle { fill: var(--_idle-color); stroke: none; }
+.badge { stroke: var(--_background); stroke-width: 2; }
+.badge.stale { fill: var(--_warn-color); }
+.badge.error { fill: var(--_critical-color); }
+.badge-mark { stroke: var(--_background); stroke-linecap: round; }
+.badge-dot { fill: var(--_background); }
+.mono { font-weight: 700; letter-spacing: -0.02em; color: var(--_monogram-color); }
+.mono.muted { color: var(--_monogram-muted-color); }
+.mono.center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.dim { opacity: 0.4; }
+`;
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const f = (n) => +n.toFixed(3);
+const camel = (s) => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+const kebab = (s) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+// 0° = up, clockwise; viewBox is 48×48 with the centre at 24,24.
+const pt = (r, deg) => {
+  const a = (deg * Math.PI) / 180;
+  return [24 + r * Math.sin(a), 24 - r * Math.cos(a)];
+};
+const arc = (r, a0, sweep) => {
+  if (sweep < 0.5) return '';
+  const [x0, y0] = pt(r, a0);
+  const [x1, y1] = pt(r, a0 + sweep);
+  return `M ${f(x0)} ${f(y0)} A ${r} ${r} 0 ${sweep > 180 ? 1 : 0} 1 ${f(x1)} ${f(y1)}`;
+};
+
+class UsageGauge extends HTMLElement {
+  static get observedAttributes() { return [...DATA, ...LOOK, ...COLORS]; }
+
+  constructor() {
+    super();
+    this._root = this.attachShadow({ mode: 'open' });
+    this._queued = false;
+  }
+
+  connectedCallback() {
+    if (!this.hasAttribute('role')) this.setAttribute('role', 'img');
+    this._render();
+  }
+
+  attributeChangedCallback(name, _old, value) {
+    if (COLORS.includes(name)) {
+      // Attribute colours become custom properties, so CSS can still override them per state.
+      if (value == null || value === '') this.style.removeProperty(`--ug-${name}`);
+      else this.style.setProperty(`--ug-${name}`, value);
+    }
+    if (this._queued) return;
+    this._queued = true;
+    queueMicrotask(() => { this._queued = false; this._render(); });
+  }
+
+  /** Set several values at once: el.update({ weekly: 41, session: 62, resetMinutes: 110 }) */
+  update(values) {
+    for (const [k, v] of Object.entries(values || {})) {
+      const a = kebab(k);
+      if (v == null || v === false && a !== 'show-tick' && a !== 'show-dots') this.removeAttribute(a);
+      else this.setAttribute(a, String(v));
+    }
+  }
+
+  _num(name, fallback) {
+    const v = parseFloat(this.getAttribute(name));
+    return Number.isFinite(v) ? v : fallback;
+  }
+
+  _render() {
+    if (!this.isConnected) return;
+    const W = clamp(this._num('weekly', 0), 0, 100);
+    const S = clamp(this._num('session', 0), 0, 100);
+    const hasPace = this.hasAttribute('pace');
+    const P = clamp(this._num('pace', 0), 0, 100);
+    const M = clamp(this._num('reset-minutes', 0), 0, 300);
+    const status = this.getAttribute('status') || 'ok';
+    const size = clamp(this._num('size', 44), 12, 1000);
+    const SW = clamp(this._num('sweep', 270), 180, 330);
+    const rw = clamp(this._num('ring-width', 3.5), 1, 6);
+    const rg = clamp(this._num('ring-gap', 3.5), 0, 8);
+    const warnAt = clamp(this._num('warn-at', 20), 0, 100);
+    const showTick = this.getAttribute('show-tick') !== 'false' && hasPace;
+    const showDots = this.getAttribute('show-dots') !== 'false';
+    const mono = (this.getAttribute('monogram') || '').slice(0, 2);
+    const pos = this.getAttribute('monogram-position') || 'center';
+
+    const idle = M <= 0;
+    const err = status === 'error';
+    const stale = status === 'stale';
+    const wLeft = 100 - W;
+    const sLeft = idle ? 100 : 100 - S;
+    const tone = (left) => (left <= 0 ? 'crit' : left <= warnAt ? 'warn' : '');
+
+    // Geometry: the outer edge stays put; ring width and gap move the inner ring.
+    const R1 = 21.75 - rw / 2;
+    const R2 = Math.max(2, R1 - rw - rg);
+    const gap = 360 - SW;
+    const A0 = 180 + gap / 2;
+    const dash = err ? ` stroke-dasharray="2 2.4"` : '';
+    const sw = ` stroke-width="${rw}"`;
+
+    let g = '';
+    g += `<path class="track${!err && W >= 100 ? ' capped' : ''}" d="${arc(R1, A0, SW)}"${sw}${dash}/>`;
+    if (!err) g += `<path class="weekly ${tone(wLeft)}" d="${arc(R1, A0, SW * wLeft / 100)}"${sw}/>`;
+    g += `<path class="track${!err && !idle && S >= 100 ? ' capped' : ''}" d="${arc(R2, A0, SW)}"${sw}${dash}/>`;
+    if (!err) g += `<path class="session ${idle ? 'idle' : tone(sLeft)}" d="${arc(R2, A0, SW * sLeft / 100)}"${sw}/>`;
+
+    if (showTick && !err) {
+      const a = A0 + SW * (100 - P) / 100;
+      const [ix, iy] = pt(R1 - rw / 2 - 1.6, a);
+      const [ox, oy] = pt(R1 + rw / 2 + 1.85, a);
+      const ahead = W > P + 5 && W < 100;
+      g += `<path class="tick${ahead ? ' ahead' : ''}" d="M ${f(ix)} ${f(iy)} L ${f(ox)} ${f(oy)}" stroke-width="1.6"/>`;
+    }
+
+    if (showDots) {
+      // Five dots in the opening, one per hour until the 5h window resets.
+      // They empty right to left, like the rings; the current hour fades.
+      const step = Math.min(gap / 6, 14);
+      const r = f(rw * 0.36);
+      const h = M / 60;
+      for (let i = 0; i < 5; i++) {
+        const [x, y] = pt(R1, 180 + (i - 2) * step);
+        let v = clamp(h - (4 - i), 0, 1);
+        if (idle) v = 1;
+        if (err) v = 0;
+        g += `<circle class="dot-empty" cx="${f(x)}" cy="${f(y)}" r="${r}"/>`;
+        if (v > 0) g += `<circle class="dot${idle ? ' idle' : ''}" cx="${f(x)}" cy="${f(y)}" r="${r}" opacity="${f(v)}"/>`;
+      }
+    }
+
+    let badge = '';
+    if (stale || err) {
+      badge = `<circle class="badge ${err ? 'error' : 'stale'}" cx="40" cy="8" r="6"/>`
+        + `<path class="badge-mark" d="M 40 5.2 L 40 8.6" stroke-width="1.7"/>`
+        + `<circle class="badge-dot" cx="40" cy="11" r="0.95"/>`;
+    }
+
+    const monoCls = `mono${err ? ' muted' : ''}${stale ? ' dim' : ''}`;
+    const centerMono = mono && pos === 'center'
+      ? `<span class="${monoCls} center" style="font-size:${f(size * 0.23)}px">${esc(mono)}</span>` : '';
+    const sideMono = mono && (pos === 'left' || pos === 'right')
+      ? `<span class="${monoCls}" style="font-size:${f(size * 0.42)}px">${esc(mono)}</span>` : '';
+
+    const gauge = `<span class="box" style="width:${size}px;height:${size}px">`
+      + `<svg viewBox="0 0 48 48" aria-hidden="true"><g class="${stale ? 'dim' : ''}">${g}</g>${badge}</svg>`
+      + centerMono + `</span>`;
+
+    this.style.gap = sideMono ? `${f(size * 0.2)}px` : '';
+    this._root.innerHTML = `<style>${STYLE}</style>`
+      + (pos === 'left' ? sideMono + gauge : gauge + sideMono);
+
+    let label = this.getAttribute('label');
+    if (!label) {
+      label = err ? 'No usage data: update failed.'
+        : `Weekly ${f(wLeft)}% left, 5-hour window ${idle ? 'not started' : `${f(sLeft)}% left, resets in ${Math.round(M)} min`}`
+          + (stale ? '. Last update failed; showing older values.' : '');
+      if (mono) label = `${mono}: ${label}`;
+    }
+    this.setAttribute('aria-label', label);
+  }
+}
+
+// Every attribute is also a property: el.weekly = 41, el.resetMinutes = 110, el.weeklyColor = '#fff'.
+for (const a of UsageGauge.observedAttributes) {
+  Object.defineProperty(UsageGauge.prototype, camel(a), {
+    get() { return this.getAttribute(a); },
+    set(v) { if (v == null) this.removeAttribute(a); else this.setAttribute(a, String(v)); },
+    configurable: true
+  });
+}
+
+if (!customElements.get('usage-gauge')) customElements.define('usage-gauge', UsageGauge);
+export { UsageGauge };
