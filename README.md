@@ -13,7 +13,7 @@ Small, dependency-free Web Components. Each folder is one component: a single `.
 **From the CDN** (recommended): pin a release tag so updates never change a project by surprise.
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/gh/adm-glitch/web-components@v1.0.0/usage-gauge/usage-gauge.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/gh/adm-glitch/web-components@v1.0.1/usage-gauge/usage-gauge.js"></script>
 <usage-gauge weekly="41" session="62" pace="57" reset-minutes="110" monogram="M"></usage-gauge>
 ```
 

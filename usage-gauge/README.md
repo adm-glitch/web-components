@@ -8,6 +8,12 @@ The Claude usage glyph as a **Web Component**: one JavaScript file, no dependenc
 <usage-gauge weekly="41" session="62" pace="57" reset-minutes="110" monogram="M"></usage-gauge>
 ```
 
+**From the CDN** (pin a release tag):
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/gh/adm-glitch/web-components@v1.0.1/usage-gauge/usage-gauge.js"></script>
+```
+
 Open `example.html` to see every option. It carries its own copy of the component, so it works straight from disk.
 
 ## Data
