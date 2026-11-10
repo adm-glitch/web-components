@@ -1,6 +1,6 @@
 # `<fd-look>`
 
-The image card he reacts to (S6 gap G6): every image whole with its label, tap = full size (a dialog) and back, optional Like / Don't like, a large comment box, Send once there is a reaction or words; sent shows what he said and Change.
+The image card he reacts to (S6 gap G6): every image whole with its label, tap = full size (a dialog) and back, optional Like / Don't like, a large comment box, Send once there is a reaction or words; a double tap on Like or Don't like sends at once; sent shows what he said and Change.
 
 Part of the Friday design system (v0.3, stage S6). Tokens from [`fd-tokens`](../fd-tokens/); the component carries its own copy.
 

@@ -13,6 +13,7 @@
  *   - Every image whole (never cropped), with its label; a tap opens it full size (a dialog), a tap or Esc closes it.
  *   - Optional Like / Don't like (equal, a toggle; never forced), a large comment box (≥ 7 rows), Send.
  *   - Send waits for a Like, a Don't like or some words. Sent: "Sent · Like · your words" with Change.
+ *   - A double tap on Like or Don't like sends at once (his 11-10: "if I click twice on one of the options just send it").
  *
  *   <fd-look company="ps" question="The panel, built from its own parts" why="Tap an image to open it full size."
  *     imgs='[{"src":"a.webp","alt":"Panel, dark","label":"Dark · desktop"}]'></fd-look>
@@ -44,21 +45,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -172,7 +174,7 @@ class FdLook extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${LOOK_CSS}</style>`
       + `<h3 part="question">${fdEsc(this.getAttribute('question') || '')}</h3><div class="meta">${meta}</div>`
       + (why ? `<p class="why">${fdEsc(why)}</p>` : '')
-      + `<div class="imgs" part="images">${imgs.map((im, i) => `<figure><button type="button" data-i="${i}" aria-label="Open full size: ${fdEsc(im.alt || im.label || '')}"><img src="${fdEsc(im.src)}" alt="${fdEsc(im.alt || '')}" loading="lazy"></button>${im.label ? `<figcaption>${fdEsc(im.label)} · tap to open full size</figcaption>` : ''}</figure>`).join('')}</div>`
+      + `<div class="imgs" part="images">${imgs.map((im, i) => `<figure><button type="button" data-i="${i}" aria-label="Open full size: ${fdEsc(im.alt || im.label || '')}"><img src="${fdEsc(im.src)}" alt="${fdEsc(im.alt || '')}" loading="lazy"></button>${im.label ? `<figcaption>${fdEsc(im.label)}</figcaption>` : ''}</figure>`).join('')}</div>`
       + foot
       + `<dialog part="zoom" aria-label="Full size image"><button type="button" class="btn close">Close</button><img alt=""></dialog>`;
     const sr = this.shadowRoot, dlg = sr.querySelector('dialog');
@@ -184,7 +186,9 @@ class FdLook extends HTMLElement {
     dlg.querySelector('.close').addEventListener('click', close);
     dlg.querySelector('img').addEventListener('click', close);
     sr.querySelectorAll('[data-like]').forEach((b) => b.addEventListener('click', () => {
-      const v = b.dataset.like === '1'; this._like = this._like === v ? null : v;
+      const v = b.dataset.like === '1', t = Date.now(), last = this._tap; this._tap = { v, t };
+      if (last && last.v === v && t - last.t < 450) { this._tap = null; this._like = v; this.send(); return; }   // double tap = send now
+      this._like = this._like === v ? null : v;
       sr.querySelectorAll('[data-like]').forEach((x) => x.setAttribute('aria-pressed', String(this._like === (x.dataset.like === '1'))));
       this._sync();
     }));

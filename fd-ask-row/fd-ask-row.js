@@ -37,21 +37,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -113,9 +114,9 @@ const ASK_CSS = `
 .t small{display:block;font-weight:var(--_fw-regular);color:var(--_muted);font-size:var(--_fs-sm);margin-top:var(--_sp-1)}
 .opts{display:flex;gap:var(--_sp-3);flex-wrap:wrap;justify-content:flex-end}
 /* 3+ options, or a narrow row: the answers go under the question, equal widths, in thumb reach */
-@container (max-width: 420px){.row.many{flex-wrap:wrap}.row.many .opts{width:100%;justify-content:stretch}.row.many .opts .btn{flex:1}}
+@container (max-width: 420px){.row.many{flex-wrap:wrap}.row.many .opts{width:100%;justify-content:stretch}.row.many .opts .btn{flex:1;min-width:0}}
 .row.many3{flex-wrap:wrap}.row.many3 .opts{width:100%;padding-left:calc(24px + var(--_sp-4));justify-content:flex-start}
-@container (max-width: 420px){.row.many3 .opts{padding-left:0}.row.many3 .opts .btn{flex:1 1 40%}}
+@container (max-width: 420px){.row.many3 .opts{padding-left:0}.row.many3 .opts .btn{flex:1 1 40%;min-width:0}}
 .nw{white-space:nowrap}
 .t a{color:inherit;text-decoration:none;padding:13px 0}   /* inline: a 44 px hit area that never moves the meta line (S6 lens 5) */.t a:hover{text-decoration:underline;text-underline-offset:3px}
 .t a:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px;border-radius:2px}

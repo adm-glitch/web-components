@@ -147,12 +147,13 @@
 /* usage-gauge in the Friday language (S5 component 7e): its own colour hooks fed from the tokens. Amber is the one attention
    colour, so only 'near the limit, slow down' is amber (he can still act); at the limit there is nothing to do until the reset, so
    it is drawn in the text colour on a spent grey track: plain and readable, not an alarm and not faint (S5 r2 lenses 2, 3, 4,
-   6, 8, 11); never red; idle is never a company colour (L4). The gauge's own stale badge is still its "!": a later patch. */
+   6, 8, 11); never red; idle is never a company colour (L4). Its stale badge is a clock in the muted colour: old data is not his
+   to act on, so never amber (S6 hand-off follow-up, slice 7b). */
 usage-gauge {
   --ug-weekly-color: var(--fd-text); --ug-session-color: var(--fd-text); --ug-tick-color: var(--fd-muted);
   --ug-tick-ahead-color: var(--fd-amb); --ug-dot-color: var(--fd-text); --ug-dot-empty-color: var(--fd-text-dim);
   --ug-track-color: var(--fd-line); --ug-warn-color: var(--fd-amb); --ug-critical-color: var(--fd-text);
-  --ug-critical-track-color: var(--fd-text-dim); --ug-idle-color: var(--fd-muted);
+  --ug-critical-track-color: var(--fd-text-dim); --ug-idle-color: var(--fd-muted); --ug-stale-color: var(--fd-muted);
   --ug-monogram-color: var(--fd-text); --ug-monogram-muted-color: var(--fd-muted); --ug-background: var(--fd-surface);
   font-family: var(--fd-ff);
 }
@@ -303,21 +304,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -469,21 +471,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -535,7 +538,7 @@ function fdProps(Cls, attrs, json = []) {
 const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
 // fd-shared:end
 
-const DIAL_ATTRS = ['company', 'name', 'href', 'fronts', 'size', 'center', 'note', 'per-segment', 'highlight', 'theme', 'label', 'slots', 'stale'];
+const DIAL_ATTRS = ['company', 'name', 'href', 'fronts', 'size', 'center', 'note', 'per-segment', 'highlight', 'theme', 'label', 'slots', 'stale', 'unit'];
 const STATES = ['run', 'rest', 'done', 'need', 'fault'];
 
 const DIAL_CSS = `
@@ -650,10 +653,11 @@ class FdDial extends HTMLElement {
     });
     const count = (s) => all.filter((x) => x.s === s).length;
     const needs = count('need'), fs = Math.round(R * 0.42);
-    const showWord = !phone;
+    const unit = this.hasAttribute('unit') ? this.getAttribute('unit') : 'fronts';   // unit="" = the number alone
+    const showWord = !phone && !!unit;
     if (centre === 'count') {
       g += `<text x="${cx}" y="${f1(cy + fs * 0.32)}" text-anchor="middle" style="font-size:${fs}px;font-weight:var(--_fw-medium);fill:var(--_text)">${all.length}</text>`;
-      if (showWord) g += `<text data-px="12" data-word="1" x="${cx}" y="${f1(cy + fs * 0.32 + 18)}" text-anchor="middle" style="letter-spacing:.12em;fill:var(--_muted)">FRONTS</text>`;
+      if (showWord) g += `<text data-px="12" data-word="1" x="${cx}" y="${f1(cy + fs * 0.32 + 18)}" text-anchor="middle" style="letter-spacing:.12em;fill:var(--_muted)">${fdEsc(unit.toUpperCase())}</text>`;
     } else if (needs) {
       // lens 11 variant: the centre says what is his, in words, never a big number (language.md: no headline count of his)
       const fz = phone ? 11 : 15;
@@ -661,7 +665,7 @@ class FdDial extends HTMLElement {
       g += `<text data-px="12" x="${cx}" y="${f1(cy + fz)}" text-anchor="middle" style="font-weight:var(--_fw-medium);fill:var(--_muted)">for you</text>`;
     } else {
       // nothing for him: the centre says the quiet count in words, never an empty hole (S5 lenses 3, 8)
-      g += `<text data-px="12" x="${cx}" y="${f1(cy + 4)}" text-anchor="middle" style="fill:var(--_muted)">${all.length} fronts</text>`;
+      g += `<text data-px="12" x="${cx}" y="${f1(cy + 4)}" text-anchor="middle" style="fill:var(--_muted)">${all.length}${unit ? " " + fdEsc(unit) : ""}</text>`;
     }
     if (hidden) { const hs = all.filter((x) => !shown.includes(x)); const mix = ['done', 'rest', 'run'].map((s) => [s, hs.filter((x) => x.s === s).length]).filter(([, c]) => c).map(([s, c]) => `${c} ${label(s)}`).join(', ');
       g += `<text data-px="12" x="${cx}" y="${f1(cy + R * 1.08)}" text-anchor="middle" style="fill:var(--_muted)"><title>${hidden} more: ${mix}</title>+${hidden}</text>`; }
@@ -742,21 +746,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -818,9 +823,9 @@ const ASK_CSS = `
 .t small{display:block;font-weight:var(--_fw-regular);color:var(--_muted);font-size:var(--_fs-sm);margin-top:var(--_sp-1)}
 .opts{display:flex;gap:var(--_sp-3);flex-wrap:wrap;justify-content:flex-end}
 /* 3+ options, or a narrow row: the answers go under the question, equal widths, in thumb reach */
-@container (max-width: 420px){.row.many{flex-wrap:wrap}.row.many .opts{width:100%;justify-content:stretch}.row.many .opts .btn{flex:1}}
+@container (max-width: 420px){.row.many{flex-wrap:wrap}.row.many .opts{width:100%;justify-content:stretch}.row.many .opts .btn{flex:1;min-width:0}}
 .row.many3{flex-wrap:wrap}.row.many3 .opts{width:100%;padding-left:calc(24px + var(--_sp-4));justify-content:flex-start}
-@container (max-width: 420px){.row.many3 .opts{padding-left:0}.row.many3 .opts .btn{flex:1 1 40%}}
+@container (max-width: 420px){.row.many3 .opts{padding-left:0}.row.many3 .opts .btn{flex:1 1 40%;min-width:0}}
 .nw{white-space:nowrap}
 .t a{color:inherit;text-decoration:none;padding:13px 0}   /* inline: a 44 px hit area that never moves the meta line (S6 lens 5) */.t a:hover{text-decoration:underline;text-underline-offset:3px}
 .t a:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px;border-radius:2px}
@@ -962,21 +967,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -1029,7 +1035,7 @@ const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !
 // fd-shared:end
 
 // S6 (7b workstream rows, console-parallel-ui §4): next step and carrier under the text; paused = idle mark, resume line
-const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused', 'need', 'state'];
+const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused', 'need', 'state', 'next-prefix'];
 
 const RUN_CSS = `
 :host{display:block}
@@ -1068,7 +1074,7 @@ class FdRunRow extends HTMLElement {
       ? `<span class="bar" role="meter" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${Math.min(c, t)}" aria-label="${fdEsc(text)}: ${c} of ${t}" part="meter"><i style="width:${(Math.min(c, t) / t * 100).toFixed(1)}%"></i></span>`
       : '<span></span>';
     const tag = href ? 'a' : 'div';
-    const inner = `${this.getAttribute('icon') && !['run', 'ask'].includes(this.getAttribute('icon')) ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : fdSign(this.getAttribute('state') || (this.hasAttribute('need') ? 'need' : this.hasAttribute('paused') ? 'rest' : 'run'), k, 20)}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · next: ${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
+    const inner = `${this.getAttribute('icon') && !['run', 'ask'].includes(this.getAttribute('icon')) ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : fdSign(this.getAttribute('state') || (this.hasAttribute('need') ? 'need' : this.hasAttribute('paused') ? 'rest' : 'run'), k, 20)}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · ${fdEsc(this.hasAttribute('next-prefix') ? this.getAttribute('next-prefix') : 'next: ')}${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${RUN_CSS}</style><${tag} class="run" part="row"${href ? ` href="${fdEsc(href)}"` : ''}>${inner}</${tag}>`;
     const el = this.shadowRoot.querySelector('.run'), id = this.getAttribute('front');
     if (id != null) {
@@ -1117,21 +1123,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -1257,21 +1264,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -1393,21 +1401,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -1550,21 +1559,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -1691,21 +1701,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -1871,21 +1882,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -1957,7 +1969,7 @@ textarea{display:block;width:100%;min-height:72px;margin-top:var(--_sp-5);font:v
  background:var(--_field-deep);border:var(--_st-hair) solid var(--_hover-line);border-radius:var(--_r-md);padding:var(--_sp-3) var(--_sp-4);resize:vertical}
 textarea:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .opts{display:flex;flex-wrap:wrap;gap:var(--_sp-3);margin-top:var(--_sp-5)}.opts:focus{outline:none}
-@container (max-width: 480px){.opts .btn{flex:1 1 40%}}
+@container (max-width: 480px){.opts .btn{flex:1 1 40%;min-width:0}}
 .btn.chosen:disabled{color:var(--_text);border-color:var(--_muted)}
 .done{display:flex;align-items:center;gap:var(--_sp-4);margin-top:var(--_sp-5);font-size:var(--_fs-md)}
 .done span{flex:1}.done{animation:fdin var(--_d-enter) var(--_e-out) both}.done:focus{outline:none}
@@ -2063,21 +2075,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -2215,21 +2228,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -2342,7 +2356,7 @@ export { FdSpotlight };
 const DATA = ['weekly', 'session', 'pace', 'reset-minutes', 'status'];
 const LOOK = ['monogram', 'monogram-position', 'size', 'sweep', 'ring-width', 'ring-gap',
   'theme', 'show-tick', 'show-dots', 'warn-at', 'label'];
-const COLORS = ['weekly-color', 'session-color', 'tick-color', 'tick-ahead-color', 'dot-color',
+const COLORS = ['weekly-color', 'session-color', 'tick-color', 'tick-ahead-color', 'dot-color', 'stale-color',
   'dot-empty-color', 'track-color', 'warn-color', 'critical-color', 'critical-track-color',
   'idle-color', 'monogram-color', 'monogram-muted-color', 'background'];
 
@@ -2351,7 +2365,7 @@ const COLORS = ['weekly-color', 'session-color', 'tick-color', 'tick-ahead-color
 const PALETTE = {
   dark: {
     'weekly-color': '#F4F4F2', 'session-color': '#F4F4F2', 'tick-color': '#8E8E89',
-    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#F4F4F2',
+    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#F4F4F2', 'stale-color': 'var(--_warn-color)',
     'dot-empty-color': 'rgba(244,244,242,0.22)', 'track-color': 'rgba(244,244,242,0.16)',
     'warn-color': '#F5A524', 'critical-color': '#FF6B5A', 'critical-track-color': 'rgba(255,107,90,0.38)',
     'idle-color': '#6CB4FF', 'monogram-color': '#F4F4F2', 'monogram-muted-color': '#8E8E89',
@@ -2359,7 +2373,7 @@ const PALETTE = {
   },
   light: {
     'weekly-color': '#26262B', 'session-color': '#26262B', 'tick-color': '#7A7A73',
-    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#26262B',
+    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#26262B', 'stale-color': 'var(--_warn-color)',
     'dot-empty-color': 'rgba(38,38,43,0.22)', 'track-color': 'rgba(38,38,43,0.11)',
     'warn-color': '#C96A00', 'critical-color': '#D63A2B', 'critical-track-color': 'rgba(214,58,43,0.26)',
     'idle-color': '#2B7DE9', 'monogram-color': '#26262B', 'monogram-muted-color': '#7A7A73',
@@ -2393,7 +2407,7 @@ path, circle { fill: none; }
 .dot { fill: var(--_dot-color); }
 .dot.idle { fill: var(--_idle-color); stroke: none; }
 .badge { stroke: var(--_background); stroke-width: 2; }
-.badge.stale { fill: var(--_warn-color); }
+.badge.stale { fill: var(--_stale-color); }
 .badge.error { fill: var(--_critical-color); }
 .badge-mark { stroke: var(--_background); stroke-linecap: round; }
 .badge-dot { fill: var(--_background); }
@@ -2525,9 +2539,11 @@ class UsageGauge extends HTMLElement {
 
     let badge = '';
     if (stale || err) {
+      // stale = old data, not an error: a clock (a time-based mark for time-based data); error keeps the "!"
       badge = `<circle class="badge ${err ? 'error' : 'stale'}" cx="40" cy="8" r="6"/>`
-        + `<path class="badge-mark" d="M 40 5.2 L 40 8.6" stroke-width="1.7"/>`
-        + `<circle class="badge-dot" cx="40" cy="11" r="0.95"/>`;
+        + (err
+          ? `<path class="badge-mark" d="M 40 5.2 L 40 8.6" stroke-width="1.7"/><circle class="badge-dot" cx="40" cy="11" r="0.95"/>`
+          : `<path class="badge-mark" d="M 40 5 L 40 8.2 L 42.3 9.4" stroke-width="1.4" fill="none" stroke-linejoin="round"/>`);
     }
 
     const monoCls = `mono${err ? ' muted' : ''}${stale ? ' dim' : ''}`;
@@ -2608,21 +2624,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -2684,7 +2701,7 @@ header{display:flex;align-items:center;gap:var(--_sp-4);min-height:56px}
 .tabs{display:flex;gap:var(--_sp-2);flex:1;margin-left:var(--_sp-5)}
 .tab{position:relative;display:inline-flex;align-items:center;gap:var(--_sp-2);min-height:var(--_sz-target);padding:0 var(--_sp-4);color:var(--_muted);
  text-decoration:none;font-size:var(--_fs-md);font-weight:var(--_fw-medium);border-radius:var(--_r-sm)}
-.tab:hover{color:var(--_text);background:var(--_hover-bg)}
+@media (hover:hover){.tab:hover{color:var(--_text);background:var(--_hover-bg)}}
 .tab[aria-current=page]{color:var(--_text)}
 .tab[aria-current=page]::after{content:"";position:absolute;left:var(--_sp-4);right:var(--_sp-4);bottom:4px;height:2px;border-radius:1px;background:var(--_text)}
 .need{width:7px;height:7px;border-radius:50%;background:var(--_amb);box-shadow:0 0 6px color-mix(in srgb,var(--_glow) 60%,transparent);flex:none}
@@ -2696,7 +2713,8 @@ header{display:flex;align-items:center;gap:var(--_sp-4);min-height:56px}
 @media (max-width:899px){
  :host(:not([position=top])) .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;margin:0;gap:0;justify-content:space-around;
   background:var(--_surface);border-top:var(--_st-hair) solid var(--_line);padding:var(--_sp-1) var(--_sp-2) calc(var(--_sp-1) + env(safe-area-inset-bottom))}
- :host(:not([position=top])) .tab{flex:1;justify-content:center;padding:0 var(--_sp-2);font-size:var(--_fs-sm)}
+ :host(:not([position=top])) .tab{flex:1;justify-content:center;padding:0 var(--_sp-2);font-size:var(--_fs-sm);white-space:nowrap}
+ :host(:not([position=top])) .tab .need{position:absolute;top:9px;right:4px}   /* "Friday did ●" never breaks onto two lines */
  :host(:not([position=top])) .tab[aria-current=page]::after{top:2px;bottom:auto}
 }
 `;
@@ -2737,6 +2755,7 @@ export { FdNav };
  *   - Every image whole (never cropped), with its label; a tap opens it full size (a dialog), a tap or Esc closes it.
  *   - Optional Like / Don't like (equal, a toggle; never forced), a large comment box (≥ 7 rows), Send.
  *   - Send waits for a Like, a Don't like or some words. Sent: "Sent · Like · your words" with Change.
+ *   - A double tap on Like or Don't like sends at once (his 11-10: "if I click twice on one of the options just send it").
  *
  *   <fd-look company="ps" question="The panel, built from its own parts" why="Tap an image to open it full size."
  *     imgs='[{"src":"a.webp","alt":"Panel, dark","label":"Dark · desktop"}]'></fd-look>
@@ -2768,21 +2787,22 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -2896,7 +2916,7 @@ class FdLook extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${LOOK_CSS}</style>`
       + `<h3 part="question">${fdEsc(this.getAttribute('question') || '')}</h3><div class="meta">${meta}</div>`
       + (why ? `<p class="why">${fdEsc(why)}</p>` : '')
-      + `<div class="imgs" part="images">${imgs.map((im, i) => `<figure><button type="button" data-i="${i}" aria-label="Open full size: ${fdEsc(im.alt || im.label || '')}"><img src="${fdEsc(im.src)}" alt="${fdEsc(im.alt || '')}" loading="lazy"></button>${im.label ? `<figcaption>${fdEsc(im.label)} · tap to open full size</figcaption>` : ''}</figure>`).join('')}</div>`
+      + `<div class="imgs" part="images">${imgs.map((im, i) => `<figure><button type="button" data-i="${i}" aria-label="Open full size: ${fdEsc(im.alt || im.label || '')}"><img src="${fdEsc(im.src)}" alt="${fdEsc(im.alt || '')}" loading="lazy"></button>${im.label ? `<figcaption>${fdEsc(im.label)}</figcaption>` : ''}</figure>`).join('')}</div>`
       + foot
       + `<dialog part="zoom" aria-label="Full size image"><button type="button" class="btn close">Close</button><img alt=""></dialog>`;
     const sr = this.shadowRoot, dlg = sr.querySelector('dialog');
@@ -2908,7 +2928,9 @@ class FdLook extends HTMLElement {
     dlg.querySelector('.close').addEventListener('click', close);
     dlg.querySelector('img').addEventListener('click', close);
     sr.querySelectorAll('[data-like]').forEach((b) => b.addEventListener('click', () => {
-      const v = b.dataset.like === '1'; this._like = this._like === v ? null : v;
+      const v = b.dataset.like === '1', t = Date.now(), last = this._tap; this._tap = { v, t };
+      if (last && last.v === v && t - last.t < 450) { this._tap = null; this._like = v; this.send(); return; }   // double tap = send now
+      this._like = this._like === v ? null : v;
       sr.querySelectorAll('[data-like]').forEach((x) => x.setAttribute('aria-pressed', String(this._like === (x.dataset.like === '1'))));
       this._sync();
     }));

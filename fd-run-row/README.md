@@ -26,6 +26,8 @@ Every attribute is also a camelCase property.
 | `text` | string | — | What is running. |
 | `href` | URL | — | Its front (the row becomes a link). |
 | `status` | string | — | Status in words next to the text ("running", "14 of 30"). |
+| `next` | string | — | The line under the text after the owner: `next: …`. |
+| `next-prefix` | string | `next: ` | What goes before `next` (`next-prefix=""` when the line is a reason or a count, not a next step). |
 | `count / total` | numbers | — | Both set = a meter (role=meter). Otherwise no bar. |
 | `front` | id | — | Fires fd-front-hover with this id (row → dial). |
 | `highlight` | boolean | off | Lit from outside (dial → row). |
