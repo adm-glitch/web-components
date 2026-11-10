@@ -13,7 +13,7 @@ const trough = process.argv.includes('--trough');   // the breath at its faintes
 const motion = process.argv.includes('--motion') || trough;
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
 const PAGE = process.argv.includes('--page') ? process.argv[process.argv.indexOf('--page') + 1] : 'index';   // console = S6 screens
-const SECS = PAGE === 'console' ? ['front', 'decide', 'records', 'health', 'numbers', 'board'] : ['home', 'dial', 'ask', 'run', 'done', 'states', 'buttons', 'steer', 'decision', 'table', 'gauge', 'spotlight', 'app', 'open'];
+const SECS = PAGE === 'console' ? ['work', 'front', 'decide', 'records', 'health', 'numbers', 'board'] : ['home', 'dial', 'ask', 'run', 'done', 'states', 'buttons', 'steer', 'decision', 'table', 'gauge', 'spotlight', 'app', 'open'];
 const url = 'file://' + path.join(ROOT, PAGE === 'index' ? 'playground/standalone.html' : `playground/${PAGE}-standalone.html`);
 const b = await chromium.launch();
 const shot = async (th, dev) => {

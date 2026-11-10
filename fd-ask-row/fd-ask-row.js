@@ -71,6 +71,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -107,7 +117,7 @@ const ASK_CSS = `
 .row.many3{flex-wrap:wrap}.row.many3 .opts{width:100%;padding-left:calc(24px + var(--_sp-4));justify-content:flex-start}
 @container (max-width: 420px){.row.many3 .opts{padding-left:0}.row.many3 .opts .btn{flex:1 1 40%}}
 .nw{white-space:nowrap}
-.t a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;min-height:var(--_sz-target);margin:-13px 0}.t a:hover{text-decoration:underline;text-underline-offset:3px}
+.t a{color:inherit;text-decoration:none;padding:13px 0}   /* inline: a 44 px hit area that never moves the meta line (S6 lens 5) */.t a:hover{text-decoration:underline;text-underline-offset:3px}
 .t a:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px;border-radius:2px}
 :host([highlight]) .row{background:var(--_hover-bg);border-radius:var(--_r-sm);box-shadow:inset 2px 0 0 var(--_hover-line)}
 .btn.chosen:disabled{color:var(--_text);border-color:var(--_muted)}

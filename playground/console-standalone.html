@@ -179,7 +179,7 @@ section{margin-top:var(--fd-sp-9)}
 .top{display:flex;align-items:center;justify-content:space-between;gap:var(--fd-sp-4);flex-wrap:wrap}
 .seg{display:inline-flex;border:1px solid var(--fd-line);border-radius:var(--fd-r-md);overflow:hidden}
 .seg button{font:var(--fd-fw-medium) var(--fd-fs-sm) var(--fd-ff);color:var(--fd-muted);background:transparent;border:0;min-height:var(--fd-sz-target);padding:0 var(--fd-sp-5);cursor:pointer}
-.seg button[aria-pressed=true]{background:var(--fd-raised);color:var(--fd-text)}
+.seg button[aria-pressed=true]{background:var(--fd-raised);color:var(--fd-text);box-shadow:inset 0 -2px 0 var(--fd-text)}
 .seg button:focus-visible{outline:2px dashed var(--fd-text);outline-offset:-3px}
 .tabs{display:flex;gap:var(--fd-sp-2);flex-wrap:wrap;margin-top:var(--fd-sp-5)}
 .tabs a{color:var(--fd-muted);text-decoration:none;font-size:var(--fd-fs-sm);min-height:var(--fd-sz-target);display:inline-flex;align-items:center;padding:0 var(--fd-sp-4);border-radius:var(--fd-r-md);border:1px solid transparent}
@@ -187,8 +187,11 @@ section{margin-top:var(--fd-sp-9)}
 .fronthead{display:flex;align-items:center;gap:var(--fd-sp-5);flex-wrap:wrap}
 .fronthead b{font-size:var(--fd-fs-xl);font-weight:var(--fd-fw-strong)}
 .fronthead .st{font-size:var(--fd-fs-sm);color:var(--fd-muted)}
+/* a front page: a way back, and on the phone what needs him comes before the timeline (S6 lens 7) */
+.back{display:inline-flex;align-items:center;min-height:var(--fd-sz-target);color:var(--fd-muted);text-decoration:none;font-size:var(--fd-fs-sm);margin-bottom:var(--fd-sp-3)}.back:hover{color:var(--fd-text)}
+@media(max-width:899px){#front .tl{order:2}}
 .board{display:grid;grid-template-columns:1fr;gap:var(--fd-sp-5)}
-@media(min-width:900px){.board{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:900px){.board{grid-template-columns:repeat(5,1fr)}}
 .dot{display:inline-block;width:8px;height:8px;border-radius:999px;margin-right:var(--fd-sp-2);vertical-align:1px}
 </style></head><body>
 <div class="wrap">
@@ -196,22 +199,26 @@ section{margin-top:var(--fd-sp-9)}
   <div><div class="lbl">Friday · design system v0.3 · S6 · the Console in the components</div><h1>The Console, screen by screen</h1></div>
   <div class="seg" role="group" aria-label="Theme"><button type="button" data-th="dark">Dark</button><button type="button" data-th="light">Paper</button></div>
  </header>
- <p class="mu" style="margin-top:var(--fd-sp-3);max-width:66ch;font-size:var(--fd-fs-md);color:var(--fd-muted)">Every screen here is built only from the components you saw. A dashed tag marks a piece that is still missing; the plan names it. The data are examples.</p>
- <nav class="tabs" aria-label="Screens"><a href="standalone.html#%7B%7D">Home (the panel)</a><a href="#front">A front's page</a><a href="#decide">Decide</a><a href="#records">Records</a><a href="#health">Friday's services</a><a href="#numbers">Numbers</a><a href="#board">Week board</a></nav>
+ <p class="mu" style="margin-top:var(--fd-sp-3);max-width:66ch;font-size:var(--fd-fs-md);color:var(--fd-muted)">Every screen here is built only from the components you saw. A dashed tag marks a piece not built yet; the plan names it. The data are examples.</p>
+ <nav class="tabs" aria-label="Screens"><a href="standalone.html#%7B%7D">Home (the panel)</a><a href="#work">Work</a><a href="#front">A front's page</a><a href="#decide">Decide</a><a href="#records">Records</a><a href="#health">Friday's services</a><a href="#numbers">Numbers</a><a href="#board">Week board</a></nav>
+
+ <section id="work" aria-labelledby="h-work"><h2 id="h-work">Work</h2><p class="intro">Every front, grouped by company in dial order: what it is doing, where it runs, the next step. A front that waits on you says so; one that is idle says how to pick it up again.</p>
+  <div class="g"><div class="s8 stack" id="work-rows"></div>
+   <div class="s4"><fd-panel heading-level="3" label="Done today" pad="row"><fd-ledger id="work-done"></fd-ledger></fd-panel></div></div></section>
 
  <section id="front" aria-labelledby="h-front"><h2 id="h-front">A front's page</h2><p class="intro">Opened from a dial segment or a row. Only this front: its timeline (your words, steps, hand-offs, what it produced), the box to steer it, and what it needs from you.</p>
   <div class="g">
-   <div class="s12"><fd-panel pad="none" heading-level="3" label="Marquatica · front"><div class="fronthead" style="padding:var(--fd-sp-5)">
+   <div class="s12"><a class="back" href="standalone.html#%7B%7D">← Panel</a><fd-panel pad="none" heading-level="3" label="Marquatica · front"><div class="fronthead" style="padding:var(--fd-sp-5)">
     <fd-dial company="mq" size="phone" style="width:120px" id="front-dial"></fd-dial>
-    <div><b>Lead research</b><div class="st"><span class="dot" style="background:var(--fd-mq)"></span>Marquatica · running · on the VPS · 14 of 30 leads · next: score the last 16</div></div>
+    <div><b>Client rotation</b><div class="st"><span class="dot" style="background:var(--fd-mq)"></span>Marquatica · needs you · on the server · next: your yes, then the 6 handovers</div></div>
    </div></fd-panel></div>
-   <div class="s7 stack">
+   <div class="s7 stack tl">
     <fd-panel heading-level="3" label="Timeline"><fd-rail id="front-rail" max="12" label="Lead research timeline"></fd-rail></fd-panel>
     <fd-panel heading-level="3" label="Produced"><fd-ledger id="front-made" label="Produced by this front"></fd-ledger></fd-panel>
    </div>
    <div class="s5 stack">
-    <fd-panel heading-level="3" label="Needs you here"><fd-decision company="mq" question="Score Belém leads above São Paulo this week?" why="Belém answered 3× more last month. Friday would rank them first until Friday." minutes="1" options='["No","Yes"]' suggest="Yes"><a slot="doc" href="#front">Last month by city · 1 page</a></fd-decision></fd-panel>
-    <fd-panel heading-level="3" label="Steer this front"><fd-steer company="mq" front="Lead research"></fd-steer></fd-panel>
+    <fd-panel heading-level="3" label="Needs you here"><fd-decision company="mq" question="OK to rotate 6 clients?" why="Six clients move to the new account owners on Monday. Friday checked each handover note." minutes="1" options='["No","Yes"]' suggest="Yes"><a slot="doc" href="#front">The 6 clients and their new owners · 1 page</a></fd-decision></fd-panel>
+    <fd-panel heading-level="3" label="Steer this front"><fd-steer company="mq" front="Client rotation"></fd-steer></fd-panel>
    </div>
   </div></section>
 
@@ -219,9 +226,9 @@ section{margin-top:var(--fd-sp-9)}
   <div class="g">
    <div class="s7 stack">
     <fd-panel heading-level="3" label="Needs you · 2"><div class="stack">
-     <fd-decision company="mq" question="Which CRM for the AI Systems pilot?" why="It sets the next three months of work for the pilot client." minutes="3" options='["GoHighLevel","HubSpot"]' suggest="GoHighLevel" note-box><a slot="doc" href="#decide">Comparison · 2 pages</a><a slot="doc" href="#decide">Field map for the lead relay · 1 page</a></fd-decision>
+     <fd-decision company="mq" question="OK to rotate 6 clients?" why="Six clients move to the new account owners on Monday. Friday checked each handover note." minutes="1" options='["No","Yes"]' suggest="Yes" note-box href="#front"><a slot="doc" href="#front">The 6 clients and their new owners · 1 page</a></fd-decision>
     </div></fd-panel>
-    <fd-panel heading-level="3" label="Look and react" pad="row"><fd-ask-row company="ps" question="The panel in its components: what do you see?" note="1 tap · 4 images" options='["Open"]' href="#decide"></fd-ask-row></fd-panel>
+    <fd-panel heading-level="3" label="Look and react" pad="row"><fd-ask-row company="ps" question="Which of these looks like Friday?" note="1 tap · 4 images" options='["Open"]' href="#decide"></fd-ask-row></fd-panel>
     <p class="meta">Image cards (the "look" cards you answer now) open full size in the Console; here they are a row with one door. <span class="gap">gap G6: image look card</span></p>
    </div>
    <div class="s5 stack">
@@ -230,20 +237,20 @@ section{margin-top:var(--fd-sp-9)}
    </div>
   </div></section>
 
- <section id="records" aria-labelledby="h-records"><h2 id="h-records">Records</h2><p class="intro">What "mostra asks / recibos / incidentes" opens: one owner at a time, newest first, a table on the computer and cards on the phone.</p>
-  <fd-panel heading-level="3" label="Asks"><div style="display:flex;gap:var(--fd-sp-4);align-items:center;flex-wrap:wrap;margin-bottom:var(--fd-sp-4)">
+ <section id="records" aria-labelledby="h-records"><h2 id="h-records">Records</h2><p class="intro">What "mostra pedidos / recibos / incidentes" opens: one owner at a time, newest first, a table on the computer and cards on the phone.</p>
+  <fd-panel heading-level="3" label="Requests"><div style="display:flex;gap:var(--fd-sp-4);align-items:center;flex-wrap:wrap;margin-bottom:var(--fd-sp-4)">
    <div class="seg" role="group" aria-label="Owner" id="owner-seg"><button type="button" aria-pressed="true">Personal</button><button type="button">Marquatica</button><button type="button">Atípica</button><button type="button">All</button></div>
    <span class="gap">gap G3: owner filter as a component</span></div>
    <fd-table id="rec-table"></fd-table></fd-panel></section>
 
- <section id="health" aria-labelledby="h-health"><h2 id="h-health">Friday's services</h2><p class="intro">Friday's own jobs. Not yours: when one stops, it shows as "Friday fixing it", never in amber.</p>
+ <section id="health" aria-labelledby="h-health"><h2 id="h-health">Friday's services</h2><p class="intro">Friday's own services. Not yours: when one stops, it shows as "Friday fixing it", never in amber.</p>
   <div class="g">
    <div class="s5 stack">
     <fd-panel heading-level="3" label="Friday fixing it" pad="row"><fd-state kind="fixing" company="ps" text="Backup stopped at 3 am" note="not yours · Friday is on it since 03:10"></fd-state></fd-panel>
     <fd-panel heading-level="3" label="Morning brief" stale="09:58"><fd-state kind="stale" since="09:58"></fd-state></fd-panel>
    </div>
    <div class="s7"><fd-panel heading-level="3" label="All services"><fd-table id="svc-table"></fd-table>
-    <p class="meta">The state column is words today. <span class="gap">gap G4: a state mark for table cells</span></p></fd-panel></div>
+    <p class="meta">The state column carries the dial’s own signs (G4, built in S6).</p></fd-panel></div>
   </div></section>
 
  <section id="numbers" aria-labelledby="h-numbers"><h2 id="h-numbers">Numbers</h2><p class="intro">The R-numbers, how the system is doing (never a count of anything you missed). Today as a table; each number with its target and the week before.</p>
@@ -330,6 +337,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -486,6 +503,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -749,6 +776,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -785,7 +822,7 @@ const ASK_CSS = `
 .row.many3{flex-wrap:wrap}.row.many3 .opts{width:100%;padding-left:calc(24px + var(--_sp-4));justify-content:flex-start}
 @container (max-width: 420px){.row.many3 .opts{padding-left:0}.row.many3 .opts .btn{flex:1 1 40%}}
 .nw{white-space:nowrap}
-.t a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;min-height:var(--_sz-target);margin:-13px 0}.t a:hover{text-decoration:underline;text-underline-offset:3px}
+.t a{color:inherit;text-decoration:none;padding:13px 0}   /* inline: a 44 px hit area that never moves the meta line (S6 lens 5) */.t a:hover{text-decoration:underline;text-underline-offset:3px}
 .t a:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px;border-radius:2px}
 :host([highlight]) .row{background:var(--_hover-bg);border-radius:var(--_r-sm);box-shadow:inset 2px 0 0 var(--_hover-line)}
 .btn.chosen:disabled{color:var(--_text);border-color:var(--_muted)}
@@ -959,6 +996,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -982,11 +1029,11 @@ const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !
 // fd-shared:end
 
 // S6 (7b workstream rows, console-parallel-ui §4): next step and carrier under the text; paused = idle mark, resume line
-const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused'];
+const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused', 'need', 'state'];
 
 const RUN_CSS = `
 :host{display:block}
-.run{display:grid;grid-template-columns:20px minmax(0,1fr) auto 64px;align-items:center;gap:var(--_sp-4);font-size:var(--_fs-sm);
+.run{display:grid;grid-template-columns:20px minmax(0,1fr) auto auto;align-items:center;gap:var(--_sp-4);font-size:var(--_fs-sm);
  padding:var(--_sp-2);min-height:var(--_sz-target);color:inherit;text-decoration:none;border-radius:var(--_r-sm);
  transition:background-color var(--_d-change) var(--_e-out)}
 a.run:hover{background:var(--_hover-bg)}
@@ -997,6 +1044,9 @@ a.run:focus-visible{outline:var(--_sz-focus-ring) solid var(--_focus);outline-of
 .tt{min-width:0}.tt>span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tt small{display:block;color:var(--_muted);font-size:var(--_fs-xs)}
 .n{color:var(--_muted);font-size:var(--_fs-xs);text-align:right;white-space:nowrap}
+.run>span:last-child:empty{display:none}
+/* in a narrow column the status goes under the text instead of squeezing it (S6 board) */
+:host{container-type:inline-size}@container (max-width: 260px){.run{grid-template-columns:20px minmax(0,1fr)}.n{grid-column:2;text-align:left}}
 .bar{width:64px;height:4px;border-radius:2px;background:var(--_text-dim);position:relative;display:block}
 .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--_text);border-radius:2px}
 `;
@@ -1018,7 +1068,7 @@ class FdRunRow extends HTMLElement {
       ? `<span class="bar" role="meter" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${Math.min(c, t)}" aria-label="${fdEsc(text)}: ${c} of ${t}" part="meter"><i style="width:${(Math.min(c, t) / t * 100).toFixed(1)}%"></i></span>`
       : '<span></span>';
     const tag = href ? 'a' : 'div';
-    const inner = `${this.getAttribute('icon') && this.getAttribute('icon') !== 'run' ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : `<span class="ic arc" style="width:20px;height:20px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:var(--_${k}${this.hasAttribute('paused') ? '-dim' : ''});stroke-width:${this.hasAttribute('paused') ? 2 : 3}px"/></svg></span>`}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · next: ${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
+    const inner = `${this.getAttribute('icon') && !['run', 'ask'].includes(this.getAttribute('icon')) ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : fdSign(this.getAttribute('state') || (this.hasAttribute('need') ? 'need' : this.hasAttribute('paused') ? 'rest' : 'run'), k, 20)}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · next: ${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${RUN_CSS}</style><${tag} class="run" part="row"${href ? ` href="${fdEsc(href)}"` : ''}>${inner}</${tag}>`;
     const el = this.shadowRoot.querySelector('.run'), id = this.getAttribute('front');
     if (id != null) {
@@ -1101,6 +1151,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -1128,7 +1188,8 @@ const LEDGER_ATTRS = ['items', 'reward', 'theme', 'label'];
 const LEDGER_CSS = `
 :host{display:block}
 ol{list-style:none;margin:0;padding:0}
-li>*{display:flex;align-items:center;gap:var(--_sp-4);padding:var(--_sp-3) 0;font-size:var(--_fs-sm);color:inherit;text-decoration:none;min-height:var(--_sz-target-dense)}
+li>*{display:flex;align-items:center;gap:var(--_sp-4);padding:var(--_sp-3) 0;font-size:var(--_fs-sm);color:inherit;text-decoration:none;min-height:var(--_sz-target)}
+@media (min-width:900px) and (pointer:fine){li>*{min-height:var(--_sz-target-dense)}}
 li+li{border-top:var(--_st-hair) solid var(--_line-soft)}
 li a:hover{background:var(--_hover-bg)}li a:focus-visible{outline:var(--_sz-focus-ring) solid var(--_focus);outline-offset:calc(-1 * var(--_sz-focus-ring))}
 .x{flex:1;min-width:0}
@@ -1230,6 +1291,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -1261,7 +1332,7 @@ li{display:flex;gap:var(--_sp-3);line-height:1.35}
 time{color:var(--_text);min-width:44px;white-space:nowrap;flex:none}
 li.you{color:var(--_text)}
 li.you b{font-weight:var(--_fw-strong)}
-li a{color:var(--_text);text-underline-offset:3px;text-decoration-color:var(--_muted)}li small{font-size:var(--_fs-xs)}
+li a{color:var(--_text);text-underline-offset:3px;text-decoration-color:var(--_muted);padding:15px 0}   /* inline: 44 px hit area, no layout shift */li small{font-size:var(--_fs-xs)}
 `;
 
 class FdRail extends HTMLElement {
@@ -1356,6 +1427,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -1503,6 +1584,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -1634,6 +1725,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -1804,6 +1905,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -1898,7 +2009,7 @@ class FdDecision extends HTMLElement {
         + `</div>`;
     }
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${DEC_CSS}</style>`
-      + `<div class="head">${fdIcon('ask', st === 'answered' ? 'var(--_text)' : 'var(--_amb)', 24)}<div><h3 part="question">${this.getAttribute('href') ? `<a href="${fdEsc(this.getAttribute('href'))}" style="color:inherit;text-decoration:none">${fdEsc(this.getAttribute('question') || '')}</a>` : fdEsc(this.getAttribute('question') || '')}</h3><div class="meta">${meta}</div></div></div>`
+      + `<div class="head">${fdIcon('ask', st === 'answered' ? 'var(--_text)' : 'var(--_amb)', 24)}<div><h3 part="question">${this.getAttribute('href') ? `<a href="${fdEsc(this.getAttribute('href'))}" style="color:inherit;text-decoration:none;padding:11px 0">${fdEsc(this.getAttribute('question') || '')}</a>` : fdEsc(this.getAttribute('question') || '')}</h3><div class="meta">${meta}</div></div></div>`
       + (why ? `<p class="why" part="why">${fdEsc(why)}</p>` : '')
       // one doc mark per document: each slotted link gets its own named slot and its own row (S5 r2 lenses 1, 2)
       + `<div class="docs" part="docs"${hasDocs ? '' : ' hidden'}><div class="lbl">To read</div>${docs.map((_, i) => `<div class="dl">${fdIcon('doc', 'var(--_text)', 20)}<slot name="doc-${i}"></slot></div>`).join('')}<slot name="doc" hidden></slot></div>`
@@ -1986,6 +2097,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -2025,10 +2146,12 @@ tr:last-child th.rh{border-bottom:0}
 .cards{display:none;list-style:none;margin:0;padding:0}
 .cards li{padding:var(--_sp-4) 0;border-bottom:var(--_st-hair) solid var(--_line-soft)}
 .cards li:last-child{border-bottom:0}
+.cards a{color:inherit;text-underline-offset:3px;text-decoration-color:var(--_muted);padding:13px 0}
 .cards b{display:block;font-size:var(--_fs-md);font-weight:var(--_fw-medium);margin-bottom:var(--_sp-2)}
 .cards dl{display:grid;grid-template-columns:auto 1fr;gap:var(--_sp-1) var(--_sp-4);margin:0;font-size:var(--_fs-sm)}
 .cards dt{color:var(--_muted)}.cards dd{margin:0}
 .cap{display:none}
+.sg{display:inline-flex;align-items:center;gap:var(--_sp-2)}
 `;
 
 class FdTable extends HTMLElement {
@@ -2043,7 +2166,7 @@ class FdTable extends HTMLElement {
   render() {
     const cols = this.columns || [], rows = this.rows || [], cap = this.getAttribute('caption');
     const br = parseInt(this.getAttribute('break') || '560', 10);
-    const cell = (r, c, i) => { const v = fdEsc(r[c.key]); const dot = i === 0 && r.company ? `<span class="dot" style="background:var(--_${r.company})"></span>` : ''; return i === 0 && r.href ? `${dot}<a href="${fdEsc(r.href)}">${v}</a>` : dot + v; };
+    const cell = (r, c, i) => { const v = c.state ? `<span class="sg">${fdSign(r[c.key], r.company || null, 18)}${fdEsc(r[c.key])}</span>` : fdEsc(r[c.key]); const dot = i === 0 && r.company ? `<span class="dot" style="background:var(--_${r.company})"></span>` : ''; return i === 0 && r.href ? `${dot}<a href="${fdEsc(r.href)}">${v}</a>` : dot + v; };
     const table = `<table part="table">${cap ? `<caption>${fdEsc(cap)}</caption>` : ''}<thead><tr>${cols.map((c) => `<th scope="col"${c.num ? ' class="n"' : ''}>${fdEsc(c.label)}</th>`).join('')}</tr></thead>`
       + `<tbody>${rows.map((r) => `<tr${r.href ? ' class="go"' : ''}>${cols.map((c, i) => i === 0 ? `<th scope="row" class="rh">${cell(r, c, i)}</th>` : `<td${c.num ? ' class="n"' : ''}>${cell(r, c, i)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
     const cards = `${cap ? `<div class="lbl cap" part="caption">${fdEsc(cap)}</div>` : ''}<ul class="cards" part="cards"${cap ? ` aria-label="${fdEsc(cap)}"` : ''}>${rows.map((r) => `<li><b>${cell(r, cols[0] || { key: '' }, 0)}</b><dl>${cols.slice(1).map((c) => `<dt>${fdEsc(c.label)}</dt><dd${c.num ? ' class="n"' : ''}>${fdEsc(r[c.key])}</dd>`).join('')}</dl></li>`).join('')}</ul>`;
@@ -2126,6 +2249,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -2444,29 +2577,34 @@ setTheme(P.th === 'light' ? 'light' : 'dark');
 $$('#owner-seg button').forEach((b) => (b.onclick = () => $$('#owner-seg button').forEach((x) => x.setAttribute('aria-pressed', x === b))));
 // the same Marquatica fronts as the home panel (one data list)
 $('#front-dial').fronts = [{ id: 'm1', t: 'Monthly report', s: 'run' }, { id: 'm2', t: 'CRM check', s: 'done' }, { id: 'm3', t: 'Client rotation', s: 'need' }, { id: 'm4', t: 'Lead research', s: 'run' }, { id: 'm5', t: 'New proposal', s: 'rest' }];
-$('#front-dial').setAttribute('highlight', 'm4');
+$('#front-dial').setAttribute('highlight', 'm3');
 $('#front-rail').items = [
-  { at: 'Mon 09:02', text: '“find 30 leads in Belém and São Paulo, AI Systems fit”', you: true },
-  { at: 'Mon 09:05', text: 'plan written', kind: 'step', href: '#front' },
-  { at: 'Mon 14:40', text: 'laptop → VPS (the scrape runs at night)', kind: 'hand-off' },
-  { at: 'Tue 07:10', text: '14 leads found, 6 scored', kind: 'step' },
-  { at: 'Tue 07:12', text: 'leads-2026-11-10.csv', kind: 'artifact', href: '#front' },
-  { at: 'Tue 09:58', text: 'asked you: Belém first?', kind: 'step' }];
-$('#front-made').items = [{ company: 'mq', text: 'leads-2026-11-10.csv', meta: '14 rows', href: '#front' }, { company: 'mq', text: 'Scoring rules', meta: '1 page', href: '#front' }];
+  { at: 'Fri 16:20', text: '“rotate the six accounts before the Monday call”', you: true },
+  { at: 'Fri 16:24', text: 'plan written', kind: 'step', href: '#front' },
+  { at: 'Sat 09:10', text: 'laptop → server (handover notes run overnight)', kind: 'hand-off' },
+  { at: 'Mon 07:40', text: 'six handover notes checked', kind: 'step' },
+  { at: 'Mon 07:42', text: 'rotation-plan.pdf', kind: 'file', href: '#front' },
+  { at: 'Mon 09:58', text: 'asked you: OK to rotate?', kind: 'step' }];
+$('#front-made').items = [{ company: 'mq', text: 'rotation-plan.pdf', meta: '6 clients', href: '#front' }, { company: 'mq', text: 'Handover notes', meta: '6 pages', href: '#front' }];
 $('#decide-done').items = [{ company: 'mq', text: 'CRM check', meta: '12 clients' }, { company: 'at', text: 'Management report', meta: 'page' }, { company: 'ps', text: 'Receipts', meta: '3 photos' }];
 const rt = $('#rec-table');
-rt.columns = [{ key: 'id', label: 'Ask' }, { key: 'state', label: 'State' }, { key: 'proof', label: 'Proof' }, { key: 'when', label: 'Since' }];
-rt.rows = [{ id: 'friday-ds-5', company: 'ps', state: 'running', proof: 'PR #1 · tests 45/45', when: 'today 01:00', href: '#records' }, { id: 'receipts-nov', company: 'ps', state: 'done', proof: '3 photos read', when: 'today 09:12', href: '#records' }, { id: 'backup-nightly', company: 'ps', state: 'Friday fixing it', proof: 'timer: friday-backup', when: 'today 03:10', href: '#records' }];
+rt.columns = [{ key: 'id', label: 'Request' }, { key: 'state', label: 'State', state: true }, { key: 'proof', label: 'Proof' }, { key: 'when', label: 'Since' }];
+rt.rows = [{ id: 'Receipts for November', state: 'done', proof: '3 photos read', when: 'today 09:12', href: '#records' }, { id: 'Nightly backup', state: 'Friday fixing it', proof: 'runs every night at 3', when: 'today 03:10', href: '#records' }, { id: 'Design System', state: 'running', proof: 'components built, tests pass', when: 'today 01:00', href: '#records' }];
 const st = $('#svc-table');
-st.columns = [{ key: 'name', label: 'Service' }, { key: 'state', label: 'State' }, { key: 'last', label: 'Last good run' }, { key: 'watch', label: 'Watched by' }];
-st.rows = [{ name: 'Backup', company: 'ps', state: 'Friday fixing it', last: 'yesterday 03:00', watch: 'self-heal' }, { name: 'Receipts', company: 'ps', state: 'running', last: 'today 09:12', watch: 'self-heal' }, { name: 'Morning brief', company: 'ps', state: 'running', last: 'today 06:30', watch: 'timer + receipt' }, { name: 'Console sweep', company: 'ps', state: 'running', last: 'today 10:00', watch: 'service' }];
+st.columns = [{ key: 'name', label: 'Service' }, { key: 'state', label: 'State', state: true }, { key: 'last', label: 'Last good run' }, { key: 'watch', label: 'Who notices if it stops' }];
+st.rows = [{ name: 'Backup', state: 'Friday fixing it', last: 'yesterday 03:00', watch: 'Friday, within 10 min' }, { name: 'Receipts', state: 'running', last: 'today 09:12', watch: 'Friday, within 10 min' }, { name: 'Morning brief', state: 'running', last: 'today 06:30', watch: 'Friday, at 06:40' }, { name: 'Console sweep', state: 'running', last: 'today 10:00', watch: 'Friday, within 10 min' }];
 const r = $('#r-table');
-r.columns = [{ key: 'r', label: 'Number' }, { key: 'what', label: 'What it measures' }, { key: 'v', label: 'This week', num: true }, { key: 't', label: 'Target', num: true }, { key: 'p', label: 'Last week', num: true }];
-r.rows = [{ r: 'R3', what: 'decisions on one screen', v: '2', t: '≤ 5', p: '4' }, { r: 'R9', what: 'answers in one tap', v: '86 %', t: '≥ 80 %', p: '71 %' }, { r: 'R10', what: 'jobs reporting on time', v: '97 %', t: '≥ 95 %', p: '93 %' }, { r: 'R11', what: 'pushes outside 06:30–20:00', v: '0', t: '0', p: '0' }];
+r.columns = [{ key: 'r', label: '#' }, { key: 'what', label: 'What it measures' }, { key: 'v', label: 'This week', num: true }, { key: 't', label: 'Target', num: true }, { key: 'p', label: 'Last week', num: true }];
+r.rows = [{ r: 'R1', what: 'seconds to answer you (median)', v: '9', t: '< 15', p: '12' }, { r: 'R10', what: 'messages Friday sent unasked', v: '0', t: '≤ 3', p: '2' }, { r: 'R15', what: 'messages that fit a phone', v: '93 %', t: '≥ 95 %', p: '90 %' }, { r: 'R14', what: 'open requests with a goal', v: '9 %', t: '100 %', p: '4 %' }];
 // week board: every front by state, dial order inside each column
 const FR = { mq: [['Monthly report', 'run'], ['CRM check', 'done'], ['Client rotation', 'need'], ['Lead research', 'run'], ['New proposal', 'rest']], at: [['November plan', 'rest'], ['Management report', 'done'], ['New contract', 'rest'], ['Post approvals', 'run']], ps: [['Design System', 'need'], ['Receipts', 'done'], ['Backup', 'fault'], ['Brain map', 'run'], ['Lab tests', 'rest'], ['Training', 'rest']] };
-const COLS = [['need', 'Needs you'], ['run', 'Running'], ['rest', 'Idle'], ['done', 'Done this week']];
-$('#board-cols').innerHTML = COLS.map(([s, n]) => `<fd-panel pad="row" heading-level="3" label="${n}">${['mq', 'at', 'ps'].flatMap((k) => FR[k].filter((f) => f[1] === s || (s === 'rest' && f[1] === 'fault')).map(([t, x]) => `<fd-run-row company="${k}" text="${t}" status="${x === 'fault' ? 'Friday fixing it' : ''}" href="#board"${s !== 'run' ? ' paused' : ''}></fd-run-row>`)).join('') || '<fd-state kind="empty" text="Nothing here."></fd-state>'}</fd-panel>`).join('');
+const COLS = [['need', 'Needs you'], ['run', 'Running'], ['fault', 'Friday fixing it'], ['rest', 'Idle'], ['done', 'Done this week']];
+$('#board-cols').innerHTML = COLS.map(([s, n]) => `<fd-panel pad="row" heading-level="3" label="${n}">${['mq', 'at', 'ps'].flatMap((k) => FR[k].filter((f) => f[1] === s).map(([t, x]) => `<fd-run-row company="${k}" text="${t}" status="${x === 'fault' ? 'Friday fixing it' : ''}" href="#board" state="${x}"></fd-run-row>`)).join('') || '<fd-state kind="empty" text="Nothing here."></fd-state>'}</fd-panel>`).join('');
+const WORK = { mq: [['Monthly report', 'run', 'drafting · 10:02', 'charts', 'server'], ['Client rotation', 'need', 'asked you · 09:58', 'your yes', 'server'], ['Lead research', 'run', '14 of 30', 'score the last 16', 'server'], ['New proposal', 'rest', 'idle since Fri', 'pick up with one word to Friday', 'laptop']],
+  at: [['November plan', 'rest', 'idle since Thu', 'pick up with one word to Friday', 'laptop'], ['New contract', 'rest', 'waiting on the client', 'Friday checks Monday', 'server'], ['Post approvals', 'run', '4 of 9 posts', 'the next 5', 'server']],
+  ps: [['Design System', 'need', 'cards for you · 01:30', 'your look', 'server'], ['Backup', 'fault', 'stopped 03:00', 'Friday fixing it', 'server'], ['Brain map', 'run', 'drawing', 'labels', 'laptop'], ['Lab tests', 'rest', 'idle', 'Thursday 07:00', 'you'], ['Training', 'rest', 'today 6 pm', 'at the gym', 'you']] };
+$('#work-rows').innerHTML = ['mq', 'at', 'ps'].map((k) => `<fd-panel pad="row" heading-level="3" label="${{ mq: 'Marquatica', at: 'Atípica', ps: 'Personal' }[k]}">${WORK[k].map(([t, st, last, next, car]) => `<fd-run-row company="${k}" text="${t}" status="${last}" next="${next}" carrier="${car}" state="${st}" href="#front"></fd-run-row>`).join('')}</fd-panel>`).join('');
+$('#work-done').items = [{ company: 'mq', text: 'CRM check', meta: '12 clients' }, { company: 'at', text: 'Management report', meta: 'page' }, { company: 'ps', text: 'Receipts', meta: '3 photos' }];
 await customElements.whenDefined('fd-dial');
 document.fonts.ready.then(() => { document.body.dataset.ready = '1'; document.body.dataset.face = document.fonts.check('16px Figtree') ? 'figtree' : 'missing'; });
 </script>

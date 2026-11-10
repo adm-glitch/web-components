@@ -11,10 +11,11 @@ const PG = 'file://' + path.join(ROOT, 'playground/standalone.html');
 let fails = 0, n = 0;
 const ok = (cond, name, extra = '') => { n++; if (cond) console.log('ok  ', name); else { fails++; console.log('FAIL', name, extra); } };
 const b = await chromium.launch();
-const open = async ({ w = 1440, h = 900, dpr = 1, th = 'dark', reduced = 'no-preference', touch = false } = {}) => {
+const PG6 = 'file://' + path.join(ROOT, 'playground/console-standalone.html');
+const open = async ({ w = 1440, h = 900, dpr = 1, th = 'dark', reduced = 'no-preference', touch = false, url = PG } = {}) => {
   const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: dpr, reducedMotion: reduced, hasTouch: touch });
   const p = await ctx.newPage(); p._errs = []; p.on('pageerror', (e) => p._errs.push(e.message));
-  await p.goto(PG + '#' + encodeURIComponent(JSON.stringify({ th })));
+  await p.goto(url + '#' + encodeURIComponent(JSON.stringify({ th })));
   await p.waitForSelector('body[data-ready="1"]', { timeout: 20000 }); await p.waitForTimeout(300);
   return p;
 };
@@ -144,6 +145,21 @@ for (const th of ['dark', 'light']) {
   const low = con.filter(([, r]) => r < 4.5);
   ok(con.length >= 16 && low.length === 0, `${th}: every button label ≥ 4.5:1 in every state`, JSON.stringify(low));
   await p.context().close();
+}
+// 2b · S6 Console compositions (lens 9: the screens get the same checks)
+for (const th of ['dark', 'light']) {
+  const p = await open({ url: PG6, th });
+  ok(p._errs.length === 0, `console ${th}: no page errors`, p._errs.join(' | '));
+  const loops = await p.evaluate(() => { const all = []; const walk = (root) => root.querySelectorAll('*').forEach((el) => { el.getAnimations?.().filter((a) => a.effect.getTiming().iterations === Infinity).forEach((a) => all.push(el.getAttribute('class') || el.tagName)); if (el.shadowRoot) walk(el.shadowRoot); }); walk(document); return [...new Set(all)]; });
+  ok(loops.every((c) => c === 'halo'), `console ${th}: only the breath loops`, JSON.stringify(loops));
+  const front = await p.evaluate(() => { const d = document.querySelector('#front-dial'); const need = [...d.shadowRoot.querySelectorAll('path.seg[data-s=need]')].map((x) => x.dataset.id); return [need, d.getAttribute('highlight')]; });
+  ok(front[0].includes(front[1]), `console ${th}: the front page's dial lights the front the page is about`, JSON.stringify(front));
+  await p.context().close();
+  const q = await open({ url: PG6, th, w: 390, h: 844, dpr: 2, touch: true });
+  const small = await q.evaluate(() => { const bad = []; const all = (root) => { root.querySelectorAll('button, a').forEach((el) => { const r = el.getBoundingClientRect(); if (r.width && r.height && (r.height < 43.5 || r.width < 43.5)) bad.push((el.textContent || '').trim().slice(0, 24) + ' ' + Math.round(r.width) + 'x' + Math.round(r.height)); }); root.querySelectorAll('*').forEach((el) => el.shadowRoot && all(el.shadowRoot)); }; all(document); return bad; });
+  ok(small.length === 0, `console phone ${th}: every control ≥ 44 × 44`, JSON.stringify(small.slice(0, 6)));
+  ok(await q.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `console phone ${th}: no sideways scroll`);
+  await q.context().close();
 }
 // 3 · reduced motion: nothing moves
 {
