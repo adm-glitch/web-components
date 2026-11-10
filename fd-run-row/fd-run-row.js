@@ -67,6 +67,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -90,11 +100,11 @@ const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !
 // fd-shared:end
 
 // S6 (7b workstream rows, console-parallel-ui §4): next step and carrier under the text; paused = idle mark, resume line
-const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused'];
+const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused', 'need', 'state'];
 
 const RUN_CSS = `
 :host{display:block}
-.run{display:grid;grid-template-columns:20px minmax(0,1fr) auto 64px;align-items:center;gap:var(--_sp-4);font-size:var(--_fs-sm);
+.run{display:grid;grid-template-columns:20px minmax(0,1fr) auto auto;align-items:center;gap:var(--_sp-4);font-size:var(--_fs-sm);
  padding:var(--_sp-2);min-height:var(--_sz-target);color:inherit;text-decoration:none;border-radius:var(--_r-sm);
  transition:background-color var(--_d-change) var(--_e-out)}
 a.run:hover{background:var(--_hover-bg)}
@@ -105,6 +115,9 @@ a.run:focus-visible{outline:var(--_sz-focus-ring) solid var(--_focus);outline-of
 .tt{min-width:0}.tt>span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tt small{display:block;color:var(--_muted);font-size:var(--_fs-xs)}
 .n{color:var(--_muted);font-size:var(--_fs-xs);text-align:right;white-space:nowrap}
+.run>span:last-child:empty{display:none}
+/* in a narrow column the status goes under the text instead of squeezing it (S6 board) */
+:host{container-type:inline-size}@container (max-width: 260px){.run{grid-template-columns:20px minmax(0,1fr)}.n{grid-column:2;text-align:left}}
 .bar{width:64px;height:4px;border-radius:2px;background:var(--_text-dim);position:relative;display:block}
 .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--_text);border-radius:2px}
 `;
@@ -126,7 +139,7 @@ class FdRunRow extends HTMLElement {
       ? `<span class="bar" role="meter" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${Math.min(c, t)}" aria-label="${fdEsc(text)}: ${c} of ${t}" part="meter"><i style="width:${(Math.min(c, t) / t * 100).toFixed(1)}%"></i></span>`
       : '<span></span>';
     const tag = href ? 'a' : 'div';
-    const inner = `${this.getAttribute('icon') && this.getAttribute('icon') !== 'run' ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : `<span class="ic arc" style="width:20px;height:20px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:var(--_${k}${this.hasAttribute('paused') ? '-dim' : ''});stroke-width:${this.hasAttribute('paused') ? 2 : 3}px"/></svg></span>`}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · next: ${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
+    const inner = `${this.getAttribute('icon') && !['run', 'ask'].includes(this.getAttribute('icon')) ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : fdSign(this.getAttribute('state') || (this.hasAttribute('need') ? 'need' : this.hasAttribute('paused') ? 'rest' : 'run'), k, 20)}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · next: ${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${RUN_CSS}</style><${tag} class="run" part="row"${href ? ` href="${fdEsc(href)}"` : ''}>${inner}</${tag}>`;
     const el = this.shadowRoot.querySelector('.run'), id = this.getAttribute('front');
     if (id != null) {

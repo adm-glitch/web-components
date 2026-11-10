@@ -67,6 +67,16 @@ const FD_ICONS = {
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+// the dial's signs at row size (S6 gap G4): run = lit arc, rest = lighter thinner arc, done = thread, fault = dashed muted,
+// need = the amber ask mark. k = company (mq|at|ps) or null for Friday's own jobs (text colour).
+const FD_STATE_WORD = { running: 'run', run: 'run', idle: 'rest', rest: 'rest', waiting: 'rest', done: 'done', 'Friday fixing it': 'fault', fault: 'fault', fixing: 'fault', 'needs you': 'need', need: 'need' };
+const fdSign = (state, k, size = 20) => {
+  const s = FD_STATE_WORD[state] || state;
+  if (s === 'need') return fdIcon('ask', 'var(--_amb)', size);
+  const col = { run: k ? `var(--_${k})` : 'var(--_text)', rest: k ? `var(--_${k}-dim)` : 'var(--_text-dim)', done: 'var(--_text-dim)', fault: 'var(--_fault)' }[s] || 'var(--_text-dim)';
+  const w = { run: 3, rest: 2, done: 1.2, fault: 2 }[s] || 2;
+  return `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:${col};stroke-width:${w}px${s === 'fault' ? ';stroke-dasharray:2.5 2.5;stroke-linecap:butt' : ''}"/></svg></span>`;
+};
 const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
@@ -106,10 +116,12 @@ tr:last-child th.rh{border-bottom:0}
 .cards{display:none;list-style:none;margin:0;padding:0}
 .cards li{padding:var(--_sp-4) 0;border-bottom:var(--_st-hair) solid var(--_line-soft)}
 .cards li:last-child{border-bottom:0}
+.cards a{color:inherit;text-underline-offset:3px;text-decoration-color:var(--_muted);padding:13px 0}
 .cards b{display:block;font-size:var(--_fs-md);font-weight:var(--_fw-medium);margin-bottom:var(--_sp-2)}
 .cards dl{display:grid;grid-template-columns:auto 1fr;gap:var(--_sp-1) var(--_sp-4);margin:0;font-size:var(--_fs-sm)}
 .cards dt{color:var(--_muted)}.cards dd{margin:0}
 .cap{display:none}
+.sg{display:inline-flex;align-items:center;gap:var(--_sp-2)}
 `;
 
 class FdTable extends HTMLElement {
@@ -124,7 +136,7 @@ class FdTable extends HTMLElement {
   render() {
     const cols = this.columns || [], rows = this.rows || [], cap = this.getAttribute('caption');
     const br = parseInt(this.getAttribute('break') || '560', 10);
-    const cell = (r, c, i) => { const v = fdEsc(r[c.key]); const dot = i === 0 && r.company ? `<span class="dot" style="background:var(--_${r.company})"></span>` : ''; return i === 0 && r.href ? `${dot}<a href="${fdEsc(r.href)}">${v}</a>` : dot + v; };
+    const cell = (r, c, i) => { const v = c.state ? `<span class="sg">${fdSign(r[c.key], r.company || null, 18)}${fdEsc(r[c.key])}</span>` : fdEsc(r[c.key]); const dot = i === 0 && r.company ? `<span class="dot" style="background:var(--_${r.company})"></span>` : ''; return i === 0 && r.href ? `${dot}<a href="${fdEsc(r.href)}">${v}</a>` : dot + v; };
     const table = `<table part="table">${cap ? `<caption>${fdEsc(cap)}</caption>` : ''}<thead><tr>${cols.map((c) => `<th scope="col"${c.num ? ' class="n"' : ''}>${fdEsc(c.label)}</th>`).join('')}</tr></thead>`
       + `<tbody>${rows.map((r) => `<tr${r.href ? ' class="go"' : ''}>${cols.map((c, i) => i === 0 ? `<th scope="row" class="rh">${cell(r, c, i)}</th>` : `<td${c.num ? ' class="n"' : ''}>${cell(r, c, i)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
     const cards = `${cap ? `<div class="lbl cap" part="caption">${fdEsc(cap)}</div>` : ''}<ul class="cards" part="cards"${cap ? ` aria-label="${fdEsc(cap)}"` : ''}>${rows.map((r) => `<li><b>${cell(r, cols[0] || { key: '' }, 0)}</b><dl>${cols.slice(1).map((c) => `<dt>${fdEsc(c.label)}</dt><dd${c.num ? ' class="n"' : ''}>${fdEsc(r[c.key])}</dd>`).join('')}</dl></li>`).join('')}</ul>`;

@@ -10,7 +10,7 @@ Small, dependency-free Web Components. Each folder is one component: a single `.
 
 ### Friday design system (`fd-*`, v0.3)
 
-One family on shared tokens ([`fd-tokens`](fd-tokens/)). See them together in [`playground/standalone.html`](playground/standalone.html) (opens from disk).
+One family on shared tokens ([`fd-tokens`](fd-tokens/)). See them together in [`playground/standalone.html`](playground/standalone.html) and the Console screens in [`playground/console-standalone.html`](playground/console-standalone.html) (both open from disk).
 
 | Component | What it is |
 |---|---|
@@ -27,6 +27,8 @@ One family on shared tokens ([`fd-tokens`](fd-tokens/)). See them together in [`
 | [`fd-table`](fd-table/) | A table that becomes cards on a narrow screen. |
 | [`fd-spotlight`](fd-spotlight/) | Points at one thing: ring with a gap, caption, one entrance, ends by itself. |
 | [`fd-app`](fd-app/) | App icon, PWA manifest and start screen from the dial mark. |
+| [`fd-nav`](fd-nav/) | The Console's header, tabs (at the bottom on the phone) and the way back. |
+| [`fd-look`](fd-look/) | The image card he reacts to: whole images, full size on tap, Like / Don't like, a large comment. |
 
 `usage-gauge` takes the Friday colours when the page loads `fd-tokens/fd-tokens.css` (its `--ug-*` hooks; amber for warn and critical, never red).
 
