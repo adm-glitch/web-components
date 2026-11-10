@@ -22,8 +22,8 @@ const open = async ({ w = 1440, h = 900, dpr = 1, th = 'dark', reduced = 'no-pre
 // 1 · desktop dark: structure, links, events
 {
   const p = await open();
-  const tags = ['fd-panel', 'fd-dial', 'fd-ask-row', 'fd-run-row', 'fd-ledger', 'fd-rail', 'fd-state', 'fd-button'];
-  ok(await p.evaluate((t) => t.every((x) => !!customElements.get(x)), tags), 'all 8 components defined');
+  const tags = ['fd-panel', 'fd-dial', 'fd-ask-row', 'fd-run-row', 'fd-ledger', 'fd-rail', 'fd-state', 'fd-button', 'fd-steer', 'fd-decision', 'fd-table', 'fd-spotlight'];
+  ok(await p.evaluate((t) => t.every((x) => !!customElements.get(x)), tags), 'all 12 components defined');
   ok(p._errs.length === 0, 'no page errors', p._errs.join(' | '));
   // dial: per-segment links only with a fine pointer on desktop; the whole dial is one link otherwise
   const seg = await p.evaluate(() => document.querySelector('#dials fd-dial').shadowRoot.querySelectorAll('svg a').length);
@@ -67,7 +67,7 @@ const open = async ({ w = 1440, h = 900, dpr = 1, th = 'dark', reduced = 'no-pre
   const cancel = await p.evaluate(() => { const r = document.createElement('fd-ask-row'); r.setAttribute('question', 'Q?'); document.body.append(r); r.addEventListener('fd-answer', (e) => e.preventDefault()); r.shadowRoot.querySelector('button').click(); const s = r.getAttribute('state'); r.remove(); return s; });
   ok(cancel === null || cancel === 'open', 'fd-answer is cancelable (row stays open)', cancel);
   // motion: the only running animations are the breath halos (one loop rule)
-  const anims = await p.evaluate(() => { const all = []; const walk = (root) => { root.querySelectorAll('*').forEach((el) => { el.getAnimations?.().filter((a) => a.constructor.name === 'CSSAnimation').forEach((a) => all.push((el.getAttribute('class') || el.tagName) + ':' + (a.animationName || a.constructor.name))); if (el.shadowRoot) walk(el.shadowRoot); }); }; walk(document); return all; });
+  const anims = await p.evaluate(() => { const all = []; const walk = (root) => { root.querySelectorAll('*').forEach((el) => { el.getAnimations?.().filter((a) => a.constructor.name === 'CSSAnimation' && a.effect.getTiming().iterations === Infinity).forEach((a) => all.push((el.getAttribute('class') || el.tagName) + ':' + (a.animationName || a.constructor.name))); if (el.shadowRoot) walk(el.shadowRoot); }); }; walk(document); return all; });
   ok(anims.length > 0 && anims.every((a) => /^halo:breath/.test(a)), 'only the breath loops (one loop only, motion rule)', JSON.stringify([...new Set(anims)]));
   // loading has no shimmer
   ok(await p.evaluate(() => document.querySelector('fd-state[kind=loading]').shadowRoot.querySelector('.sk').getAnimations({ subtree: true }).length === 0), 'loading skeleton is still (no shimmer loop)');
@@ -91,11 +91,36 @@ const open = async ({ w = 1440, h = 900, dpr = 1, th = 'dark', reduced = 'no-pre
   // a single action with a place to go is a link, not an answer
   const door = await p.evaluate(() => { const r = document.createElement('fd-ask-row'); r.setAttribute('question', 'Q?'); r.setAttribute('options', 'Open'); r.setAttribute('href', '#x'); document.body.append(r); const a = r.shadowRoot.querySelector('a.btn.primary'); const out = [!!a, !r.shadowRoot.querySelector('button[data-v]')]; r.remove(); return out; });
   ok(door[0] && door[1], 'a single action with href is a link (a door, not a vote)', JSON.stringify(door));
+  // component 7: steer, decision, table, spotlight, usage-gauge in the language
+  const steer = await p.evaluate(async () => { const s = document.querySelector('#steer fd-steer:not([confirm])'); let got = null; s.addEventListener('fd-steer', (e) => (got = e.detail.text), { once: true });
+    const t = s.shadowRoot.querySelector('textarea'); t.value = 'Only leads from Belém this week'; t.dispatchEvent(new Event('input'));
+    t.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', ctrlKey: true, bubbles: true })); await new Promise((r) => setTimeout(r, 50));
+    return [got, s.getAttribute('state'), s.shadowRoot.querySelector('.sent')?.textContent.includes('Only leads from Belém'), s.shadowRoot.querySelector('textarea').value]; });
+  ok(steer[0] === 'Only leads from Belém this week' && steer[1] === 'sent' && steer[2] && steer[3] === '', 'steer: Ctrl+Enter sends, the sent text stays readable, the box empties', JSON.stringify(steer));
+  const enterNl = await p.evaluate(() => { const s = document.createElement('fd-steer'); document.body.append(s); let fired = false; s.addEventListener('fd-steer', () => (fired = true)); const t = s.shadowRoot.querySelector('textarea'); t.value = 'a'; t.dispatchEvent(new Event('input')); t.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); const b = s.shadowRoot.querySelector('button.send').disabled; s.remove(); return [fired, b]; });
+  ok(!enterNl[0] && !enterNl[1], 'steer: Enter alone does not send (dictated notes)', JSON.stringify(enterNl));
+  const dec = await p.evaluate(async () => { const d = document.querySelector('#decision fd-decision[note-box]'); const bs = [...d.shadowRoot.querySelectorAll('button[data-v]')].map((b) => b.className); const docs = d.querySelectorAll('[slot=doc]').length; const ta = d.shadowRoot.querySelector('textarea'); ta.value = 'pilot only'; let got; d.addEventListener('fd-answer', (e) => (got = e.detail), { once: true }); d.shadowRoot.querySelector('button[data-v="HubSpot"]').click(); await new Promise((r) => setTimeout(r, 30)); const done = d.shadowRoot.querySelector('.done')?.textContent; d.shadowRoot.querySelector('[data-change]').click(); return [bs, docs, got, done, d.getAttribute('state')]; });
+  ok(dec[0][0] === 'btn suggest' && dec[0][1] === 'btn' && dec[1] === 2 && dec[2]?.note === 'pilot only' && /You chose HubSpot/.test(dec[3]) && dec[4] === 'open', 'decision: equal options + outline, doc slots, note sent, answered, Change reopens', JSON.stringify(dec));
+  const tbl = await p.evaluate(() => [...document.querySelectorAll('#table fd-table')].map((t) => [getComputedStyle(t.shadowRoot.querySelector('table')).display, getComputedStyle(t.shadowRoot.querySelector('.cards')).display]));
+  ok(tbl[0][0] === 'table' && tbl[0][1] === 'none' && tbl[1][0] === 'none' && tbl[1][1] === 'block', 'table: a real table when wide, cards when narrow', JSON.stringify(tbl));
+  const spot = await p.evaluate(() => new Promise((res) => { const s = document.createElement('fd-spotlight'); s.setAttribute('label', 'x'); s.setAttribute('for', '120'); document.body.append(s); s.setAttribute('active', ''); const inf = s.shadowRoot.querySelector('.wrap').getAnimations().some((a) => a.effect.getTiming().iterations === Infinity); s.addEventListener('fd-spotlight-end', (e) => { res([inf, e.detail.reason, s.hasAttribute('active')]); s.remove(); }); setTimeout(() => res('timeout'), 2000); }));
+  ok(Array.isArray(spot) && spot[0] === false && spot[1] === 'time' && spot[2] === false, 'spotlight: one entrance (no loop), ends by itself', JSON.stringify(spot));
+  const ug = await p.evaluate(() => { const g = document.querySelector('#gauge usage-gauge[weekly="100"]'); const cs = getComputedStyle(g); return [cs.getPropertyValue('--ug-critical-color').trim(), cs.getPropertyValue('--ug-idle-color').trim()]; });
+  ok(/fd-amb|#E9880B/i.test(ug[0]) && /fd-muted|#9A968F/i.test(ug[1]), 'usage-gauge takes the Friday colours (critical = amber, idle = muted)', JSON.stringify(ug));
   // never-words on screen (language.md, English and Portuguese)
   const text = await p.evaluate(() => { let t = document.body.innerText; const walk = (root) => root.querySelectorAll('*').forEach((el) => { if (el.shadowRoot) { t += ' ' + el.shadowRoot.textContent; walk(el.shadowRoot); } }); walk(document); return t; });
   const never = text.match(/\b(overdue|urgent|failed|missed|dashboard|still|again|atrasad[oa]|vencid[oa]|pendente|urgente|falhou|ainda|de novo)\b/i);
   ok(!never, 'no never-word on screen', never?.[0]);
   await p.context().close();
+}
+// 1b · component 9: manifest and icons
+{
+  const m = JSON.parse(fs.readFileSync(path.join(ROOT, 'fd-app/manifest.webmanifest'), 'utf8'));
+  const miss = m.icons.filter((i) => !fs.existsSync(path.join(ROOT, 'fd-app', i.src)));
+  ok(m.name === 'Friday' && m.display === 'standalone' && m.icons.some((i) => i.purpose === 'maskable') && miss.length === 0 && /^#/.test(m.theme_color), 'manifest: name, standalone, maskable icon, every icon file present', JSON.stringify(miss));
+  const svg = fs.readFileSync(path.join(ROOT, 'fd-app/icon.svg'), 'utf8');
+  const amb = JSON.parse(fs.readFileSync(path.join(ROOT, 'fd-tokens/tokens/color.dark.json'), 'utf8')).color.mark.amb.$value.hex;
+  ok(!svg.toUpperCase().includes(amb.toUpperCase()), 'the icon carries no amber (it never asks for anything)');
 }
 // 2 · phone: targets and the whole dial as one link
 for (const th of ['dark', 'light']) {

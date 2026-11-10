@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../fd-tokens/fd-tokens.css">
+<link rel="manifest" href="../fd-app/manifest.webmanifest"><link rel="icon" href="../fd-app/icon.svg"><link rel="apple-touch-icon" href="../fd-app/apple-touch-icon.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--fd-ff);font-size:var(--fd-fs-base);line-height:var(--fd-lh-text);color:var(--fd-text);
@@ -70,7 +71,7 @@ section{margin-top:var(--fd-sp-9)}
   <div class="seg" role="group" aria-label="Theme"><button type="button" data-th="dark">Dark</button><button type="button" data-th="light">Paper</button></div>
  </header>
  <p class="mu" style="margin-top:var(--fd-sp-3);max-width:66ch;font-size:var(--fd-fs-md)">Every block here is a real component, themed only by the tokens. Try it: answer a row, point at a dial, switch to Paper. The data are examples.</p>
- <nav class="nav" aria-label="Sections"><a href="#home">Panel</a><a href="#dial">Dials</a><a href="#ask">Needs you</a><a href="#run">In progress</a><a href="#done">Done and just now</a><a href="#states">States</a><a href="#buttons">Buttons</a><a href="#open">Two colour questions</a></nav>
+ <nav class="nav" aria-label="Sections"><a href="#home">Panel</a><a href="#dial">Dials</a><a href="#ask">Needs you</a><a href="#run">In progress</a><a href="#done">Done and just now</a><a href="#states">States</a><a href="#buttons">Buttons</a><a href="#steer">Steer</a><a href="#decision">Decisions</a><a href="#table">Tables</a><a href="#gauge">Usage</a><a href="#spotlight">Spotlight</a><a href="#app">App icon</a><a href="#open">Two colour questions</a></nav>
 
  <section id="home" aria-labelledby="h-home" style="margin-top:var(--fd-sp-7)">
   <h2 id="h-home" class="vh" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Instrument panel</h2>
@@ -147,6 +148,52 @@ section{margin-top:var(--fd-sp-9)}
  <section id="buttons"><h2>Buttons</h2><p class="intro">Plain for ordinary actions, an outline for Friday's suggestion, amber only for a single action on something that needs you. Every state from the tokens.</p>
   <fd-panel label="Kinds and states"><div class="btns" id="btns"></div></fd-panel></section>
 
+ <section id="steer"><h2>Steer</h2><p class="intro">On a front's page: you say, in your words, what Friday should change. Ctrl + Enter sends; Enter is a new line. What you sent stays readable; the answer comes in Just now.</p>
+  <div class="g">
+   <div class="s6"><fd-panel label="Lead research" heading-level="3"><fd-steer company="mq" front="Lead research"></fd-steer></fd-panel></div>
+   <div class="s6"><fd-panel label="Brain map" heading-level="3"><fd-steer id="steer-sent" company="ps" front="Brain map" confirm></fd-steer></fd-panel>
+   <p class="meta">After sending: what you wrote stays above an empty box, with the time Friday got it.</p></div>
+  </div></section>
+
+ <section id="decision"><h2>Decisions</h2><p class="intro">For a decision that needs more than a row: why it is yours, about how long it takes, what to read first, the options (equal; Friday's suggestion has the outline) and an optional note.</p>
+  <div class="g">
+   <div class="s7"><fd-panel label="Needs you" heading-level="3"><fd-decision company="mq" question="Which CRM for the AI Systems pilot?" why="It sets the next three months of work for the pilot client. Friday compared both on the fields the relay needs." minutes="3" options='["GoHighLevel","HubSpot"]' suggest="GoHighLevel" note-box>
+     <a slot="doc" href="#decision">Comparison · 2 pages</a><a slot="doc" href="#decision">Field map for the lead relay · 1 page</a></fd-decision></fd-panel></div>
+   <div class="s5"><fd-panel label="Answered" heading-level="3"><fd-decision id="dec-done" company="ps" question="Which morning for the lab tests?" minutes="1" options='["Tuesday","Thursday"]'></fd-decision></fd-panel>
+   <p class="meta">After you choose: what you chose, when, your note, and Change.</p></div>
+  </div></section>
+
+ <section id="table"><h2>Tables</h2><p class="intro">A real table where there is room; on a narrow screen each row becomes a small card, so nothing scrolls sideways.</p>
+  <div class="g">
+   <div class="s8"><fd-panel heading-level="3" label="Receipts this week"><fd-table class="tbl"></fd-table></fd-panel></div>
+   <div class="s4"><fd-panel heading-level="3" label="The same, narrow"><fd-table class="tbl"></fd-table></fd-panel></div>
+  </div></section>
+
+ <section id="gauge"><h2>Usage</h2><p class="intro">Your usage gauge, in the Friday colours: what is left in the week (outer) and in the 5-hour window (inner), the hours to reset as dots. Near the limit it turns amber, never red.</p>
+  <fd-panel heading-level="3" label="Claude usage"><div style="display:flex;gap:var(--fd-sp-7);flex-wrap:wrap;align-items:center;font-size:var(--fd-fs-sm)">
+   <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="41" session="30" pace="57" reset-minutes="110" monogram="M" size="64"></usage-gauge>plenty left</span>
+   <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="72" session="88" pace="57" reset-minutes="40" monogram="M" size="64"></usage-gauge>window almost used</span>
+   <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="100" session="100" pace="80" reset-minutes="20" monogram="M" size="64"></usage-gauge>at the limit</span>
+   <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="41" session="0" pace="57" reset-minutes="0" monogram="M" size="64"></usage-gauge>no window running</span>
+  </div></fd-panel></section>
+
+ <section id="spotlight"><h2>Spotlight</h2><p class="intro">Points at one thing without dimming the page: a ring with a gap and a short caption, one entrance, gone by itself or with "Got it". Amber only around something that needs you.</p>
+  <div class="g">
+   <div class="s6"><fd-spotlight active label="New since 09:58"><fd-panel pad="row"><fd-run-row company="at" text="Post approvals" status="running" href="#spotlight"></fd-run-row></fd-panel></fd-spotlight></div>
+   <div class="s6"><fd-spotlight active tone="need" label="This is what the dial meant"><fd-panel pad="row"><fd-ask-row company="mq" question="OK to rotate 6 clients?" note="6 clients · 1 tap" options='["No","Yes"]' suggest="Yes" keep></fd-ask-row></fd-panel></fd-spotlight></div>
+  </div></section>
+
+ <section id="app"><h2>App icon and start screen</h2><p class="intro">The instrument at rest: one segment per company in its colour, always in the same order, fine ticks, on the dark field. No amber: the icon never asks for anything.</p>
+  <div class="g">
+   <div class="s8"><fd-panel heading-level="3" label="Icon"><div style="display:flex;gap:var(--fd-sp-7);align-items:flex-end;flex-wrap:wrap;font-size:var(--fd-fs-xs);color:var(--fd-muted)">
+    <figure style="margin:0;text-align:center"><img src="../fd-app/icon-512.png" width="160" height="160" alt="Friday app icon"><figcaption>home screen</figcaption></figure>
+    <figure style="margin:0;text-align:center"><img src="../fd-app/icon-maskable-512.png" width="120" height="120" alt="Friday icon, Android shape" style="border-radius:50%"><figcaption>Android (round)</figcaption></figure>
+    <figure style="margin:0;text-align:center"><img src="../fd-app/icon-192.png" width="60" height="60" alt="Friday icon, small"><figcaption>small</figcaption></figure>
+    <figure style="margin:0;text-align:center"><img src="../fd-app/icon-192.png" width="32" height="32" alt="Friday icon, tab size"><figcaption>tab</figcaption></figure>
+   </div></fd-panel></div>
+   <div class="s4"><fd-panel heading-level="3" label="Start screen (phone)"><img src="../fd-app/splash-1290x2796.png" alt="Friday start screen: the icon mark on the dark field" style="display:block;width:140px;height:auto;margin:0 auto;border-radius:16px;border:1px solid var(--fd-line)"></fd-panel></div>
+  </div></section>
+
  <section id="open"><h2>Two colour questions</h2><p class="intro">Left is today. Right is a possible change. Nothing changes until you say so.</p>
   <div class="pair" id="pair-ps">
    <div class="variant"><div class="lbl">Personal green · today</div><div class="dials" id="ps-a"></div></div>
@@ -167,6 +214,11 @@ section{margin-top:var(--fd-sp-9)}
 <script type="module" src="../fd-rail/fd-rail.js"></script>
 <script type="module" src="../fd-state/fd-state.js"></script>
 <script type="module" src="../fd-button/fd-button.js"></script>
+<script type="module" src="../fd-steer/fd-steer.js"></script>
+<script type="module" src="../fd-decision/fd-decision.js"></script>
+<script type="module" src="../fd-table/fd-table.js"></script>
+<script type="module" src="../fd-spotlight/fd-spotlight.js"></script>
+<script type="module" src="../usage-gauge/usage-gauge.js"></script>
 <script type="module">
 const P = Object.assign({ th: 'dark' }, JSON.parse(decodeURIComponent(location.hash.slice(1).startsWith('%7B') || location.hash.slice(1).startsWith('{') ? location.hash.slice(1) : '%7B%7D')));
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
@@ -221,6 +273,11 @@ $('#ledger').items = DONE; $$('.ledger-demo').forEach((l) => (l.items = DONE));
 const KINDS = [['plain', 'No'], ['suggest', 'Yes'], ['primary', 'Open'], ['quiet', 'Later']];
 const ST = [['', 'rest'], ['hover', 'hover'], ['pressed', 'pressed'], ['focus', 'focus'], ['disabled', 'disabled']];
 $('#btns').innerHTML = '<span></span>' + ST.map(([, n]) => `<span>${n}</span>`).join('') + KINDS.map(([v, t]) => `<span>${{ plain: 'plain', suggest: 'Friday suggests', primary: 'single action', quiet: 'quiet' }[v]}</span>` + ST.map(([s]) => `<fd-button variant="${v}"${s === 'disabled' ? ' disabled' : s ? ` show-state="${s}"` : ''}>${t}</fd-button>`).join('')).join('');
+// component 7: sample data
+const RCPT = [{ item: 'Groceries', where: 'Market', company: 'ps', value: '412.00', when: 'Mon' }, { item: 'Pharmacy', where: 'Drugstore', company: 'ps', value: '38.90', when: 'Tue' }, { item: 'Market', where: 'Fair', company: 'ps', value: '121.50', when: 'Thu' }];
+$$('.tbl').forEach((t) => { t.columns = [{ key: 'item', label: 'Item' }, { key: 'where', label: 'Where' }, { key: 'when', label: 'Day' }, { key: 'value', label: 'R$', num: true }]; t.rows = RCPT; });
+{ const st = $('#steer-sent'); st.value = 'Draw the Qompass cluster closer to Marquatica, and keep the labels on hover only.'; st.send(); st.setAttribute('state', 'sent'); st.setAttribute('sent-at', '10:02'); }
+{ const d = $('#dec-done'); d.setAttribute('answered-at', '09:47'); d.choose('Thursday'); }
 if (P.sec) document.getElementById(P.sec)?.scrollIntoView();
 await customElements.whenDefined('fd-dial');
 document.fonts.ready.then(() => { document.body.dataset.ready = '1'; document.body.dataset.face = document.fonts.check('16px Figtree') ? 'figtree' : 'missing'; });

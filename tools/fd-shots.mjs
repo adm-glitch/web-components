@@ -9,9 +9,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const { chromium } = await import(process.env.PLAYWRIGHT_CORE || 'playwright-core');
 const OUT = process.argv[2]; if (!OUT) { console.error('usage: fd-shots.mjs <out-dir>'); process.exit(2); }
 fs.mkdirSync(OUT, { recursive: true });
-const motion = process.argv.includes('--motion');
+const trough = process.argv.includes('--trough');   // the breath at its faintest (t = half the breath): S5 lens 9
+const motion = process.argv.includes('--motion') || trough;
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
-const SECS = ['home', 'dial', 'ask', 'run', 'done', 'states', 'buttons', 'open'];
+const SECS = ['home', 'dial', 'ask', 'run', 'done', 'states', 'buttons', 'steer', 'decision', 'table', 'gauge', 'spotlight', 'app', 'open'];
 const url = 'file://' + path.join(ROOT, 'playground/standalone.html');
 const b = await chromium.launch();
 const shot = async (th, dev) => {
@@ -21,10 +22,11 @@ const shot = async (th, dev) => {
   await p.goto(url + '#' + encodeURIComponent(JSON.stringify({ th })));
   await p.waitForSelector('body[data-ready="1"]', { timeout: 20000 }); await p.waitForTimeout(400);
   if ((await p.evaluate(() => document.body.dataset.face)) === 'missing') throw new Error('Figtree not loaded');
-  const t = th === 'light' ? 'papel' : 'dark', tag = motion ? '-motion' : '';
+  if (trough) await p.evaluate(() => { const walk = (r) => r.querySelectorAll('*').forEach((el) => { if (el.classList?.contains('halo')) el.getAnimations().forEach((a) => { a.pause(); a.currentTime = 2250; }); if (el.shadowRoot) walk(el.shadowRoot); }); walk(document); });
+  const t = th === 'light' ? 'papel' : 'dark', tag = trough ? '-trough' : motion ? '-motion' : '';
   for (const s of SECS) {
     if (only && !only.includes(s)) continue;
-    const el = await p.$('#' + s); const bb = await el.boundingBox(), m = 24;
+    await p.evaluate(() => scrollTo(0, 0)); const el = await p.$('#' + s); const bb = await el.boundingBox(), m = 24;
     const f = path.join(OUT, `s5-${s}-${t}-${dev}${tag}.png`);
     await p.screenshot({ path: f, fullPage: true, clip: { x: Math.max(0, bb.x - m), y: Math.max(0, bb.y - m), width: Math.min(w, bb.width + 2 * m), height: bb.height + 2 * m } });
     console.log(f);

@@ -22,6 +22,13 @@ One family on shared tokens ([`fd-tokens`](fd-tokens/)). See them together in [`
 | [`fd-rail`](fd-rail/) | "Just now", with his own answers as "You: …". |
 | [`fd-state`](fd-state/) | Empty, loading, stale, fixing. |
 | [`fd-button`](fd-button/) | Plain, suggest, primary (amber), quiet; every state from tokens. |
+| [`fd-steer`](fd-steer/) | The steer box on a front's page: he says what to change; Ctrl + Enter sends. |
+| [`fd-decision`](fd-decision/) | A decision card with doc slots, equal options, Friday's suggestion as an outline, a note. |
+| [`fd-table`](fd-table/) | A table that becomes cards on a narrow screen. |
+| [`fd-spotlight`](fd-spotlight/) | Points at one thing: ring with a gap, caption, one entrance, ends by itself. |
+| [`fd-app`](fd-app/) | App icon, PWA manifest and start screen from the dial mark. |
+
+`usage-gauge` takes the Friday colours when the page loads `fd-tokens/fd-tokens.css` (its `--ug-*` hooks; amber for warn and critical, never red).
 
 ## Using a component
 

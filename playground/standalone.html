@@ -144,7 +144,18 @@
   --fd-grain: 0;
   color-scheme: light;
 }
+/* usage-gauge in the Friday language (S5 component 7e): its own colour hooks fed from the tokens. Amber is the one attention
+   colour, so the gauge's warn and its critical are both amber (never red, never a company colour for idle: L4). */
+usage-gauge {
+  --ug-weekly-color: var(--fd-text); --ug-session-color: var(--fd-text); --ug-tick-color: var(--fd-muted);
+  --ug-tick-ahead-color: var(--fd-amb); --ug-dot-color: var(--fd-text); --ug-dot-empty-color: var(--fd-text-dim);
+  --ug-track-color: var(--fd-line); --ug-warn-color: var(--fd-amb); --ug-critical-color: var(--fd-amb);
+  --ug-critical-track-color: color-mix(in srgb, var(--fd-amb) 35%, transparent); --ug-idle-color: var(--fd-muted);
+  --ug-monogram-color: var(--fd-text); --ug-monogram-muted-color: var(--fd-muted); --ug-background: var(--fd-surface);
+  font-family: var(--fd-ff);
+}
 </style>
+<link rel="manifest" href="../fd-app/manifest.webmanifest"><link rel="icon" href="../fd-app/icon.svg"><link rel="apple-touch-icon" href="../fd-app/apple-touch-icon.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--fd-ff);font-size:var(--fd-fs-base);line-height:var(--fd-lh-text);color:var(--fd-text);
@@ -208,7 +219,7 @@ section{margin-top:var(--fd-sp-9)}
   <div class="seg" role="group" aria-label="Theme"><button type="button" data-th="dark">Dark</button><button type="button" data-th="light">Paper</button></div>
  </header>
  <p class="mu" style="margin-top:var(--fd-sp-3);max-width:66ch;font-size:var(--fd-fs-md)">Every block here is a real component, themed only by the tokens. Try it: answer a row, point at a dial, switch to Paper. The data are examples.</p>
- <nav class="nav" aria-label="Sections"><a href="#home">Panel</a><a href="#dial">Dials</a><a href="#ask">Needs you</a><a href="#run">In progress</a><a href="#done">Done and just now</a><a href="#states">States</a><a href="#buttons">Buttons</a><a href="#open">Two colour questions</a></nav>
+ <nav class="nav" aria-label="Sections"><a href="#home">Panel</a><a href="#dial">Dials</a><a href="#ask">Needs you</a><a href="#run">In progress</a><a href="#done">Done and just now</a><a href="#states">States</a><a href="#buttons">Buttons</a><a href="#steer">Steer</a><a href="#decision">Decisions</a><a href="#table">Tables</a><a href="#gauge">Usage</a><a href="#spotlight">Spotlight</a><a href="#app">App icon</a><a href="#open">Two colour questions</a></nav>
 
  <section id="home" aria-labelledby="h-home" style="margin-top:var(--fd-sp-7)">
   <h2 id="h-home" class="vh" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Instrument panel</h2>
@@ -284,6 +295,52 @@ section{margin-top:var(--fd-sp-9)}
 
  <section id="buttons"><h2>Buttons</h2><p class="intro">Plain for ordinary actions, an outline for Friday's suggestion, amber only for a single action on something that needs you. Every state from the tokens.</p>
   <fd-panel label="Kinds and states"><div class="btns" id="btns"></div></fd-panel></section>
+
+ <section id="steer"><h2>Steer</h2><p class="intro">On a front's page: you say, in your words, what Friday should change. Ctrl + Enter sends; Enter is a new line. What you sent stays readable; the answer comes in Just now.</p>
+  <div class="g">
+   <div class="s6"><fd-panel label="Lead research" heading-level="3"><fd-steer company="mq" front="Lead research"></fd-steer></fd-panel></div>
+   <div class="s6"><fd-panel label="Brain map" heading-level="3"><fd-steer id="steer-sent" company="ps" front="Brain map" confirm></fd-steer></fd-panel>
+   <p class="meta">After sending: what you wrote stays above an empty box, with the time Friday got it.</p></div>
+  </div></section>
+
+ <section id="decision"><h2>Decisions</h2><p class="intro">For a decision that needs more than a row: why it is yours, about how long it takes, what to read first, the options (equal; Friday's suggestion has the outline) and an optional note.</p>
+  <div class="g">
+   <div class="s7"><fd-panel label="Needs you" heading-level="3"><fd-decision company="mq" question="Which CRM for the AI Systems pilot?" why="It sets the next three months of work for the pilot client. Friday compared both on the fields the relay needs." minutes="3" options='["GoHighLevel","HubSpot"]' suggest="GoHighLevel" note-box>
+     <a slot="doc" href="#decision">Comparison · 2 pages</a><a slot="doc" href="#decision">Field map for the lead relay · 1 page</a></fd-decision></fd-panel></div>
+   <div class="s5"><fd-panel label="Answered" heading-level="3"><fd-decision id="dec-done" company="ps" question="Which morning for the lab tests?" minutes="1" options='["Tuesday","Thursday"]'></fd-decision></fd-panel>
+   <p class="meta">After you choose: what you chose, when, your note, and Change.</p></div>
+  </div></section>
+
+ <section id="table"><h2>Tables</h2><p class="intro">A real table where there is room; on a narrow screen each row becomes a small card, so nothing scrolls sideways.</p>
+  <div class="g">
+   <div class="s8"><fd-panel heading-level="3" label="Receipts this week"><fd-table class="tbl"></fd-table></fd-panel></div>
+   <div class="s4"><fd-panel heading-level="3" label="The same, narrow"><fd-table class="tbl"></fd-table></fd-panel></div>
+  </div></section>
+
+ <section id="gauge"><h2>Usage</h2><p class="intro">Your usage gauge, in the Friday colours: what is left in the week (outer) and in the 5-hour window (inner), the hours to reset as dots. Near the limit it turns amber, never red.</p>
+  <fd-panel heading-level="3" label="Claude usage"><div style="display:flex;gap:var(--fd-sp-7);flex-wrap:wrap;align-items:center;font-size:var(--fd-fs-sm)">
+   <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="41" session="30" pace="57" reset-minutes="110" monogram="M" size="64"></usage-gauge>plenty left</span>
+   <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="72" session="88" pace="57" reset-minutes="40" monogram="M" size="64"></usage-gauge>window almost used</span>
+   <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="100" session="100" pace="80" reset-minutes="20" monogram="M" size="64"></usage-gauge>at the limit</span>
+   <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="41" session="0" pace="57" reset-minutes="0" monogram="M" size="64"></usage-gauge>no window running</span>
+  </div></fd-panel></section>
+
+ <section id="spotlight"><h2>Spotlight</h2><p class="intro">Points at one thing without dimming the page: a ring with a gap and a short caption, one entrance, gone by itself or with "Got it". Amber only around something that needs you.</p>
+  <div class="g">
+   <div class="s6"><fd-spotlight active label="New since 09:58"><fd-panel pad="row"><fd-run-row company="at" text="Post approvals" status="running" href="#spotlight"></fd-run-row></fd-panel></fd-spotlight></div>
+   <div class="s6"><fd-spotlight active tone="need" label="This is what the dial meant"><fd-panel pad="row"><fd-ask-row company="mq" question="OK to rotate 6 clients?" note="6 clients · 1 tap" options='["No","Yes"]' suggest="Yes" keep></fd-ask-row></fd-panel></fd-spotlight></div>
+  </div></section>
+
+ <section id="app"><h2>App icon and start screen</h2><p class="intro">The instrument at rest: one segment per company in its colour, always in the same order, fine ticks, on the dark field. No amber: the icon never asks for anything.</p>
+  <div class="g">
+   <div class="s8"><fd-panel heading-level="3" label="Icon"><div style="display:flex;gap:var(--fd-sp-7);align-items:flex-end;flex-wrap:wrap;font-size:var(--fd-fs-xs);color:var(--fd-muted)">
+    <figure style="margin:0;text-align:center"><img src="../fd-app/icon-512.png" width="160" height="160" alt="Friday app icon"><figcaption>home screen</figcaption></figure>
+    <figure style="margin:0;text-align:center"><img src="../fd-app/icon-maskable-512.png" width="120" height="120" alt="Friday icon, Android shape" style="border-radius:50%"><figcaption>Android (round)</figcaption></figure>
+    <figure style="margin:0;text-align:center"><img src="../fd-app/icon-192.png" width="60" height="60" alt="Friday icon, small"><figcaption>small</figcaption></figure>
+    <figure style="margin:0;text-align:center"><img src="../fd-app/icon-192.png" width="32" height="32" alt="Friday icon, tab size"><figcaption>tab</figcaption></figure>
+   </div></fd-panel></div>
+   <div class="s4"><fd-panel heading-level="3" label="Start screen (phone)"><img src="../fd-app/splash-1290x2796.png" alt="Friday start screen: the icon mark on the dark field" style="display:block;width:140px;height:auto;margin:0 auto;border-radius:16px;border:1px solid var(--fd-line)"></fd-panel></div>
+  </div></section>
 
  <section id="open"><h2>Two colour questions</h2><p class="intro">Left is today. Right is a possible change. Nothing changes until you say so.</p>
   <div class="pair" id="pair-ps">
@@ -1583,6 +1640,841 @@ export { FdButton };
 
 </script>
 <script type="module">
+/**
+ * <fd-steer>: the steer box on a front's page (Friday DS v0.3, S5 component 7a). He writes, in his own words, what Friday
+ * should change on that front; Friday answers in the rail. One box, one Send. Never a chat log here.
+ *   states: empty → typing → sending (still, no spinner; slow line after slow-after ms) → sent ("Friday has it · 10:05",
+ *   the text stays readable above an empty box) · unsent ("not sent; send again", his text kept)
+ *
+ *   <fd-steer company="mq" front="Lead research" placeholder="What should Friday change here?"></fd-steer>
+ *
+ * Send: the button, or Ctrl/Cmd + Enter (Enter alone is a new line: he dictates long notes). Events: fd-steer {text}
+ * (cancelable: preventDefault keeps the text in the box). With confirm, the host sets state="sent" or state="unsent".
+ */
+// fd-shared:begin (generated by tools/fd-sync.mjs from tools/fd-shared.js and fd-tokens/tokens; do not edit inside)
+// Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
+// between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
+// step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+// Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
+// sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
+const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
+const FD_TOKENS = `:host{${FD_V(FD_T.base)}${FD_V(FD_T.dark)}color-scheme:dark}`
+  + `:host([theme=dark]){${FD_V(FD_T.dark, 1)}color-scheme:dark}`
+  + `:host([theme=light]){${FD_V(FD_T.light, 1)}color-scheme:light}`
+  + `@media (prefers-color-scheme:light){:host(:not([theme])){${FD_V(FD_T.light)}}}`;
+const FD_CSS = FD_TOKENS + `
+:host{font-family:var(--_ff);color:var(--_text);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;box-sizing:border-box}
+:host([hidden]){display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+.lbl{font-size:var(--_fs-xs);letter-spacing:var(--_tr-label);text-transform:uppercase;color:var(--_muted);font-weight:var(--_fw-medium);margin:0 0 var(--_sp-3);display:flex;align-items:center;gap:var(--_sp-3);line-height:1.2}
+.lbl::after{content:"";flex:1;height:var(--_st-hair);background:var(--_line)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:var(--_r-round);vertical-align:1px;margin-right:var(--_sp-2);flex:none}
+.mu{color:var(--_muted)}
+.ic{flex:none;display:inline-grid;place-items:center}
+.ic svg{display:block}
+.ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
+/* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
+   plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+ border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
+@media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
+.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+.btn:active{background:var(--_pressed-bg)}
+/* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
+.btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
+.btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
+.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+.btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
+.btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
+.btn.plain{border-color:transparent}
+.btn.plain:hover{border-color:var(--_line)}
+.btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
+.btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
+`;
+// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
+// "refresh" (S4 lens 10), the first S5 arrow-to-bar read as Tab / skip to end (S5 lenses 2, 3, 10); it is now the dial's own
+// sign, a short lit arc, drawn by fd-run-row in the company colour so the row and its segment are one symbol.
+// "stale" is a clock (time-based sign for time-based data), never the "!" of an alert (S5 lens 10).
+const FD_ICONS = {
+  ask: 'M5 5h14v10H10l-5 4z', check: 'M5 12.5l4.2 4.2L19 7', clock: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2',
+  fix: 'M14.5 5.5a4 4 0 0 0-5 5L4 16v4h4l5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-3-3z', doc: 'M7 3h7l4 4v14H7z M14 3v4h4',
+  run: 'M5 16.5a8 8 0 0 1 14 0', 'run-s5a': 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
+  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2', empty: 'M5 12h14',
+};
+const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
+const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
+const fdReduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+// every observed attribute is also a camelCase property; JSON attributes accept arrays/objects as properties
+function fdProps(Cls, attrs, json = []) {
+  for (const a of attrs) {
+    const p = fdCamel(a);
+    if (Object.prototype.hasOwnProperty.call(Cls.prototype, p)) continue;
+    Object.defineProperty(Cls.prototype, p, {
+      get() { return json.includes(a) ? fdJSON(this.getAttribute(a), this['_' + p]) : this.getAttribute(a); },
+      set(v) {
+        if (json.includes(a) && v && typeof v === 'object') { this['_' + p] = v; this.removeAttribute(a); this.render?.(); return; }
+        if (v === null || v === undefined || v === false) this.removeAttribute(a); else this.setAttribute(a, v === true ? '' : v);
+      },
+      configurable: true,
+    });
+  }
+}
+const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
+// fd-shared:end
+
+const STEER_ATTRS = ['company', 'name', 'front', 'placeholder', 'state', 'sent-at', 'confirm', 'slow-after', 'theme', 'label'];
+
+const STEER_CSS = `
+:host{display:block}
+label{display:block;font-size:var(--_fs-sm);color:var(--_muted);margin-bottom:var(--_sp-3)}
+label b{color:var(--_text);font-weight:var(--_fw-medium)}
+textarea{display:block;width:100%;min-height:96px;resize:vertical;font:var(--_fw-regular) var(--_fs-base)/var(--_lh-text) var(--_ff);
+ color:var(--_text);background:var(--_field-deep);border:var(--_st-hair) solid var(--_line);border-radius:var(--_r-md);padding:var(--_sp-4)}
+textarea::placeholder{color:var(--_muted)}
+textarea:hover{border-color:var(--_hover-line)}
+textarea:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
+textarea:disabled{color:var(--_muted)}
+.bar{display:flex;align-items:center;gap:var(--_sp-4);margin-top:var(--_sp-3)}
+.bar small{flex:1;font-size:var(--_fs-sm);color:var(--_muted)}
+.sent{font-size:var(--_fs-sm);color:var(--_text);background:var(--_raised);border-radius:var(--_r-md);padding:var(--_sp-3) var(--_sp-4);margin-bottom:var(--_sp-3);white-space:pre-wrap}
+.sent small{display:block;color:var(--_muted);margin-top:var(--_sp-1)}
+.slow{display:none}:host([data-slow]) .slow{display:inline}
+`;
+
+class FdSteer extends HTMLElement {
+  static get observedAttributes() { return STEER_ATTRS; }
+  constructor() { super(); this.attachShadow({ mode: 'open', delegatesFocus: true }); this._text = ''; this._last = ''; }
+  connectedCallback() { this.render(); }
+  disconnectedCallback() { clearTimeout(this._slow); }
+  attributeChangedCallback() { if (this.isConnected && !this._quiet) this.render(); }
+  get value() { return this._text; }
+  set value(v) { this._text = String(v ?? ''); const t = this.shadowRoot.querySelector('textarea'); if (t) t.value = this._text; this._sync(); }
+  _sync() { const b = this.shadowRoot.querySelector('button.send'); if (b) b.disabled = !this._text.trim() || this.getAttribute('state') === 'sending'; }
+  _set(a) { this._quiet = true; for (const [k, v] of Object.entries(a)) v == null ? this.removeAttribute(k) : this.setAttribute(k, v); this._quiet = false; this.render(); }
+  send() {
+    const text = this._text.trim(); if (!text) return;
+    if (!this.dispatchEvent(new CustomEvent('fd-steer', { detail: { text }, bubbles: true, composed: true, cancelable: true }))) return;
+    this._last = text;
+    if (this.hasAttribute('confirm')) this._set({ state: 'sending' });
+    else { const n = new Date(); this._text = ''; this._set({ state: 'sent', 'sent-at': String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0') }); }
+  }
+  render() {
+    const k = ['mq', 'at', 'ps'].includes(this.getAttribute('company')) ? this.getAttribute('company') : 'mq';
+    const name = this.getAttribute('name') || FD_NAME[k];
+    const front = this.getAttribute('front') || '';
+    const st = this.getAttribute('state') || 'open';
+    if (st === 'sent' && this._prev === 'sending') this._text = '';
+    this._prev = st;
+    const sending = st === 'sending';
+    clearTimeout(this._slow); this.removeAttribute('data-slow');
+    const note = sending ? 'sending to Friday<span class="slow"> · taking longer than usual; Friday keeps trying</span>'
+      : st === 'unsent' ? 'not sent; your text is still here, send again' : 'Ctrl + Enter sends';
+    const lab = this.getAttribute('label') || `Steer <b>${fdEsc(front)}</b>`;
+    this.shadowRoot.innerHTML = `<style>${FD_CSS}${STEER_CSS}</style>`
+      + (st === 'sent' && this._last ? `<div class="sent" part="sent" role="status">${fdEsc(this._last)}<small>Friday has it · ${fdEsc(this.getAttribute('sent-at') || '')} · the answer comes in Just now</small></div>` : '')
+      + `<label for="t"><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)} · ${lab}</label>`
+      + `<textarea id="t" part="input" placeholder="${fdEsc(this.getAttribute('placeholder') || 'What should Friday change here?')}"${sending ? ' disabled' : ''}></textarea>`
+      + `<div class="bar"><small aria-live="polite">${note}</small><button type="button" class="btn send" part="send">Send</button></div>`;
+    const t = this.shadowRoot.querySelector('textarea');
+    t.value = sending ? this._last : this._text;
+    t.addEventListener('input', () => { this._text = t.value; this._sync(); });
+    t.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); this.send(); } });
+    this.shadowRoot.querySelector('button.send').addEventListener('click', () => this.send());
+    this._sync();
+    if (sending) this._slow = setTimeout(() => this.setAttribute('data-slow', ''), parseInt(this.getAttribute('slow-after') || '4000', 10));
+  }
+}
+fdProps(FdSteer, STEER_ATTRS);
+fdDefine('fd-steer', FdSteer);
+export { FdSteer };
+
+</script>
+<script type="module">
+/**
+ * <fd-decision>: a decision card with doc slots (Friday DS v0.3, S5 component 7b). For the decisions that need more than a
+ * row: the question, why it is his, the cost in time, the documents to read (slotted links, each with the doc mark), the
+ * options (equal; Friday's suggestion = outline + "Friday suggests …"), and an optional note box. One card component: it
+ * sits inside an fd-panel like everything else, no own background or border.
+ *
+ *   <fd-decision company="mq" question="Which CRM for the AI Systems pilot?" why="It sets the next 3 months of work"
+ *     minutes="3" options='["GoHighLevel","HubSpot"]' suggest="GoHighLevel" note-box>
+ *     <a slot="doc" href="…">Comparison · 2 pages</a>
+ *   </fd-decision>
+ *
+ * Events: fd-answer {value, note} (cancelable). States: open · answered ("You chose X · 10:05" + Change, which reopens and
+ * fires fd-undo). With confirm, busy until the host sets state.
+ */
+// fd-shared:begin (generated by tools/fd-sync.mjs from tools/fd-shared.js and fd-tokens/tokens; do not edit inside)
+// Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
+// between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
+// step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+// Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
+// sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
+const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
+const FD_TOKENS = `:host{${FD_V(FD_T.base)}${FD_V(FD_T.dark)}color-scheme:dark}`
+  + `:host([theme=dark]){${FD_V(FD_T.dark, 1)}color-scheme:dark}`
+  + `:host([theme=light]){${FD_V(FD_T.light, 1)}color-scheme:light}`
+  + `@media (prefers-color-scheme:light){:host(:not([theme])){${FD_V(FD_T.light)}}}`;
+const FD_CSS = FD_TOKENS + `
+:host{font-family:var(--_ff);color:var(--_text);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;box-sizing:border-box}
+:host([hidden]){display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+.lbl{font-size:var(--_fs-xs);letter-spacing:var(--_tr-label);text-transform:uppercase;color:var(--_muted);font-weight:var(--_fw-medium);margin:0 0 var(--_sp-3);display:flex;align-items:center;gap:var(--_sp-3);line-height:1.2}
+.lbl::after{content:"";flex:1;height:var(--_st-hair);background:var(--_line)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:var(--_r-round);vertical-align:1px;margin-right:var(--_sp-2);flex:none}
+.mu{color:var(--_muted)}
+.ic{flex:none;display:inline-grid;place-items:center}
+.ic svg{display:block}
+.ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
+/* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
+   plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+ border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
+@media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
+.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+.btn:active{background:var(--_pressed-bg)}
+/* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
+.btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
+.btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
+.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+.btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
+.btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
+.btn.plain{border-color:transparent}
+.btn.plain:hover{border-color:var(--_line)}
+.btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
+.btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
+`;
+// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
+// "refresh" (S4 lens 10), the first S5 arrow-to-bar read as Tab / skip to end (S5 lenses 2, 3, 10); it is now the dial's own
+// sign, a short lit arc, drawn by fd-run-row in the company colour so the row and its segment are one symbol.
+// "stale" is a clock (time-based sign for time-based data), never the "!" of an alert (S5 lens 10).
+const FD_ICONS = {
+  ask: 'M5 5h14v10H10l-5 4z', check: 'M5 12.5l4.2 4.2L19 7', clock: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2',
+  fix: 'M14.5 5.5a4 4 0 0 0-5 5L4 16v4h4l5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-3-3z', doc: 'M7 3h7l4 4v14H7z M14 3v4h4',
+  run: 'M5 16.5a8 8 0 0 1 14 0', 'run-s5a': 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
+  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2', empty: 'M5 12h14',
+};
+const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
+const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
+const fdReduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+// every observed attribute is also a camelCase property; JSON attributes accept arrays/objects as properties
+function fdProps(Cls, attrs, json = []) {
+  for (const a of attrs) {
+    const p = fdCamel(a);
+    if (Object.prototype.hasOwnProperty.call(Cls.prototype, p)) continue;
+    Object.defineProperty(Cls.prototype, p, {
+      get() { return json.includes(a) ? fdJSON(this.getAttribute(a), this['_' + p]) : this.getAttribute(a); },
+      set(v) {
+        if (json.includes(a) && v && typeof v === 'object') { this['_' + p] = v; this.removeAttribute(a); this.render?.(); return; }
+        if (v === null || v === undefined || v === false) this.removeAttribute(a); else this.setAttribute(a, v === true ? '' : v);
+      },
+      configurable: true,
+    });
+  }
+}
+const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
+// fd-shared:end
+
+const DEC_ATTRS = ['company', 'name', 'question', 'why', 'minutes', 'options', 'suggest', 'state', 'answer', 'note-box', 'confirm', 'theme', 'answered-at'];
+
+const DEC_CSS = `
+:host{display:block;container-type:inline-size}
+.head{display:flex;gap:var(--_sp-4);align-items:flex-start}
+h3{font-size:var(--_fs-lg);font-weight:var(--_fw-strong);line-height:var(--_lh-tight);margin:0}
+.meta{font-size:var(--_fs-sm);color:var(--_muted);margin-top:var(--_sp-2)}
+.why{font-size:var(--_fs-md);margin:var(--_sp-4) 0 0;max-width:62ch}
+.docs{margin-top:var(--_sp-5)}
+.docs[hidden]{display:none}
+::slotted(a){display:flex!important;align-items:center;gap:var(--_sp-3);min-height:var(--_sz-target);color:var(--_text)!important;text-decoration:none!important;font-size:var(--_fs-sm)}
+::slotted(a:hover){text-decoration:underline!important}
+@media (min-width:900px) and (pointer:fine){::slotted(a){min-height:var(--_sz-target-dense)}}
+.docs .ic{margin-right:var(--_sp-3)}
+.dl{display:grid;grid-template-columns:24px 1fr;align-items:start;gap:0 var(--_sp-3)}.dl>.ic{margin-top:10px}
+textarea{display:block;width:100%;min-height:72px;margin-top:var(--_sp-5);font:var(--_fw-regular) var(--_fs-md)/var(--_lh-text) var(--_ff);color:var(--_text);
+ background:var(--_field-deep);border:var(--_st-hair) solid var(--_line);border-radius:var(--_r-md);padding:var(--_sp-3) var(--_sp-4);resize:vertical}
+textarea:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
+.opts{display:flex;flex-wrap:wrap;gap:var(--_sp-3);margin-top:var(--_sp-5)}
+@container (max-width: 480px){.opts .btn{flex:1 1 40%}}
+.btn.chosen:disabled{color:var(--_text);border-color:var(--_muted)}
+.done{display:flex;align-items:center;gap:var(--_sp-4);margin-top:var(--_sp-5);font-size:var(--_fs-md)}
+.done span{flex:1}
+`;
+
+class FdDecision extends HTMLElement {
+  static get observedAttributes() { return DEC_ATTRS; }
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
+  connectedCallback() { this.render(); }
+  attributeChangedCallback() { if (this.isConnected && !this._quiet) this.render(); }
+  get options() { const v = this.getAttribute('options'); if (v && !v.trim().startsWith('[')) return v.split(',').map((s) => s.trim()); return fdJSON(v, this._options || ['No', 'Yes']); }
+  set options(v) { if (typeof v === 'string') this.setAttribute('options', v); else { this._options = v; this.removeAttribute('options'); this.render(); } }
+  _set(a) { this._quiet = true; for (const [k, v] of Object.entries(a)) v == null ? this.removeAttribute(k) : this.setAttribute(k, v); this._quiet = false; this.render(); }
+  choose(value) {
+    const note = this.shadowRoot.querySelector('textarea')?.value.trim() || '';
+    if (!this.dispatchEvent(new CustomEvent('fd-answer', { detail: { value, note }, bubbles: true, composed: true, cancelable: true }))) return;
+    this._note = note;
+    const n = new Date(); this._at = String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0');
+    this._set({ state: this.hasAttribute('confirm') ? 'busy' : 'answered', answer: value });
+    if (!this.hasAttribute('confirm')) this.shadowRoot.querySelector('[data-change]')?.focus({ preventScroll: true });
+  }
+  change() { const value = this.getAttribute('answer'); this._set({ state: 'open', answer: null }); this.dispatchEvent(new CustomEvent('fd-undo', { detail: { value }, bubbles: true, composed: true })); this.shadowRoot.querySelector(`button[data-v="${CSS.escape(value || '')}"]`)?.focus(); }
+  render() {
+    const k = ['mq', 'at', 'ps'].includes(this.getAttribute('company')) ? this.getAttribute('company') : 'mq';
+    const name = this.getAttribute('name') || FD_NAME[k];
+    const opts = this.options || [];
+    const sug = this.getAttribute('suggest'), st = this.getAttribute('state') || 'open', ans = this.getAttribute('answer');
+    const min = this.getAttribute('minutes');
+    const busy = st === 'busy';
+    const meta = [`<span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}`, min ? `about ${fdEsc(min)} min` : null,
+      sug && opts.length > 1 && st !== 'answered' ? `<span style="white-space:nowrap">Friday suggests ${fdEsc(sug)}</span>` : null].filter(Boolean).join(' · ');
+    const why = this.getAttribute('why');
+    const hasDocs = !!this.querySelector('[slot=doc]');
+    let foot;
+    if (st === 'answered') {
+      const at = this.getAttribute('answered-at') || this._at;
+      foot = `<div class="done" role="status"><span>You chose <b>${fdEsc(ans)}</b>${at ? ` · ${fdEsc(at)}` : ''}${this._note ? ` · “${fdEsc(this._note)}”` : ''}</span><button type="button" class="btn" data-change>Change</button></div>`;
+    } else {
+      foot = (this.hasAttribute('note-box') ? `<textarea part="note" aria-label="A note for Friday (optional)" placeholder="A note for Friday (optional)"${busy ? ' disabled' : ''}>${fdEsc(this._note || '')}</textarea>` : '')
+        + `<div class="opts" role="group" aria-label="${fdEsc(this.getAttribute('question') || '')}">`
+        + opts.map((o) => `<button type="button" class="btn${opts.length === 1 ? ' primary' : sug === o ? ' suggest' : ''}${busy && ans === o ? ' chosen' : ''}" data-v="${fdEsc(o)}"${busy ? ' disabled' : ''}>${busy && ans === o ? `${fdEsc(o)} · sending` : fdEsc(o)}</button>`).join('')
+        + `</div>`;
+    }
+    this.shadowRoot.innerHTML = `<style>${FD_CSS}${DEC_CSS}</style>`
+      + `<div class="head">${fdIcon('ask', st === 'answered' ? 'var(--_text)' : 'var(--_amb)', 24)}<div><h3 part="question">${fdEsc(this.getAttribute('question') || '')}</h3><div class="meta">${meta}</div></div></div>`
+      + (why ? `<p class="why" part="why">${fdEsc(why)}</p>` : '')
+      + `<div class="docs" part="docs"${hasDocs ? '' : ' hidden'}><div class="lbl">To read</div><div class="dl">${fdIcon('doc', 'var(--_text)', 20)}<div><slot name="doc"></slot></div></div></div>`
+      + foot;
+    this.shadowRoot.querySelectorAll('button[data-v]').forEach((b) => b.addEventListener('click', () => this.choose(b.dataset.v)));
+    this.shadowRoot.querySelector('[data-change]')?.addEventListener('click', () => this.change());
+    this.shadowRoot.querySelector('slot[name=doc]')?.addEventListener('slotchange', () => { const d = this.shadowRoot.querySelector('.docs'); d.hidden = !this.querySelector('[slot=doc]'); });
+  }
+}
+fdProps(FdDecision, DEC_ATTRS.filter((a) => a !== 'options'));
+fdDefine('fd-decision', FdDecision);
+export { FdDecision };
+
+</script>
+<script type="module">
+/**
+ * <fd-table>: a table that becomes cards on a narrow screen (Friday DS v0.3, S5 component 7c). Wide (container ≥ break px,
+ * default 560): a real <table> with a header row, figures right-aligned in tabular numerals. Narrow: one stacked card per
+ * row (the first column is the card's title, the rest are label · value lines), so nothing scrolls sideways on the phone.
+ *
+ *   <fd-table columns='[{"key":"item","label":"Item"},{"key":"value","label":"R$","num":true}]'
+ *     rows='[{"item":"Groceries","value":"412.00"},{"item":"Pharmacy","value":"38.90"}]' caption="Receipts this week"></fd-table>
+ *
+ * A row may carry company ("mq|at|ps") for its owner dot and href to open it.
+ */
+// fd-shared:begin (generated by tools/fd-sync.mjs from tools/fd-shared.js and fd-tokens/tokens; do not edit inside)
+// Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
+// between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
+// step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+// Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
+// sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
+const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
+const FD_TOKENS = `:host{${FD_V(FD_T.base)}${FD_V(FD_T.dark)}color-scheme:dark}`
+  + `:host([theme=dark]){${FD_V(FD_T.dark, 1)}color-scheme:dark}`
+  + `:host([theme=light]){${FD_V(FD_T.light, 1)}color-scheme:light}`
+  + `@media (prefers-color-scheme:light){:host(:not([theme])){${FD_V(FD_T.light)}}}`;
+const FD_CSS = FD_TOKENS + `
+:host{font-family:var(--_ff);color:var(--_text);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;box-sizing:border-box}
+:host([hidden]){display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+.lbl{font-size:var(--_fs-xs);letter-spacing:var(--_tr-label);text-transform:uppercase;color:var(--_muted);font-weight:var(--_fw-medium);margin:0 0 var(--_sp-3);display:flex;align-items:center;gap:var(--_sp-3);line-height:1.2}
+.lbl::after{content:"";flex:1;height:var(--_st-hair);background:var(--_line)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:var(--_r-round);vertical-align:1px;margin-right:var(--_sp-2);flex:none}
+.mu{color:var(--_muted)}
+.ic{flex:none;display:inline-grid;place-items:center}
+.ic svg{display:block}
+.ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
+/* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
+   plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+ border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
+@media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
+.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+.btn:active{background:var(--_pressed-bg)}
+/* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
+.btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
+.btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
+.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+.btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
+.btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
+.btn.plain{border-color:transparent}
+.btn.plain:hover{border-color:var(--_line)}
+.btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
+.btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
+`;
+// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
+// "refresh" (S4 lens 10), the first S5 arrow-to-bar read as Tab / skip to end (S5 lenses 2, 3, 10); it is now the dial's own
+// sign, a short lit arc, drawn by fd-run-row in the company colour so the row and its segment are one symbol.
+// "stale" is a clock (time-based sign for time-based data), never the "!" of an alert (S5 lens 10).
+const FD_ICONS = {
+  ask: 'M5 5h14v10H10l-5 4z', check: 'M5 12.5l4.2 4.2L19 7', clock: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2',
+  fix: 'M14.5 5.5a4 4 0 0 0-5 5L4 16v4h4l5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-3-3z', doc: 'M7 3h7l4 4v14H7z M14 3v4h4',
+  run: 'M5 16.5a8 8 0 0 1 14 0', 'run-s5a': 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
+  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2', empty: 'M5 12h14',
+};
+const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
+const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
+const fdReduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+// every observed attribute is also a camelCase property; JSON attributes accept arrays/objects as properties
+function fdProps(Cls, attrs, json = []) {
+  for (const a of attrs) {
+    const p = fdCamel(a);
+    if (Object.prototype.hasOwnProperty.call(Cls.prototype, p)) continue;
+    Object.defineProperty(Cls.prototype, p, {
+      get() { return json.includes(a) ? fdJSON(this.getAttribute(a), this['_' + p]) : this.getAttribute(a); },
+      set(v) {
+        if (json.includes(a) && v && typeof v === 'object') { this['_' + p] = v; this.removeAttribute(a); this.render?.(); return; }
+        if (v === null || v === undefined || v === false) this.removeAttribute(a); else this.setAttribute(a, v === true ? '' : v);
+      },
+      configurable: true,
+    });
+  }
+}
+const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
+// fd-shared:end
+
+const TABLE_ATTRS = ['columns', 'rows', 'caption', 'break', 'theme'];
+
+const TABLE_CSS = `
+:host{display:block;container-type:inline-size}
+table{width:100%;border-collapse:collapse;font-size:var(--_fs-sm)}
+caption{text-align:left;font-size:var(--_fs-xs);letter-spacing:var(--_tr-label);text-transform:uppercase;color:var(--_muted);font-weight:var(--_fw-medium);padding-bottom:var(--_sp-3)}
+th{font-weight:var(--_fw-medium);color:var(--_muted);text-align:left;font-size:var(--_fs-xs);padding:var(--_sp-2) var(--_sp-3) var(--_sp-3);border-bottom:var(--_st-hair) solid var(--_line)}
+td{padding:var(--_sp-3);border-bottom:var(--_st-hair) solid var(--_line-soft);vertical-align:baseline}
+tr:last-child td{border-bottom:0}
+th.n,td.n{text-align:right;white-space:nowrap}
+td a{color:inherit}
+tbody tr:hover{background:var(--_hover-bg)}
+.cards{display:none;list-style:none;margin:0;padding:0}
+.cards li{padding:var(--_sp-4) 0;border-bottom:var(--_st-hair) solid var(--_line-soft)}
+.cards li:last-child{border-bottom:0}
+.cards b{display:block;font-size:var(--_fs-md);font-weight:var(--_fw-medium);margin-bottom:var(--_sp-2)}
+.cards dl{display:grid;grid-template-columns:auto 1fr;gap:var(--_sp-1) var(--_sp-4);margin:0;font-size:var(--_fs-sm)}
+.cards dt{color:var(--_muted)}.cards dd{margin:0}.cards dd.n{text-align:right}
+.cap{display:none}
+`;
+
+class FdTable extends HTMLElement {
+  static get observedAttributes() { return TABLE_ATTRS; }
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
+  connectedCallback() { this.render(); }
+  attributeChangedCallback() { if (this.isConnected) this.render(); }
+  get columns() { return fdJSON(this.getAttribute('columns'), this._columns || []); }
+  set columns(v) { if (typeof v === 'string') this.setAttribute('columns', v); else { this._columns = v; this.removeAttribute('columns'); this.render(); } }
+  get rows() { return fdJSON(this.getAttribute('rows'), this._rows || []); }
+  set rows(v) { if (typeof v === 'string') this.setAttribute('rows', v); else { this._rows = v; this.removeAttribute('rows'); this.render(); } }
+  render() {
+    const cols = this.columns || [], rows = this.rows || [], cap = this.getAttribute('caption');
+    const br = parseInt(this.getAttribute('break') || '560', 10);
+    const cell = (r, c, i) => { const v = fdEsc(r[c.key]); const dot = i === 0 && r.company ? `<span class="dot" style="background:var(--_${r.company})"></span>` : ''; return i === 0 && r.href ? `${dot}<a href="${fdEsc(r.href)}">${v}</a>` : dot + v; };
+    const table = `<table part="table">${cap ? `<caption>${fdEsc(cap)}</caption>` : ''}<thead><tr>${cols.map((c) => `<th scope="col"${c.num ? ' class="n"' : ''}>${fdEsc(c.label)}</th>`).join('')}</tr></thead>`
+      + `<tbody>${rows.map((r) => `<tr>${cols.map((c, i) => i === 0 ? `<th scope="row" style="font-weight:var(--_fw-medium);color:var(--_text);font-size:var(--_fs-sm);border-bottom:var(--_st-hair) solid var(--_line-soft);padding:var(--_sp-3)">${cell(r, c, i)}</th>` : `<td${c.num ? ' class="n"' : ''}>${cell(r, c, i)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    const cards = `${cap ? `<div class="lbl cap" part="caption">${fdEsc(cap)}</div>` : ''}<ul class="cards" part="cards"${cap ? ` aria-label="${fdEsc(cap)}"` : ''}>${rows.map((r) => `<li><b>${cell(r, cols[0] || { key: '' }, 0)}</b><dl>${cols.slice(1).map((c) => `<dt>${fdEsc(c.label)}</dt><dd${c.num ? ' class="n"' : ''}>${fdEsc(r[c.key])}</dd>`).join('')}</dl></li>`).join('')}</ul>`;
+    this.shadowRoot.innerHTML = `<style>${FD_CSS}${TABLE_CSS}@container (max-width:${br - 1}px){table{display:none}.cards{display:block}.cap{display:flex}}</style>${table}${cards}`;
+  }
+}
+fdProps(FdTable, ['caption', 'break', 'theme']);
+fdDefine('fd-table', FdTable);
+export { FdTable };
+
+</script>
+<script type="module">
+/**
+ * <fd-spotlight>: the highlight primitive (Friday DS v0.3, S5 component 7d). Points at one thing on the page ("this is new",
+ * "this is what Friday changed", "this is the row the dial meant") without dimming the rest of the page: a ring in the text
+ * colour with a gap around the slotted content, a short caption, and one entrance (d-enter). It never loops (the only loop
+ * is the breath of what needs him) and it goes away by itself after `for` ms, or when he dismisses it.
+ *
+ *   <fd-spotlight active label="New since 09:58" for="8000"> <fd-run-row …></fd-run-row> </fd-spotlight>
+ *
+ * Attribute tone="need" uses the amber glow instead of the text ring: only for something that needs him.
+ * Events: fd-spotlight-end {reason: "time"|"dismiss"}.
+ */
+// fd-shared:begin (generated by tools/fd-sync.mjs from tools/fd-shared.js and fd-tokens/tokens; do not edit inside)
+// Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
+// between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
+// step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+// Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
+// sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
+const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
+const FD_TOKENS = `:host{${FD_V(FD_T.base)}${FD_V(FD_T.dark)}color-scheme:dark}`
+  + `:host([theme=dark]){${FD_V(FD_T.dark, 1)}color-scheme:dark}`
+  + `:host([theme=light]){${FD_V(FD_T.light, 1)}color-scheme:light}`
+  + `@media (prefers-color-scheme:light){:host(:not([theme])){${FD_V(FD_T.light)}}}`;
+const FD_CSS = FD_TOKENS + `
+:host{font-family:var(--_ff);color:var(--_text);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;box-sizing:border-box}
+:host([hidden]){display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+.lbl{font-size:var(--_fs-xs);letter-spacing:var(--_tr-label);text-transform:uppercase;color:var(--_muted);font-weight:var(--_fw-medium);margin:0 0 var(--_sp-3);display:flex;align-items:center;gap:var(--_sp-3);line-height:1.2}
+.lbl::after{content:"";flex:1;height:var(--_st-hair);background:var(--_line)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:var(--_r-round);vertical-align:1px;margin-right:var(--_sp-2);flex:none}
+.mu{color:var(--_muted)}
+.ic{flex:none;display:inline-grid;place-items:center}
+.ic svg{display:block}
+.ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
+/* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
+   plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+ border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
+@media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
+.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+.btn:active{background:var(--_pressed-bg)}
+/* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
+.btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
+.btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
+.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+.btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
+.btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
+.btn.plain{border-color:transparent}
+.btn.plain:hover{border-color:var(--_line)}
+.btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
+.btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
+`;
+// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
+// "refresh" (S4 lens 10), the first S5 arrow-to-bar read as Tab / skip to end (S5 lenses 2, 3, 10); it is now the dial's own
+// sign, a short lit arc, drawn by fd-run-row in the company colour so the row and its segment are one symbol.
+// "stale" is a clock (time-based sign for time-based data), never the "!" of an alert (S5 lens 10).
+const FD_ICONS = {
+  ask: 'M5 5h14v10H10l-5 4z', check: 'M5 12.5l4.2 4.2L19 7', clock: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2',
+  fix: 'M14.5 5.5a4 4 0 0 0-5 5L4 16v4h4l5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-3-3z', doc: 'M7 3h7l4 4v14H7z M14 3v4h4',
+  run: 'M5 16.5a8 8 0 0 1 14 0', 'run-s5a': 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
+  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2', empty: 'M5 12h14',
+};
+const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
+const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
+const fdEsc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fdCamel = (a) => a.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+const fdJSON = (v, d) => { if (v == null || v === '') return d; if (typeof v !== 'string') return v; try { return JSON.parse(v); } catch { return d; } };
+const fdReduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+// every observed attribute is also a camelCase property; JSON attributes accept arrays/objects as properties
+function fdProps(Cls, attrs, json = []) {
+  for (const a of attrs) {
+    const p = fdCamel(a);
+    if (Object.prototype.hasOwnProperty.call(Cls.prototype, p)) continue;
+    Object.defineProperty(Cls.prototype, p, {
+      get() { return json.includes(a) ? fdJSON(this.getAttribute(a), this['_' + p]) : this.getAttribute(a); },
+      set(v) {
+        if (json.includes(a) && v && typeof v === 'object') { this['_' + p] = v; this.removeAttribute(a); this.render?.(); return; }
+        if (v === null || v === undefined || v === false) this.removeAttribute(a); else this.setAttribute(a, v === true ? '' : v);
+      },
+      configurable: true,
+    });
+  }
+}
+const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
+// fd-shared:end
+
+const SPOT_ATTRS = ['active', 'label', 'for', 'tone', 'theme'];
+
+const SPOT_CSS = `
+:host{display:block;position:relative}
+.wrap{position:relative;border-radius:var(--_r-lg)}
+:host([active]) .wrap{box-shadow:0 0 0 3px var(--_field),0 0 0 5px var(--_text)}
+:host([active][tone=need]) .wrap{box-shadow:0 0 0 3px var(--_field),0 0 0 5px var(--_amb),0 0 var(--_glow-blur,14px) 4px color-mix(in srgb,var(--_glow) 55%,transparent)}
+.cap{display:none;align-items:center;gap:var(--_sp-3);font-size:var(--_fs-xs);font-weight:var(--_fw-strong);color:var(--_text);margin:0 0 var(--_sp-3) 2px}
+:host([active]) .cap{display:flex}
+.cap button{font:inherit;color:var(--_muted);background:none;border:0;cursor:pointer;min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-3);font-weight:var(--_fw-medium)}
+.cap button:hover{color:var(--_text)}.cap button:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:2px}
+.in{animation:enter var(--_d-enter) var(--_e-out) both}
+@keyframes enter{from{box-shadow:0 0 0 3px var(--_field),0 0 0 12px transparent}}
+`;
+
+class FdSpotlight extends HTMLElement {
+  static get observedAttributes() { return SPOT_ATTRS; }
+  constructor() { super(); this.attachShadow({ mode: 'open' }); }
+  connectedCallback() { this.render(); }
+  disconnectedCallback() { clearTimeout(this._t); }
+  attributeChangedCallback(n, o, v) { if (!this.isConnected) return; this.render(n === 'active' && v != null && o == null); }
+  end(reason) { clearTimeout(this._t); this.removeAttribute('active'); this.dispatchEvent(new CustomEvent('fd-spotlight-end', { detail: { reason }, bubbles: true, composed: true })); }
+  render(entering = this.hasAttribute('active')) {
+    const label = this.getAttribute('label') || '';
+    this.shadowRoot.innerHTML = `<style>${FD_CSS}${SPOT_CSS}</style>`
+      + `<div class="cap" part="caption"><span>${fdEsc(label)}</span><button type="button" part="dismiss" aria-label="Dismiss: ${fdEsc(label)}">Got it</button></div>`
+      + `<div class="wrap${entering ? ' in' : ''}" part="ring" role="group"${this.hasAttribute('active') && label ? ` aria-label="${fdEsc(label)}"` : ''}><slot></slot></div>`;
+    this.shadowRoot.querySelector('button').addEventListener('click', () => this.end('dismiss'));
+    clearTimeout(this._t);
+    const ms = parseInt(this.getAttribute('for') || '0', 10);
+    if (this.hasAttribute('active') && ms > 0) this._t = setTimeout(() => this.end('time'), ms);
+  }
+}
+fdProps(FdSpotlight, SPOT_ATTRS);
+fdDefine('fd-spotlight', FdSpotlight);
+export { FdSpotlight };
+
+</script>
+<script type="module">
+/**
+ * <usage-gauge>: a Claude usage glyph as a Web Component.
+ * No dependencies. Load it once and use the tag anywhere (plain HTML, React, Vue, Svelte…).
+ *
+ *   Load this file as a module script (type="module", src="usage-gauge.js"), then:
+ *   <usage-gauge weekly="41" session="62" reset-minutes="110" pace="57" monogram="M"></usage-gauge>
+ *
+ * Data attributes take percentages USED (0–100), the way the usage numbers come in.
+ * The gauge draws what is LEFT: both rings start full and empty right to left.
+ */
+
+const DATA = ['weekly', 'session', 'pace', 'reset-minutes', 'status'];
+const LOOK = ['monogram', 'monogram-position', 'size', 'sweep', 'ring-width', 'ring-gap',
+  'theme', 'show-tick', 'show-dots', 'warn-at', 'label'];
+const COLORS = ['weekly-color', 'session-color', 'tick-color', 'tick-ahead-color', 'dot-color',
+  'dot-empty-color', 'track-color', 'warn-color', 'critical-color', 'critical-track-color',
+  'idle-color', 'monogram-color', 'monogram-muted-color', 'background'];
+
+// Default palettes. Every value can be overridden by an attribute (weekly-color="…")
+// or a CSS custom property (--ug-weekly-color: …) on the element or any ancestor.
+const PALETTE = {
+  dark: {
+    'weekly-color': '#F4F4F2', 'session-color': '#F4F4F2', 'tick-color': '#8E8E89',
+    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#F4F4F2',
+    'dot-empty-color': 'rgba(244,244,242,0.22)', 'track-color': 'rgba(244,244,242,0.16)',
+    'warn-color': '#F5A524', 'critical-color': '#FF6B5A', 'critical-track-color': 'rgba(255,107,90,0.38)',
+    'idle-color': '#6CB4FF', 'monogram-color': '#F4F4F2', 'monogram-muted-color': '#8E8E89',
+    'background': '#17171A'
+  },
+  light: {
+    'weekly-color': '#26262B', 'session-color': '#26262B', 'tick-color': '#7A7A73',
+    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#26262B',
+    'dot-empty-color': 'rgba(38,38,43,0.22)', 'track-color': 'rgba(38,38,43,0.11)',
+    'warn-color': '#C96A00', 'critical-color': '#D63A2B', 'critical-track-color': 'rgba(214,58,43,0.26)',
+    'idle-color': '#2B7DE9', 'monogram-color': '#26262B', 'monogram-muted-color': '#7A7A73',
+    'background': '#F8F8F6'
+  }
+};
+
+const vars = (p) => COLORS.map((c) => `--_${c}: var(--ug-${c}, ${p[c]});`).join('');
+
+const STYLE = `
+:host { display: inline-flex; align-items: center; vertical-align: middle; line-height: 1;
+  font-family: inherit; ${vars(PALETTE.dark)} }
+:host([theme="light"]) { ${vars(PALETTE.light)} }
+@media (prefers-color-scheme: light) {
+  :host(:not([theme])), :host([theme="auto"]) { ${vars(PALETTE.light)} }
+}
+:host([hidden]) { display: none; }
+.box { position: relative; flex: none; }
+svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+path, circle { fill: none; }
+.track { stroke: var(--_track-color); }
+.track.capped { stroke: var(--_critical-track-color); }
+.weekly { stroke: var(--_weekly-color); }
+.session { stroke: var(--_session-color); }
+.warn { stroke: var(--_warn-color); }
+.crit { stroke: var(--_critical-color); }
+.idle { stroke: var(--_idle-color); }
+.tick { stroke: var(--_tick-color); stroke-linecap: round; }
+.tick.ahead { stroke: var(--_tick-ahead-color); }
+.dot-empty { fill: var(--_dot-empty-color); }
+.dot { fill: var(--_dot-color); }
+.dot.idle { fill: var(--_idle-color); stroke: none; }
+.badge { stroke: var(--_background); stroke-width: 2; }
+.badge.stale { fill: var(--_warn-color); }
+.badge.error { fill: var(--_critical-color); }
+.badge-mark { stroke: var(--_background); stroke-linecap: round; }
+.badge-dot { fill: var(--_background); }
+.mono { font-weight: 700; letter-spacing: -0.02em; color: var(--_monogram-color); }
+.mono.muted { color: var(--_monogram-muted-color); }
+.mono.center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.dim { opacity: 0.4; }
+`;
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const f = (n) => +n.toFixed(3);
+const camel = (s) => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+const kebab = (s) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+// 0° = up, clockwise; viewBox is 48×48 with the centre at 24,24.
+const pt = (r, deg) => {
+  const a = (deg * Math.PI) / 180;
+  return [24 + r * Math.sin(a), 24 - r * Math.cos(a)];
+};
+const arc = (r, a0, sweep) => {
+  if (sweep < 0.5) return '';
+  const [x0, y0] = pt(r, a0);
+  const [x1, y1] = pt(r, a0 + sweep);
+  return `M ${f(x0)} ${f(y0)} A ${r} ${r} 0 ${sweep > 180 ? 1 : 0} 1 ${f(x1)} ${f(y1)}`;
+};
+
+class UsageGauge extends HTMLElement {
+  static get observedAttributes() { return [...DATA, ...LOOK, ...COLORS]; }
+
+  constructor() {
+    super();
+    this._root = this.attachShadow({ mode: 'open' });
+    this._queued = false;
+  }
+
+  connectedCallback() {
+    if (!this.hasAttribute('role')) this.setAttribute('role', 'img');
+    this._render();
+  }
+
+  attributeChangedCallback(name, _old, value) {
+    if (COLORS.includes(name)) {
+      // Attribute colours become custom properties, so CSS can still override them per state.
+      if (value == null || value === '') this.style.removeProperty(`--ug-${name}`);
+      else this.style.setProperty(`--ug-${name}`, value);
+    }
+    if (this._queued) return;
+    this._queued = true;
+    queueMicrotask(() => { this._queued = false; this._render(); });
+  }
+
+  /** Set several values at once: el.update({ weekly: 41, session: 62, resetMinutes: 110 }) */
+  update(values) {
+    for (const [k, v] of Object.entries(values || {})) {
+      const a = kebab(k);
+      if (v == null || v === false && a !== 'show-tick' && a !== 'show-dots') this.removeAttribute(a);
+      else this.setAttribute(a, String(v));
+    }
+  }
+
+  _num(name, fallback) {
+    const v = parseFloat(this.getAttribute(name));
+    return Number.isFinite(v) ? v : fallback;
+  }
+
+  _render() {
+    if (!this.isConnected) return;
+    const W = clamp(this._num('weekly', 0), 0, 100);
+    const S = clamp(this._num('session', 0), 0, 100);
+    const hasPace = this.hasAttribute('pace');
+    const P = clamp(this._num('pace', 0), 0, 100);
+    const M = clamp(this._num('reset-minutes', 0), 0, 300);
+    const status = this.getAttribute('status') || 'ok';
+    const size = clamp(this._num('size', 44), 12, 1000);
+    const SW = clamp(this._num('sweep', 270), 180, 330);
+    const rw = clamp(this._num('ring-width', 3.5), 1, 6);
+    const rg = clamp(this._num('ring-gap', 3.5), 0, 8);
+    const warnAt = clamp(this._num('warn-at', 20), 0, 100);
+    const showTick = this.getAttribute('show-tick') !== 'false' && hasPace;
+    const showDots = this.getAttribute('show-dots') !== 'false';
+    const mono = (this.getAttribute('monogram') || '').slice(0, 2);
+    const pos = this.getAttribute('monogram-position') || 'center';
+
+    const idle = M <= 0;
+    const err = status === 'error';
+    const stale = status === 'stale';
+    const wLeft = 100 - W;
+    const sLeft = idle ? 100 : 100 - S;
+    const tone = (left) => (left <= 0 ? 'crit' : left <= warnAt ? 'warn' : '');
+
+    // Geometry: the outer edge stays put; ring width and gap move the inner ring.
+    const R1 = 21.75 - rw / 2;
+    const R2 = Math.max(2, R1 - rw - rg);
+    const gap = 360 - SW;
+    const A0 = 180 + gap / 2;
+    const dash = err ? ` stroke-dasharray="2 2.4"` : '';
+    const sw = ` stroke-width="${rw}"`;
+
+    let g = '';
+    g += `<path class="track${!err && W >= 100 ? ' capped' : ''}" d="${arc(R1, A0, SW)}"${sw}${dash}/>`;
+    if (!err) g += `<path class="weekly ${tone(wLeft)}" d="${arc(R1, A0, SW * wLeft / 100)}"${sw}/>`;
+    g += `<path class="track${!err && !idle && S >= 100 ? ' capped' : ''}" d="${arc(R2, A0, SW)}"${sw}${dash}/>`;
+    if (!err) g += `<path class="session ${idle ? 'idle' : tone(sLeft)}" d="${arc(R2, A0, SW * sLeft / 100)}"${sw}/>`;
+
+    if (showTick && !err) {
+      const a = A0 + SW * (100 - P) / 100;
+      const [ix, iy] = pt(R1 - rw / 2 - 1.6, a);
+      const [ox, oy] = pt(R1 + rw / 2 + 1.85, a);
+      const ahead = W > P + 5 && W < 100;
+      g += `<path class="tick${ahead ? ' ahead' : ''}" d="M ${f(ix)} ${f(iy)} L ${f(ox)} ${f(oy)}" stroke-width="1.6"/>`;
+    }
+
+    if (showDots) {
+      // Five dots in the opening, one per hour until the 5h window resets.
+      // They empty right to left, like the rings; the current hour fades.
+      const step = Math.min(gap / 6, 14);
+      const r = f(rw * 0.36);
+      const h = M / 60;
+      for (let i = 0; i < 5; i++) {
+        const [x, y] = pt(R1, 180 + (i - 2) * step);
+        let v = clamp(h - (4 - i), 0, 1);
+        if (idle) v = 1;
+        if (err) v = 0;
+        g += `<circle class="dot-empty" cx="${f(x)}" cy="${f(y)}" r="${r}"/>`;
+        if (v > 0) g += `<circle class="dot${idle ? ' idle' : ''}" cx="${f(x)}" cy="${f(y)}" r="${r}" opacity="${f(v)}"/>`;
+      }
+    }
+
+    let badge = '';
+    if (stale || err) {
+      badge = `<circle class="badge ${err ? 'error' : 'stale'}" cx="40" cy="8" r="6"/>`
+        + `<path class="badge-mark" d="M 40 5.2 L 40 8.6" stroke-width="1.7"/>`
+        + `<circle class="badge-dot" cx="40" cy="11" r="0.95"/>`;
+    }
+
+    const monoCls = `mono${err ? ' muted' : ''}${stale ? ' dim' : ''}`;
+    const centerMono = mono && pos === 'center'
+      ? `<span class="${monoCls} center" style="font-size:${f(size * 0.23)}px">${esc(mono)}</span>` : '';
+    const sideMono = mono && (pos === 'left' || pos === 'right')
+      ? `<span class="${monoCls}" style="font-size:${f(size * 0.42)}px">${esc(mono)}</span>` : '';
+
+    const gauge = `<span class="box" style="width:${size}px;height:${size}px">`
+      + `<svg viewBox="0 0 48 48" aria-hidden="true"><g class="${stale ? 'dim' : ''}">${g}</g>${badge}</svg>`
+      + centerMono + `</span>`;
+
+    this.style.gap = sideMono ? `${f(size * 0.2)}px` : '';
+    this._root.innerHTML = `<style>${STYLE}</style>`
+      + (pos === 'left' ? sideMono + gauge : gauge + sideMono);
+
+    let label = this.getAttribute('label');
+    if (!label) {
+      label = err ? 'No usage data: update failed.'
+        : `Weekly ${f(wLeft)}% left, 5-hour window ${idle ? 'not started' : `${f(sLeft)}% left, resets in ${Math.round(M)} min`}`
+          + (stale ? '. Last update failed; showing older values.' : '');
+      if (mono) label = `${mono}: ${label}`;
+    }
+    this.setAttribute('aria-label', label);
+  }
+}
+
+// Every attribute is also a property: el.weekly = 41, el.resetMinutes = 110, el.weeklyColor = '#fff'.
+for (const a of UsageGauge.observedAttributes) {
+  Object.defineProperty(UsageGauge.prototype, camel(a), {
+    get() { return this.getAttribute(a); },
+    set(v) { if (v == null) this.removeAttribute(a); else this.setAttribute(a, String(v)); },
+    configurable: true
+  });
+}
+
+if (!customElements.get('usage-gauge')) customElements.define('usage-gauge', UsageGauge);
+export { UsageGauge };
+
+</script>
+<script type="module">
 const P = Object.assign({ th: 'dark' }, JSON.parse(decodeURIComponent(location.hash.slice(1).startsWith('%7B') || location.hash.slice(1).startsWith('{') ? location.hash.slice(1) : '%7B%7D')));
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 const setTheme = (t) => { document.documentElement.dataset.theme = t; $$('.seg button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.th === t)); };
@@ -1636,6 +2528,11 @@ $('#ledger').items = DONE; $$('.ledger-demo').forEach((l) => (l.items = DONE));
 const KINDS = [['plain', 'No'], ['suggest', 'Yes'], ['primary', 'Open'], ['quiet', 'Later']];
 const ST = [['', 'rest'], ['hover', 'hover'], ['pressed', 'pressed'], ['focus', 'focus'], ['disabled', 'disabled']];
 $('#btns').innerHTML = '<span></span>' + ST.map(([, n]) => `<span>${n}</span>`).join('') + KINDS.map(([v, t]) => `<span>${{ plain: 'plain', suggest: 'Friday suggests', primary: 'single action', quiet: 'quiet' }[v]}</span>` + ST.map(([s]) => `<fd-button variant="${v}"${s === 'disabled' ? ' disabled' : s ? ` show-state="${s}"` : ''}>${t}</fd-button>`).join('')).join('');
+// component 7: sample data
+const RCPT = [{ item: 'Groceries', where: 'Market', company: 'ps', value: '412.00', when: 'Mon' }, { item: 'Pharmacy', where: 'Drugstore', company: 'ps', value: '38.90', when: 'Tue' }, { item: 'Market', where: 'Fair', company: 'ps', value: '121.50', when: 'Thu' }];
+$$('.tbl').forEach((t) => { t.columns = [{ key: 'item', label: 'Item' }, { key: 'where', label: 'Where' }, { key: 'when', label: 'Day' }, { key: 'value', label: 'R$', num: true }]; t.rows = RCPT; });
+{ const st = $('#steer-sent'); st.value = 'Draw the Qompass cluster closer to Marquatica, and keep the labels on hover only.'; st.send(); st.setAttribute('state', 'sent'); st.setAttribute('sent-at', '10:02'); }
+{ const d = $('#dec-done'); d.setAttribute('answered-at', '09:47'); d.choose('Thursday'); }
 if (P.sec) document.getElementById(P.sec)?.scrollIntoView();
 await customElements.whenDefined('fd-dial');
 document.fonts.ready.then(() => { document.body.dataset.ready = '1'; document.body.dataset.face = document.fonts.check('16px Figtree') ? 'figtree' : 'missing'; });
