@@ -37,9 +37,10 @@ const FD_CSS = FD_TOKENS + `
 .ic path{fill:none;stroke-width:var(--_st-icon);stroke-linecap:round;stroke-linejoin:round}
 /* buttons (component 8): primary = amber, only for a single action on what needs him; outline = Friday's suggestion;
    plain = everything else. Yes and No are always two plain buttons of equal weight (his ds-s4-18). */
-.btn{font:var(--_fw-strong) var(--_fs-sm)/1 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-5);
+.btn{font:var(--_fw-strong) var(--_fs-sm)/1.25 var(--_ff);min-height:var(--_sz-target);min-width:var(--_sz-target);padding:var(--_sp-3) var(--_sp-5);max-width:100%;overflow-wrap:break-word;text-align:center;
  border-radius:var(--_r-md);border:var(--_st-hair) solid var(--_line);color:var(--_text);background:transparent;display:inline-flex;
- align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
+ align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:normal;text-decoration:none;   /* long words wrap inside the button, never over the next one (his msg 3056) */
+ 
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
 @media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
@@ -123,7 +124,7 @@ textarea{display:block;width:100%;min-height:72px;margin-top:var(--_sp-5);font:v
  background:var(--_field-deep);border:var(--_st-hair) solid var(--_hover-line);border-radius:var(--_r-md);padding:var(--_sp-3) var(--_sp-4);resize:vertical}
 textarea:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .opts{display:flex;flex-wrap:wrap;gap:var(--_sp-3);margin-top:var(--_sp-5)}.opts:focus{outline:none}
-@container (max-width: 480px){.opts .btn{flex:1 1 40%}}
+@container (max-width: 480px){.opts .btn{flex:1 1 40%;min-width:0}}
 .btn.chosen:disabled{color:var(--_text);border-color:var(--_muted)}
 .done{display:flex;align-items:center;gap:var(--_sp-4);margin-top:var(--_sp-5);font-size:var(--_fs-md)}
 .done span{flex:1}.done{animation:fdin var(--_d-enter) var(--_e-out) both}.done:focus{outline:none}
