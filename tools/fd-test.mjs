@@ -62,18 +62,35 @@ const open = async ({ w = 1440, h = 900, dpr = 1, th = 'dark', reduced = 'no-pre
   ok(left === true, 'after the undo window the row leaves (fd-leave, hidden)', left);
   // confirm flow: busy until the host confirms
   const busy = await p.evaluate(() => { const r = document.createElement('fd-ask-row'); r.setAttribute('confirm', ''); r.setAttribute('question', 'Q?'); r.setAttribute('keep', ''); document.body.append(r); r.shadowRoot.querySelector('button[data-v="Yes"]').click(); const s1 = [r.getAttribute('state'), r.shadowRoot.querySelector('button[data-v="Yes"]').textContent, r.shadowRoot.querySelector('button').disabled]; r.setAttribute('state', 'answered'); const s2 = r.getAttribute('state'); r.remove(); return [...s1, s2]; });
-  ok(busy[0] === 'busy' && busy[1] === 'Sending…' && busy[2] && busy[3] === 'answered', 'confirm: busy (still, buttons disabled) until the host confirms', JSON.stringify(busy));
+  ok(busy[0] === 'busy' && busy[1] === 'Yes · sending' && busy[2] && busy[3] === 'answered', 'confirm: busy (still, buttons disabled) until the host confirms', JSON.stringify(busy));
   // cancelable
   const cancel = await p.evaluate(() => { const r = document.createElement('fd-ask-row'); r.setAttribute('question', 'Q?'); document.body.append(r); r.addEventListener('fd-answer', (e) => e.preventDefault()); r.shadowRoot.querySelector('button').click(); const s = r.getAttribute('state'); r.remove(); return s; });
   ok(cancel === null || cancel === 'open', 'fd-answer is cancelable (row stays open)', cancel);
   // motion: the only running animations are the breath halos (one loop rule)
-  const anims = await p.evaluate(() => { const all = []; const walk = (root) => { root.querySelectorAll('*').forEach((el) => { el.getAnimations?.().forEach((a) => all.push((el.getAttribute('class') || el.tagName) + ':' + (a.animationName || a.constructor.name))); if (el.shadowRoot) walk(el.shadowRoot); }); }; walk(document); return all; });
+  const anims = await p.evaluate(() => { const all = []; const walk = (root) => { root.querySelectorAll('*').forEach((el) => { el.getAnimations?.().filter((a) => a.constructor.name === 'CSSAnimation').forEach((a) => all.push((el.getAttribute('class') || el.tagName) + ':' + (a.animationName || a.constructor.name))); if (el.shadowRoot) walk(el.shadowRoot); }); }; walk(document); return all; });
   ok(anims.length > 0 && anims.every((a) => /^halo:breath/.test(a)), 'only the breath loops (one loop only, motion rule)', JSON.stringify([...new Set(anims)]));
   // loading has no shimmer
   ok(await p.evaluate(() => document.querySelector('fd-state[kind=loading]').shadowRoot.querySelector('.sk').getAnimations({ subtree: true }).length === 0), 'loading skeleton is still (no shimmer loop)');
   // stale panel: amber and company colours are off inside it
-  const stale = await p.evaluate(() => { const d = document.querySelector('#v-stale fd-dial'); const cs = getComputedStyle(d); return [cs.getPropertyValue('--fd-amb').trim(), cs.getPropertyValue('--fd-mq').trim(), d.shadowRoot.querySelector('.halo') ? getComputedStyle(d.shadowRoot.querySelector('.halo')).opacity : null]; });
-  ok(stale[0] !== '#E9880B' && stale[1] !== '#4287EB' && stale[2] === '0', 'stale panel: no amber, no company colour, no glow inside', JSON.stringify(stale));
+  const stale = await p.evaluate(() => { const d = document.querySelector('#v-stale fd-dial'); const cs = getComputedStyle(d); return [cs.getPropertyValue('--fd-amb').trim(), cs.getPropertyValue('--fd-mq').trim(), d.shadowRoot.querySelector('.halo'), d.shadowRoot.querySelector('.name').textContent]; });
+  ok(stale[0] !== '#E9880B' && stale[1] !== '#4287EB' && stale[2] === null && /1 for you at 09:58/.test(stale[3]), 'stale panel: no amber, no company colour, no light, "for you at 09:58"', JSON.stringify(stale));
+  // the breath runs on one clock: every halo on the page is in the same phase (lens 9)
+  const phases = await p.evaluate(() => { const t = []; document.querySelectorAll('fd-dial').forEach((d) => d.shadowRoot.querySelectorAll('.halo').forEach((h) => h.getAnimations().forEach((a) => t.push(Number(a.currentTime) % 4500)))); return t; });
+  const spread = Math.max(...phases) - Math.min(...phases);
+  ok(phases.length >= 4 && (spread < 120 || spread > 4380), 'every breath on the page is in step (one shared clock)', JSON.stringify(phases.map(Math.round)));
+  // highlight never rebuilds: keyboard focus on a segment survives the row light (lens 1, 9)
+  await p.mouse.move(2, 2); await p.waitForTimeout(100);
+  const kept = await p.evaluate(async () => { const d = document.querySelector('#dials fd-dial'); const a = d.shadowRoot.querySelector('svg a[data-id="m4"]'); a.focus(); await new Promise((r) => setTimeout(r, 50)); return [d.shadowRoot.activeElement === a, document.querySelector('#p-run fd-run-row[front="m4"]').hasAttribute('highlight')]; });
+  ok(kept[0] && kept[1], 'focus on a dial segment survives the segment ↔ row highlight', JSON.stringify(kept));
+  // focus never looks like the suggestion: dashed ring with a gap vs a solid border
+  const ring = await p.evaluate(() => { const b = document.querySelector('#btns fd-button[show-state=focus]'); return getComputedStyle(b.shadowRoot.querySelector('.btn')).outlineStyle; });
+  ok(ring === 'dashed', 'focus ring is dashed (Friday\'s suggestion is solid)', ring);
+  // stale answer rows wait for a confirm
+  const sa = await p.evaluate(() => { const r = document.createElement('fd-ask-row'); r.setAttribute('question', 'Q?'); r.setAttribute('stale', '09:58'); r.setAttribute('keep', ''); document.body.append(r); const t = r.shadowRoot.textContent; r.shadowRoot.querySelector('button[data-v="Yes"]').click(); const st = r.getAttribute('state'); r.remove(); return [st, /Friday checks before sending/.test(t)]; });
+  ok(sa[0] === 'busy' && sa[1], 'on stale data an answer waits for the confirm and says so', JSON.stringify(sa));
+  // a single action with a place to go is a link, not an answer
+  const door = await p.evaluate(() => { const r = document.createElement('fd-ask-row'); r.setAttribute('question', 'Q?'); r.setAttribute('options', 'Open'); r.setAttribute('href', '#x'); document.body.append(r); const a = r.shadowRoot.querySelector('a.btn.primary'); const out = [!!a, !r.shadowRoot.querySelector('button[data-v]')]; r.remove(); return out; });
+  ok(door[0] && door[1], 'a single action with href is a link (a door, not a vote)', JSON.stringify(door));
   // never-words on screen (language.md, English and Portuguese)
   const text = await p.evaluate(() => { let t = document.body.innerText; const walk = (root) => root.querySelectorAll('*').forEach((el) => { if (el.shadowRoot) { t += ' ' + el.shadowRoot.textContent; walk(el.shadowRoot); } }); walk(document); return t; });
   const never = text.match(/\b(overdue|urgent|failed|missed|dashboard|still|again|atrasad[oa]|vencid[oa]|pendente|urgente|falhou|ainda|de novo)\b/i);

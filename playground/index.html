@@ -39,6 +39,8 @@ section{margin-top:var(--fd-sp-9)}
 .hello{display:flex;align-items:baseline;justify-content:space-between;gap:var(--fd-sp-4)}
 .hello b{font-size:var(--fd-fs-xl);font-weight:var(--fd-fw-strong)}
 .dials{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--fd-sp-3)}
+/* desktop: Done today follows Needs you directly, no dead band beside the dials (S5 lenses 2, 4, 7); DOM order stays time order */
+@media(min-width:900px){#col-a{grid-row:2/span 2}#col-b{grid-row:2}#col-d{grid-row:3/span 2}#col-c{grid-row:4}#homegrid>div{align-self:start}}
 .btns{display:grid;grid-template-columns:110px repeat(5,1fr);gap:var(--fd-sp-3);align-items:center;font-size:var(--fd-fs-xs);color:var(--fd-muted)}
 @media(max-width:899px){.btns{grid-template-columns:72px repeat(5,minmax(0,1fr));gap:var(--fd-sp-2)}.btns fd-button{font-size:11px}}
 .legend{list-style:none;display:grid;gap:var(--fd-sp-2);font-size:var(--fd-fs-sm)}
@@ -51,7 +53,8 @@ section{margin-top:var(--fd-sp-9)}
 .foot{margin-top:var(--fd-sp-9);padding-top:var(--fd-sp-5);border-top:var(--fd-st-hair) solid var(--fd-line);font-size:var(--fd-fs-xs);color:var(--fd-muted)}
 /* open colour questions, S4 c3 §Conflicts (shown as a pair; palette B stays until he reacts) */
 [data-theme=dark] .ps-nudge{--fd-ps:#86B476}
-[data-theme=dark] .warm{--fd-field:#1C130A;--fd-field-deep:#180F07;--fd-surface:#231C14;--fd-raised:#29211A;--fd-line:#32302E;--fd-line-soft:#2D251D;--fd-hover-bg:#29211A}
+/* half of the first warm search result (S5 lens 2: the full shift read as coffee brown) */
+[data-theme=dark] .warm{--fd-field:#181411;--fd-field-deep:#130F0C;--fd-surface:#1E1C1A;--fd-raised:#242221;--fd-line:#2F3031;--fd-line-soft:#282624;--fd-hover-bg:#242221}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <filter id="grainf"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0"/></filter>
@@ -74,17 +77,17 @@ section{margin-top:var(--fd-sp-9)}
   <div class="g" id="homegrid">
    <div class="s12 hello"><b>Good morning, Mauricio</b><span class="mu" style="font-size:var(--fd-fs-sm)">Monday · 10:05</span></div>
    <div class="s7 stack" id="col-a">
-    <fd-panel label="Dials" id="p-dials"><div class="dials" id="dials"></div></fd-panel>
+    <fd-panel label="Dials" id="p-dials" heading-level="3"><div class="dials" id="dials"></div></fd-panel>
    </div>
    <div class="s5 stack" id="col-b">
-    <fd-panel label="Needs you" pad="row" id="p-need"></fd-panel>
+    <fd-panel label="Needs you" pad="row" id="p-need" heading-level="3"></fd-panel>
    </div>
    <div class="s7 stack" id="col-c">
-    <fd-panel label="In progress" pad="row" id="p-run"></fd-panel>
+    <fd-panel label="In progress" pad="row" id="p-run" heading-level="3"></fd-panel>
    </div>
    <div class="s5 stack" id="col-d">
-    <fd-panel label="Done today" pad="row"><fd-ledger id="ledger"></fd-ledger></fd-panel>
-    <fd-panel label="Just now"><fd-rail id="rail"></fd-rail></fd-panel>
+    <fd-panel label="Done today" pad="row" heading-level="3"><fd-ledger id="ledger"></fd-ledger></fd-panel>
+    <fd-panel label="Just now" heading-level="3"><fd-rail id="rail"></fd-rail></fd-panel>
    </div>
   </div>
  </section>
@@ -100,7 +103,7 @@ section{margin-top:var(--fd-sp-9)}
  <section id="ask"><h2>Needs you</h2><p class="intro">Yes and No are equal. When Friday recommends one, it has the outline and the line says so. A single action is the only amber button. After you answer, the row says what you said and keeps Undo for a few seconds, then leaves.</p>
   <div class="g">
    <div class="s6"><fd-panel label="Open" pad="row">
-    <fd-ask-row company="mq" question="OK to rotate 6 clients?" note="answer right here" options='["No","Yes"]' suggest="Yes" keep></fd-ask-row>
+    <fd-ask-row company="mq" question="OK to rotate 6 clients?" note="6 clients · 1 tap" options='["No","Yes"]' suggest="Yes" keep></fd-ask-row>
     <fd-ask-row company="ps" question="Which of these looks like Friday?" note="1 tap · 4 images" options='["Open"]' keep></fd-ask-row>
     <fd-ask-row company="at" question="Which week for the November plan review?" note="3 options" options='["This week","Next week","After the 20th"]' suggest="Next week" keep></fd-ask-row>
    </fd-panel></div>
@@ -108,7 +111,7 @@ section{margin-top:var(--fd-sp-9)}
     <fd-ask-row company="mq" question="Send the October report to the team?" options='["No","Yes"]' state="busy" answer="Yes" keep></fd-ask-row>
     <fd-ask-row company="mq" question="Rotation of 6 clients" options='["No","Yes"]' state="answered" answer="Yes" keep></fd-ask-row>
    </fd-panel>
-   <p class="meta">Sending: the buttons wait, unchanged, until Friday confirms (nothing spins). Answered: Undo stays 6 s, then the row leaves in 0.16 s.</p></div>
+   <p class="meta">Sending: the chosen answer says “sending”, the other goes quiet, until Friday confirms (nothing spins). Answered: Undo stays 6 s, then the row leaves in 0.16 s.</p></div>
   </div></section>
 
  <section id="run"><h2>In progress</h2><p class="intro">Each row opens its front. A bar only where there is a real count; otherwise just the status in words.</p>
@@ -116,7 +119,7 @@ section{margin-top:var(--fd-sp-9)}
    <div class="s7"><fd-panel label="In progress" pad="row">
     <fd-run-row company="mq" text="Lead research" status="14 of 30" count="14" total="30" href="#run"></fd-run-row>
     <fd-run-row company="at" text="Post approvals" status="running" href="#run"></fd-run-row>
-    <fd-run-row company="ps" text="Training" status="today 6 pm" href="#run"></fd-run-row>
+    <fd-run-row company="ps" text="Brain map" status="drawing" href="#run"></fd-run-row>
    </fd-panel></div>
    <div class="s5"><fd-panel label="The running mark"><div style="display:grid;gap:var(--fd-sp-3)">
     <fd-run-row company="ps" text="Brain map" status="drawing" icon="run"></fd-run-row>
@@ -147,11 +150,11 @@ section{margin-top:var(--fd-sp-9)}
  <section id="open"><h2>Two colour questions</h2><p class="intro">Left is today. Right is a possible change. Nothing changes until you say so.</p>
   <div class="pair" id="pair-ps">
    <div class="variant"><div class="lbl">Personal green · today</div><div class="dials" id="ps-a"></div></div>
-   <div class="variant ps-nudge"><div class="lbl">Personal green · softer, so it never outshines amber</div><div class="dials" id="ps-b"></div></div>
+   <div class="variant ps-nudge"><div class="lbl">Personal green · softer</div><div class="dials" id="ps-b"></div></div>
   </div>
   <div class="pair" id="pair-warm" style="margin-top:var(--fd-sp-6)">
-   <div class="variant"><div class="lbl">Dark greys · today (close to stock greys)</div><fd-panel label="Needs you" pad="row"><fd-ask-row company="mq" question="OK to rotate 6 clients?" options='["No","Yes"]' suggest="Yes" keep></fd-ask-row></fd-panel></div>
-   <div class="variant warm"><div class="lbl">Dark greys · a warm tint of our own</div><fd-panel label="Needs you" pad="row"><fd-ask-row company="mq" question="OK to rotate 6 clients?" options='["No","Yes"]' suggest="Yes" keep></fd-ask-row></fd-panel></div>
+   <div class="variant"><div class="lbl">Dark greys · today</div><fd-panel label="Dials"><div class="dials warm-d"></div></fd-panel><div style="height:var(--fd-sp-5)"></div><fd-panel label="Needs you" pad="row"><fd-ask-row company="mq" question="OK to rotate 6 clients?" options='["No","Yes"]' suggest="Yes" keep></fd-ask-row></fd-panel></div>
+   <div class="variant warm"><div class="lbl">Dark greys · warm tint</div><fd-panel label="Dials"><div class="dials warm-d"></div></fd-panel><div style="height:var(--fd-sp-5)"></div><fd-panel label="Needs you" pad="row"><fd-ask-row company="mq" question="OK to rotate 6 clients?" options='["No","Yes"]' suggest="Yes" keep></fd-ask-row></fd-panel></div>
   </div></section>
 
  <p class="foot" id="foot">Friday DS v0.3 · components from adm-glitch/web-components · tokens from fd-tokens.css.</p>
@@ -174,40 +177,45 @@ setTheme(P.th === 'light' ? 'light' : 'dark');
 const FR = {
   mq: [['m1', 'Monthly report', 'run', 'running'], ['m2', 'CRM check', 'done'], ['m3', 'Client rotation', 'need'], ['m4', 'Lead research', 'run', '14 of 30', 14, 30], ['m5', 'New proposal', 'rest']],
   at: [['a1', 'November plan', 'rest'], ['a2', 'Management report', 'done'], ['a3', 'New contract', 'rest'], ['a4', 'Post approvals', 'run', 'running']],
-  ps: [['p1', 'Design System', 'need'], ['p2', 'Receipts', 'done'], ['p3', 'Backup', 'fault'], ['p4', 'Brain map', 'run', 'drawing'], ['p5', 'Lab tests', 'rest'], ['p6', 'Training', 'run', 'today 6 pm']],
+  ps: [['p1', 'Design System', 'need'], ['p2', 'Receipts', 'done'], ['p3', 'Backup', 'fault'], ['p4', 'Brain map', 'run', 'drawing'], ['p5', 'Lab tests', 'rest'], ['p6', 'Training', 'rest', 'today 6 pm']],
 };
 const fronts = (k) => FR[k].map(([id, t, s]) => ({ id, t, s, href: '#' + k + '-' + id }));
 const mkDial = (k, extra = {}) => { const d = document.createElement('fd-dial'); d.setAttribute('company', k); d.setAttribute('href', '#' + k); if (k === 'ps') d.setAttribute('note', 'backup stopped · Friday fixing it'); for (const [a, v] of Object.entries(extra)) d.setAttribute(a, v); d.fronts = fronts(k); return d; };
 const fill = (sel, extra) => { const el = $(sel); el.innerHTML = ''; ['mq', 'at', 'ps'].forEach((k) => el.append(mkDial(k, extra))); };
-fill('#dials', { 'per-segment': '' }); fill('#v-count', { size: 'desktop' }); fill('#v-foryou', { size: 'desktop', center: 'for-you' }); fill('#v-stale', { size: 'desktop' });
+fill('#dials', { 'per-segment': '', slots: '6' }); fill('#v-count', { size: 'desktop' }); fill('#v-foryou', { size: 'desktop', center: 'for-you' }); fill('#v-stale', { size: 'desktop' });
 fill('#ps-a', { size: 'desktop' }); fill('#ps-b', { size: 'desktop' });
-const legend = [['l1', 'Working now', 'run'], ['l2', 'Idle', 'rest'], ['l3', 'Done today', 'done'], ['l4', 'Needs you', 'need'], ['l5', 'Friday fixing it', 'fault']];
+$$('.warm-d').forEach((el) => ['mq', 'at', 'ps'].forEach((k) => el.append(mkDial(k, { size: 'desktop' }))));
+const legend = [['l1', 'Running', 'run'], ['l2', 'Idle', 'rest'], ['l3', 'Done today', 'done'], ['l4', 'Needs you', 'need'], ['l5', 'Friday fixing it', 'fault']];
 $('#d-legend').fronts = legend.map(([id, t, s]) => ({ id, t, s }));
 const sw = { run: ['var(--fd-ps)', 4, ''], rest: ['var(--fd-ps-dim)', 2.6, ''], done: ['var(--fd-text-dim)', 2.6, ''], need: ['var(--fd-amb)', 5, ''], fault: ['var(--fd-muted)', 2.6, '3 3'] };
 $('#legend').innerHTML = legend.map(([, t, s]) => `<li><svg width="28" height="10" aria-hidden="true"><line x1="4" y1="5" x2="24" y2="5" style="stroke:${sw[s][0]};stroke-width:${sw[s][1]}px;stroke-linecap:${s === 'fault' ? 'butt' : 'round'};stroke-dasharray:${sw[s][2] || 'none'}"/></svg>${t}</li>`).join('');
 $('#d-many').fronts = Array.from({ length: 16 }, (_, i) => ({ id: 'n' + i, t: 'Front ' + (i + 1), s: i === 3 ? 'need' : i % 4 === 0 ? 'done' : i % 3 === 0 ? 'run' : 'rest' }));
 // needs you: answering lights the change on the dial (the breath stops) and comes back in Just now
-const NEED = [['mq', 'm3', 'OK to rotate 6 clients?', 'answer right here', ['No', 'Yes'], 'Yes'], ['ps', 'p1', 'Which of these looks like Friday?', '1 tap · 4 images', ['Open'], null]];
+const NEED = [['mq', 'm3', 'OK to rotate 6 clients?', '6 clients · 1 tap', ['No', 'Yes'], 'Yes'], ['ps', 'p1', 'Which of these looks like Friday?', '1 tap · 4 images', ['Open'], null]];
 const pNeed = $('#p-need');
 NEED.forEach(([k, id, q, note, opts, sug]) => {
-  const r = document.createElement('fd-ask-row'); r.setAttribute('company', k); r.setAttribute('question', q); r.setAttribute('note', note); r.options = opts; if (sug) r.setAttribute('suggest', sug); r.dataset.front = id; r.dataset.k = k; pNeed.append(r);
+  const r = document.createElement('fd-ask-row'); r.setAttribute('company', k); r.setAttribute('question', q); r.setAttribute('note', note); r.options = opts; if (sug) r.setAttribute('suggest', sug); r.dataset.front = id; r.dataset.k = k; r.setAttribute('front', id); pNeed.append(r);
 });
 const RAIL = [{ at: '09:12', text: 'receipt read' }, { at: '09:30', text: 'CRM check done' }, { at: '09:41', text: 'backup stopped · Friday fixing it' }, { at: '09:58', text: '2 new cards' }];
 const rail = $('#rail'); rail.items = RAIL;
 $('#rail-demo').items = [...RAIL.slice(1), { at: '10:02', text: 'yes to the rotation', you: true }];
 const setFront = (k, id, s) => { const f = FR[k].find((x) => x[0] === id); if (f) f[2] = s; $$('#dials fd-dial').forEach((d) => { if (d.getAttribute('company') === k) d.fronts = fronts(k); }); };
-pNeed.addEventListener('fd-answer', (e) => { const r = e.target; setFront(r.dataset.k, r.dataset.front, 'run'); const now = new Date(); rail.items = [...rail.items, { at: String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'), text: e.detail.value.toLowerCase() + ' · ' + r.getAttribute('question'), you: true }]; });
-pNeed.addEventListener('fd-undo', (e) => { const r = e.target; setFront(r.dataset.k, r.dataset.front, 'need'); rail.items = rail.items.slice(0, -1); });
-pNeed.addEventListener('fd-leave', () => { if (!$$('#p-need fd-ask-row').some((r) => !r.hidden)) { const s = document.createElement('fd-state'); s.setAttribute('kind', 'empty'); s.setAttribute('note', 'Done today has the rest.'); pNeed.append(s); $('#ledger').setAttribute('reward', ''); } });
+const hhmm = () => { const n = new Date(); return String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0'); };
+// the log line is written from the confirmed answer (fd-answered), never from the tap; Undo adds its own line (lens 11)
+pNeed.addEventListener('fd-answered', (e) => { const r = e.target; setFront(r.dataset.k, r.dataset.front, 'run'); rail.items = [...rail.items, { at: hhmm(), text: e.detail.value.toLowerCase() + ' · ' + r.getAttribute('question'), you: true }]; });
+pNeed.addEventListener('fd-undo', (e) => { const r = e.target; setFront(r.dataset.k, r.dataset.front, 'need'); rail.items = [...rail.items, { at: hhmm(), text: 'undid ' + e.detail.value.toLowerCase() + ' · ' + r.getAttribute('question'), you: true }]; });
+pNeed.addEventListener('fd-leave', (e) => { if (e.detail.hadFocus) { const next = $$('#p-need fd-ask-row').find((r) => !r.hidden); (next?.shadowRoot.querySelector('button, a') || $('#p-run fd-run-row')?.shadowRoot.querySelector('a'))?.focus(); } if (!$$('#p-need fd-ask-row').some((r) => !r.hidden)) { const s = document.createElement('fd-state'); s.setAttribute('kind', 'empty'); s.setAttribute('note', 'Done today has the rest.'); pNeed.append(s); $('#ledger').setAttribute('reward', ''); } });
 // in progress = every lit front, in dial order (L2); each row is linked to its segment
 const pRun = $('#p-run');
 for (const k of ['mq', 'at', 'ps']) FR[k].forEach(([id, t, s, n, a, b]) => { if (s !== 'run') return; const r = document.createElement('fd-run-row'); Object.entries({ company: k, text: t, status: n, href: '#' + k + '-' + id, front: id }).forEach(([x, v]) => r.setAttribute(x, v)); if (b) { r.setAttribute('count', a); r.setAttribute('total', b); } pRun.append(r); });
 document.addEventListener('fd-front-hover', (e) => {
   const id = e.detail.id;
-  $$('#p-run fd-run-row').forEach((r) => r.toggleAttribute('highlight', id != null && r.getAttribute('front') === id));
+  $$('#p-run fd-run-row, #p-need fd-ask-row').forEach((r) => r.toggleAttribute('highlight', id != null && r.getAttribute('front') === id));
   $$('#dials fd-dial').forEach((d) => (id == null ? d.removeAttribute('highlight') : d.setAttribute('highlight', id)));
 });
-const DONE = [{ company: 'ps', text: 'DS questionnaire', meta: '18 answers' }, { company: 'at', text: 'Management report', meta: 'page' }, { company: 'ps', text: 'Receipts', meta: '3 photos' }];
+// Done today = the done fronts of the dials, in dial order (glance = read: S5 lenses 8, 10)
+const META = { m2: '12 clients', a2: 'page', p2: '3 photos' };
+const DONE = []; for (const k of ['mq', 'at', 'ps']) FR[k].forEach(([id, t, s]) => { if (s === 'done') DONE.push({ company: k, text: t, meta: META[id] }); });
 $('#ledger').items = DONE; $$('.ledger-demo').forEach((l) => (l.items = DONE));
 // buttons: kinds × states
 const KINDS = [['plain', 'No'], ['suggest', 'Yes'], ['primary', 'Open'], ['quiet', 'Later']];

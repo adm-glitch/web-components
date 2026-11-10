@@ -30,7 +30,7 @@
 // Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
 // between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
 // step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
-const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
 // Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
 // sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
 const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
@@ -58,7 +58,8 @@ const FD_CSS = FD_TOKENS + `
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
 .btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
 .btn:active{background:var(--_pressed-bg)}
-.btn:focus-visible{outline:var(--_sz-focus-ring) solid var(--_focus);outline-offset:var(--_sz-focus-offset)}
+/* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
+.btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
 .btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
@@ -70,13 +71,15 @@ const FD_CSS = FD_TOKENS + `
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
 `;
-// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn in S5: the S4 circle-arrow read as "refresh"
-// (S4 lens 10); now a forward stroke along a track.
+// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
+// "refresh" (S4 lens 10), the first S5 arrow-to-bar read as Tab / skip to end (S5 lenses 2, 3, 10); it is now the dial's own
+// sign, a short lit arc, drawn by fd-run-row in the company colour so the row and its segment are one symbol.
+// "stale" is a clock (time-based sign for time-based data), never the "!" of an alert (S5 lens 10).
 const FD_ICONS = {
   ask: 'M5 5h14v10H10l-5 4z', check: 'M5 12.5l4.2 4.2L19 7', clock: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2',
   fix: 'M14.5 5.5a4 4 0 0 0-5 5L4 16v4h4l5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-3-3z', doc: 'M7 3h7l4 4v14H7z M14 3v4h4',
-  run: 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
-  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5 M12 16v.01', empty: 'M5 12h14',
+  run: 'M5 16.5a8 8 0 0 1 14 0', 'run-s5a': 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
+  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2', empty: 'M5 12h14',
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
@@ -102,7 +105,7 @@ function fdProps(Cls, attrs, json = []) {
 const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
 // fd-shared:end
 
-const ASK_ATTRS = ['company', 'name', 'question', 'note', 'options', 'suggest', 'state', 'answer', 'confirm', 'undo-window', 'keep', 'theme', 'icon'];
+const ASK_ATTRS = ['company', 'name', 'question', 'note', 'options', 'suggest', 'state', 'answer', 'confirm', 'undo-window', 'keep', 'theme', 'icon', 'href', 'front', 'highlight', 'stale', 'slow-after'];
 
 const ASK_CSS = `
 :host{display:block;container-type:inline-size}
@@ -114,8 +117,13 @@ const ASK_CSS = `
 /* 3+ options, or a narrow row: the answers go under the question, equal widths, in thumb reach */
 @container (max-width: 420px){.row.many{flex-wrap:wrap}.row.many .opts{width:100%;justify-content:stretch}.row.many .opts .btn{flex:1}}
 .row.many3{flex-wrap:wrap}.row.many3 .opts{width:100%;padding-left:calc(24px + var(--_sp-4));justify-content:flex-start}
-.busy{font-size:var(--_fs-sm);color:var(--_muted)}
-:host([state=leaving]) .row{opacity:0}
+@container (max-width: 420px){.row.many3 .opts{padding-left:0}.row.many3 .opts .btn{flex:1 1 40%}}
+.nw{white-space:nowrap}
+.t a{color:inherit;text-decoration:none}.t a:hover{text-decoration:underline;text-underline-offset:3px}
+.t a:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px;border-radius:2px}
+:host([highlight]) .row{background:var(--_hover-bg);border-radius:var(--_r-sm);box-shadow:inset 2px 0 0 var(--_hover-line)}
+.btn.chosen:disabled{color:var(--_text);border-color:var(--_muted)}
+.slow{display:none}:host([data-slow]) .slow{display:inline}
 `;
 
 class FdAskRow extends HTMLElement {
@@ -123,7 +131,7 @@ class FdAskRow extends HTMLElement {
   constructor() { super(); this.attachShadow({ mode: 'open' }); }
   connectedCallback() { this.render(); }
   disconnectedCallback() { clearTimeout(this._t); }
-  attributeChangedCallback(n) { if (this.isConnected && !this._quiet) this.render(n); }
+  attributeChangedCallback(n) { if (n === 'highlight') return; if (this.isConnected && !this._quiet) this.render(n); }
   get options() { const v = this.getAttribute('options'); if (v && !v.trim().startsWith('[')) return v.split(',').map((s) => s.trim()); return fdJSON(v, this._options || ['No', 'Yes']); }
   set options(v) { if (typeof v === 'string') this.setAttribute('options', v); else { this._options = v; this.removeAttribute('options'); this.render(); } }
 
@@ -132,7 +140,8 @@ class FdAskRow extends HTMLElement {
 
   choose(value) {
     if (!this._fire('fd-answer', { value }, true)) return;
-    if (this.hasAttribute('confirm')) this._set({ state: 'busy', answer: value });
+    // on stale data the answer always waits for the server's confirm (S5 lenses 3, 4, 11)
+    if (this.hasAttribute('confirm') || this.hasAttribute('stale')) this._set({ state: 'busy', answer: value });
     else this._set({ state: 'answered', answer: value });
   }
   undo() { const value = this.getAttribute('answer'); clearTimeout(this._t); this._set({ state: 'open', answer: null }); this._fire('fd-undo', { value }); this._focusAfter = value; this.render(); }
@@ -148,33 +157,58 @@ class FdAskRow extends HTMLElement {
     const ans = this.getAttribute('answer');
     const sr = this.shadowRoot;
     const prevState = this._state; this._state = state;
+    const href = this.getAttribute('href');
+    const stale = this.getAttribute('stale');
+    const q = href ? `<a href="${fdEsc(href)}">${fdEsc(title)}</a>` : fdEsc(title);
+    clearTimeout(this._slowT); this.removeAttribute('data-slow');
     let body;
     if (state === 'answered' || state === 'leaving') {
-      body = `<div class="row" part="row">${fdIcon('check', 'var(--_text)', 24)}<div class="t">${fdEsc(title)}<small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)} · you said ${fdEsc(ans)}</small></div>`
+      // answered keeps the ask mark, in the text colour (the check belongs to done fronts: S5 lens 10)
+      body = `<div class="row" part="row">${fdIcon('ask', 'var(--_text)', 24)}<div class="t">${q}<small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)} · you said ${fdEsc(ans)}</small></div>`
         + `<div class="opts"><button type="button" class="btn" part="undo" data-undo>Undo</button></div></div>`;
     } else {
       const busy = state === 'busy';
       const single = opts.length === 1;
-      const small = [fdEsc(name), note ? fdEsc(note) : null, !single && sug && opts.includes(sug) ? `Friday suggests ${fdEsc(sug)}` : null].filter(Boolean).join(' · ');
+      const small = [fdEsc(name), note ? fdEsc(note) : null, !single && sug && opts.includes(sug) ? `<span class="nw">Friday suggests ${fdEsc(sug)}</span>` : null,
+        stale != null && !busy ? `<span class="nw">data from ${fdEsc(stale)}; Friday checks before sending</span>` : null,
+        state === 'unsent' ? '<span class="nw">not sent; answer again</span>' : null,
+        busy ? '<span class="slow">taking longer than usual; Friday keeps trying</span>' : null].filter(Boolean).join(' · ');
       body = `<div class="row${opts.length > 2 ? ' many3' : opts.length ? ' many' : ''}" part="row"${busy ? ' aria-busy="true"' : ''}>${fdIcon(this.getAttribute('icon') || 'ask', 'var(--_amb)', 24)}`
-        + `<div class="t" id="q">${fdEsc(title)}<small><span class="dot" style="background:var(--_${k})"></span>${small}</small></div>`
+        + `<div class="t" id="q">${q}<small><span class="dot" style="background:var(--_${k})"></span>${small}</small></div>`
         + `<div class="opts" role="group" aria-labelledby="q">`
-        + opts.map((o) => `<button type="button" class="btn${single ? ' primary' : sug === o ? ' suggest' : ''}" data-v="${fdEsc(o)}"${busy ? ' disabled' : ''}${!single && sug === o ? ` aria-description="Friday suggests this"` : ''}>${busy && ans === o ? 'Sending…' : fdEsc(o)}</button>`).join('')
+        + opts.map((o) => single && href
+          // a single action with a place to go is a door, not a vote: a link, never recorded as an answer (S5 lens 7)
+          ? `<a class="btn primary" href="${fdEsc(href)}">${fdEsc(o)}</a>`
+          : `<button type="button" class="btn${single ? ' primary' : sug === o ? ' suggest' : ''}${busy && ans === o ? ' chosen' : ''}" data-v="${fdEsc(o)}"${busy ? ' disabled' : ''}${!single && sug === o ? ` aria-description="Friday suggests this"` : ''}>${busy && ans === o ? `${fdEsc(o)} · sending` : fdEsc(o)}</button>`).join('')
         + `</div></div>`;
     }
     sr.innerHTML = `<style>${FD_CSS}${ASK_CSS}</style>${body}<div class="vh" role="status" aria-live="polite" part="status">${this._live || ''}</div>`;
     sr.querySelectorAll('button[data-v]').forEach((b) => b.addEventListener('click', () => this.choose(b.dataset.v)));
     sr.querySelector('[data-undo]')?.addEventListener('click', () => this.undo());
+    const front = this.getAttribute('front'), row = sr.querySelector('.row');
+    if (front != null && row) {
+      const emit = (v) => this.dispatchEvent(new CustomEvent('fd-front-hover', { detail: { id: v }, bubbles: true, composed: true }));
+      row.addEventListener('pointerenter', () => emit(front)); row.addEventListener('pointerleave', () => emit(null));
+    }
+    if (state === 'busy') this._slowT = setTimeout(() => this.setAttribute('data-slow', ''), parseInt(this.getAttribute('slow-after') || '4000', 10));
     if (state === 'answered' && prevState !== 'answered') {
       const live = `Answered ${title}: ${ans}. Undo available.`;
       this._live = live; sr.querySelector('[role=status]').textContent = live;
+      this._fire('fd-answered', { value: ans });   // the confirmed answer (after confirm, or at once without it): the log line comes from here
       if (prevState && prevState !== 'answered') sr.querySelector('[data-undo]')?.focus();
       clearTimeout(this._t);
       if (!this.hasAttribute('keep')) {
         const win = parseInt(this.getAttribute('undo-window') || FD_T.base['d-undo-window'], 10);
         this._t = setTimeout(() => {
-          this._set({ state: 'leaving' });
-          this._t = setTimeout(() => { this.hidden = true; this._fire('fd-leave', { value: ans }); }, fdReduced() ? 0 : parseInt(FD_T.base['d-answered-leave'], 10));
+          // leave on the existing row (no re-render): fade and fold its height, so the rows below glide up instead of
+          // jumping under the thumb (S5 lenses 4, 9); reduced motion = gone at once
+          this._quiet = true; this.setAttribute('state', 'leaving'); this._quiet = false; this._state = 'leaving';
+          const ms = fdReduced() ? 0 : parseInt(FD_T.base['d-leave'], 10), h = this.getBoundingClientRect().height;
+          const done = () => { const hadFocus = this.shadowRoot.activeElement; this.hidden = true; this._fire('fd-leave', { value: ans, hadFocus: !!hadFocus }); };
+          if (!ms || !this.animate) { done(); return; }
+          this.style.overflow = 'hidden';
+          const a = this.animate([{ opacity: 1, height: h + 'px' }, { opacity: 0, height: '0px' }], { duration: ms, easing: FD_T.base['e-in'] });
+          a.onfinish = done;
         }, win);
       }
     } else if (state === 'open' && this._focusAfter) {

@@ -29,7 +29,8 @@ const FD_CSS = FD_TOKENS + `
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
 .btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
 .btn:active{background:var(--_pressed-bg)}
-.btn:focus-visible{outline:var(--_sz-focus-ring) solid var(--_focus);outline-offset:var(--_sz-focus-offset)}
+/* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
+.btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
 .btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
@@ -41,13 +42,15 @@ const FD_CSS = FD_TOKENS + `
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
 `;
-// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn in S5: the S4 circle-arrow read as "refresh"
-// (S4 lens 10); now a forward stroke along a track.
+// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
+// "refresh" (S4 lens 10), the first S5 arrow-to-bar read as Tab / skip to end (S5 lenses 2, 3, 10); it is now the dial's own
+// sign, a short lit arc, drawn by fd-run-row in the company colour so the row and its segment are one symbol.
+// "stale" is a clock (time-based sign for time-based data), never the "!" of an alert (S5 lens 10).
 const FD_ICONS = {
   ask: 'M5 5h14v10H10l-5 4z', check: 'M5 12.5l4.2 4.2L19 7', clock: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2',
   fix: 'M14.5 5.5a4 4 0 0 0-5 5L4 16v4h4l5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-3-3z', doc: 'M7 3h7l4 4v14H7z M14 3v4h4',
-  run: 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
-  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5 M12 16v.01', empty: 'M5 12h14',
+  run: 'M5 16.5a8 8 0 0 1 14 0', 'run-s5a': 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
+  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2', empty: 'M5 12h14',
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };

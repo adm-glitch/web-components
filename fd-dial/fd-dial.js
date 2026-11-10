@@ -20,7 +20,7 @@
 // Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
 // between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
 // step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
-const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
 // Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
 // sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
 const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
@@ -48,7 +48,8 @@ const FD_CSS = FD_TOKENS + `
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
 .btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
 .btn:active{background:var(--_pressed-bg)}
-.btn:focus-visible{outline:var(--_sz-focus-ring) solid var(--_focus);outline-offset:var(--_sz-focus-offset)}
+/* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
+.btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
 .btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
@@ -60,13 +61,15 @@ const FD_CSS = FD_TOKENS + `
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
 `;
-// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn in S5: the S4 circle-arrow read as "refresh"
-// (S4 lens 10); now a forward stroke along a track.
+// thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
+// "refresh" (S4 lens 10), the first S5 arrow-to-bar read as Tab / skip to end (S5 lenses 2, 3, 10); it is now the dial's own
+// sign, a short lit arc, drawn by fd-run-row in the company colour so the row and its segment are one symbol.
+// "stale" is a clock (time-based sign for time-based data), never the "!" of an alert (S5 lens 10).
 const FD_ICONS = {
   ask: 'M5 5h14v10H10l-5 4z', check: 'M5 12.5l4.2 4.2L19 7', clock: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2',
   fix: 'M14.5 5.5a4 4 0 0 0-5 5L4 16v4h4l5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-3-3z', doc: 'M7 3h7l4 4v14H7z M14 3v4h4',
-  run: 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
-  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5 M12 16v.01', empty: 'M5 12h14',
+  run: 'M5 16.5a8 8 0 0 1 14 0', 'run-s5a': 'M4 12h12 M12.5 7.5L17 12l-4.5 4.5 M20.5 6v12', 'run-s4': 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3 M19.5 4.5v3.8h-3.8',
+  stale: 'M12 4a8 8 0 1 0 .01 0z M12 8v4.5l3 2', empty: 'M5 12h14',
 };
 const fdIcon = (g, colour, size = 24) => `<span class="ic" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS[g] || FD_ICONS.doc}" style="stroke:${colour}"/></svg></span>`;
 const FD_NAME = { mq: 'Marquatica', at: 'Atípica', ps: 'Personal' };
@@ -92,26 +95,29 @@ function fdProps(Cls, attrs, json = []) {
 const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
 // fd-shared:end
 
-const DIAL_ATTRS = ['company', 'name', 'href', 'fronts', 'size', 'center', 'note', 'per-segment', 'highlight', 'theme', 'label'];
+const DIAL_ATTRS = ['company', 'name', 'href', 'fronts', 'size', 'center', 'note', 'per-segment', 'highlight', 'theme', 'label', 'slots', 'stale'];
 const STATES = ['run', 'rest', 'done', 'need', 'fault'];
 
 const DIAL_CSS = `
 :host{display:block;container-type:inline-size}
 .dial{display:block;color:inherit;text-decoration:none;border-radius:var(--_r-md);padding:var(--_sp-2) 0;outline:none}
 a.dial:hover{background:var(--_hover-bg)}
-a.dial:focus-visible,svg a:focus-visible .hit{outline:var(--_sz-focus-ring) solid var(--_focus);outline-offset:var(--_sz-focus-offset)}
+a.dial:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
+.fr{fill:none;stroke:transparent;stroke-width:var(--_sz-focus-ring);stroke-dasharray:4 3}
+svg a:focus-visible{outline:none}svg a:focus-visible .fr{stroke:var(--_focus)}
 svg{width:100%;height:auto;display:block;overflow:visible}
 text{font-family:var(--_ff);font-variant-numeric:tabular-nums}
 .name{text-align:center;font-weight:var(--_fw-medium);margin-top:var(--_sp-2);line-height:1.3;font-size:var(--_fs-md)}
 :host([data-phone]) .name{font-size:var(--_fs-sm)}
 .name a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;min-height:var(--_sz-target-dense);padding:0 var(--_sp-2);border-radius:var(--_r-sm)}
 .name a:hover{background:var(--_hover-bg)}.name a:focus-visible{outline:var(--_sz-focus-ring) solid var(--_focus)}
-.name b{font-weight:var(--_fw-strong)}
+.name b{font-weight:var(--_fw-strong);white-space:nowrap}
+/* a narrow dial puts "1 for you" on its own line instead of breaking it (S5 lens 5) */
+@container (max-width: 170px){.name .sep{display:none}.name b{display:block}}.name b.st{font-weight:var(--_fw-regular)}
 .note{text-align:center;font-size:var(--_fs-xs);color:var(--_muted);margin-top:var(--_sp-1);line-height:1.35}
 .halo{opacity:var(--_halo-o);filter:blur(var(--_halo-blur));animation:breath var(--_d-breath) var(--_e-breath) infinite}
 @keyframes breath{0%,100%{opacity:var(--_halo-o)}50%{opacity:calc(var(--_halo-o) * var(--_rule-breath-min-brightness))}}
 @media (prefers-reduced-motion:reduce){.halo{animation:none}}
-.seg{transition:stroke-width var(--_d-change) var(--_e-out)}
 .hl{filter:drop-shadow(0 0 2px var(--_text))}
 svg a{cursor:pointer}
 .hit{fill:none;stroke:transparent;pointer-events:stroke}
@@ -133,8 +139,12 @@ class FdDial extends HTMLElement {
     }
     this.render();
   }
-  disconnectedCallback() { this._mqs?.forEach((m) => m.removeEventListener?.('change', this._onMq)); }
-  attributeChangedCallback() { if (this.isConnected) this.render(); }
+  disconnectedCallback() { this._mqs?.forEach((m) => m.removeEventListener?.('change', this._onMq)); this._ro?.disconnect(); this._ro = null; }
+  // text marked data-px is set in user units so it renders at that many CSS px at the dial's real size
+  _fit() { const svg = this.shadowRoot.querySelector('svg'); const w = svg?.getBoundingClientRect().width; if (!w) return; const k = this._W / w; svg.querySelectorAll('text[data-px]').forEach((t) => { t.style.fontSize = (+t.dataset.px * k).toFixed(2) + 'px'; t.style.display = t.dataset.word && w < 150 ? 'none' : ''; }); }
+  attributeChangedCallback(n) { if (!this.isConnected) return; if (n === 'highlight') this._hl(); else this.render(); }
+  // highlight only toggles a class: a full render would restart the breath and drop keyboard focus (S5 lenses 1, 9)
+  _hl() { const id = this.getAttribute('highlight'); this.shadowRoot.querySelectorAll('path.seg').forEach((p) => p.classList.toggle('hl', id != null && p.dataset.id === id)); }
 
   get fronts() { return fdJSON(this.getAttribute('fronts'), this._fronts || []); }
   set fronts(v) { if (typeof v === 'string') this.setAttribute('fronts', v); else { this._fronts = v || []; this.removeAttribute('fronts'); this.render(); } }
@@ -161,33 +171,40 @@ class FdDial extends HTMLElement {
     const hl = this.getAttribute('highlight');
     const B = FD_T.base;
     const R = parseFloat(phone ? B['sz-dial-phone'] : B['sz-dial-desktop']);
-    const swL = R * +B['st-segment-lit'], swR = R * +B['st-segment-rest'], swN = R * +B['st-segment-need'], gapPx = parseFloat(B['st-segment-gap']);
+    const swL = R * +B['st-segment-lit'], swR = R * +B['st-segment-rest'], swN = R * +B['st-segment-need'], swD = R * +B['st-segment-done'], gapPx = parseFloat(B['st-segment-gap']);
+    const breathMs = parseFloat(B['d-breath']) || 4500;
+    const stale = this.getAttribute('stale');   // set by a stale fd-panel: no light, "for you" said with its time (lens 11)
     const a0 = Math.PI * 0.78, a1 = Math.PI * 2.22, W = R * 2 + 40, cx = W / 2, cy = R + 20;
     // a drawn segment is at least 2 × the lit stroke long, plus the gap solved from the widest stroke (caps never touch)
     const slot = 2 * swL + swN + gapPx, max = Math.max(1, Math.floor((R * (a1 - a0)) / slot));
     const { shown, hidden } = FdDial.fit(all, max);
-    const n = Math.max(shown.length, 1), seg = (a1 - a0) / n, gap = (swN + gapPx) / 2 / R;
+    // fixed places (L2, S5 lens 7): with slots="n" every front keeps its own angle while fronts are added at the end
+    const slots = Math.min(max, parseInt(this.getAttribute('slots') || '0', 10) || 0);
+    const n = Math.max(shown.length, slots, 1), seg = (a1 - a0) / n, gap = (swN + gapPx) / 2 / R;
     const P = (a, r) => [cx + r * Math.cos(a), cy + r * Math.sin(a)];
     const f1 = (v) => v.toFixed(1);
     const arc = (s, e, r) => { const [x0, y0] = P(s, r), [x1, y1] = P(e, r); return `M${f1(x0)} ${f1(y0)}A${r} ${r} 0 0 1 ${f1(x1)} ${f1(y1)}`; };
     let g = '';
     // bezel: a major tick on every front boundary (the scale counts fronts, not a quantity: S4 lens 8), minor ticks between
     const nmin = phone ? 2 : 4;
-    for (let j = 0; j <= shown.length; j++) for (let q = 0; q < (j < shown.length ? nmin + 1 : 1); q++) {
+    for (let j = 0; j <= n; j++) for (let q = 0; q < (j < n ? nmin + 1 : 1); q++) {
       const maj = q === 0, a = a0 + seg * (j + q / (nmin + 1)), [x1, y1] = P(a, R * 1.22), [x2, y2] = P(a, R * (maj ? 1.36 : 1.29));
       g += `<line x1="${f1(x1)}" y1="${f1(y1)}" x2="${f1(x2)}" y2="${f1(y2)}" style="stroke:var(${maj ? '--_muted' : '--_text-dim'});stroke-width:var(--_st-tick)"/>`;
     }
     g += `<circle cx="${cx}" cy="${cy}" r="${R * 0.76}" style="fill:var(--_surface);stroke:var(--_line-soft);stroke-width:var(--_st-hair)"/>`;
-    const label = (s) => ({ run: 'running', rest: 'idle', done: 'done today', need: 'needs you', fault: 'Friday fixing it' }[s]);
+    const label = (s) => ({ run: 'running', rest: 'idle', done: 'done today', need: stale != null ? `needed you at ${stale}` : 'needs you', fault: 'Friday fixing it' }[s]);
     shown.forEach((f, j) => {
       const d = arc(a0 + j * seg + gap, a0 + (j + 1) * seg - gap, R);
-      const col = { need: 'var(--_amb)', fault: 'var(--_fault)', run: `var(--_${k})`, rest: `var(--_${k}-dim)`, done: 'var(--_text-dim)' }[f.s];
-      const w = f.s === 'need' ? swN : f.s === 'run' ? swL : swR;
+      const col = { need: stale != null ? 'var(--_text-dim)' : 'var(--_amb)', fault: 'var(--_fault)', run: `var(--_${k})`, rest: `var(--_${k}-dim)`, done: 'var(--_text-dim)' }[f.s];
+      // done is a thread (thinner than idle): done vs idle never rests on colour alone (S5 lenses 2, 3, 8)
+      const w = f.s === 'need' ? (stale != null ? swR : swN) : f.s === 'run' ? swL : f.s === 'done' ? swD : swR;
       let p = '';
-      if (f.s === 'need') p += `<path class="halo" d="${d}" style="fill:none;stroke:var(--_glow);stroke-width:${f1(w * 2.4)}px;stroke-linecap:round"/>`;
+      // the light sits behind the segment and never past its slot (butt ends, 1.7 × the stroke: a lamp, not a smear; S5 lenses 2, 8, 10, 11);
+      // one shared clock: the phase comes from the page clock, so every breath on the page is in step and a re-render never restarts it (lens 9)
+      if (f.s === 'need' && stale == null) p += `<path class="halo" d="${d}" style="fill:none;stroke:var(--_glow);stroke-width:${f1(w * 1.7)}px;stroke-linecap:butt;animation-delay:-${Math.round((typeof performance !== 'undefined' ? performance.now() : 0) % breathMs)}ms"/>`;
       p += `<path class="seg${hl != null && hl === f.id ? ' hl' : ''}" data-id="${fdEsc(f.id)}" data-s="${f.s}" d="${d}" style="fill:none;stroke:${col};stroke-width:${f1(w)}px;stroke-linecap:${f.s === 'fault' ? 'butt' : 'round'}${f.s === 'fault' ? ';stroke-dasharray:3 3' : ''}">${perSeg ? '' : `<title>${fdEsc(f.t)} · ${label(f.s)}</title>`}</path>`;
       if (perSeg) {
-        p = `<a href="${fdEsc(f.href || href || '#')}" data-id="${fdEsc(f.id)}" aria-label="${fdEsc(f.t)}: ${label(f.s)}"><path class="hit" d="${d}" style="stroke-width:${f1(swN * 2)}px;stroke-linecap:round"/>${p}</a>`;
+        p = `<a href="${fdEsc(f.href || href || '#')}" data-id="${fdEsc(f.id)}" aria-label="${fdEsc(f.t)}: ${label(f.s)}"><path class="fr" d="${arc(a0 + j * seg + gap, a0 + (j + 1) * seg - gap, R * 1.17)}"/><path class="hit" d="${d}" style="stroke-width:${f1(Math.max(swN * 2, 24))}px;stroke-linecap:round"/>${p}</a>`;
       }
       g += p;
     });
@@ -196,14 +213,18 @@ class FdDial extends HTMLElement {
     const showWord = !phone;
     if (centre === 'count') {
       g += `<text x="${cx}" y="${f1(cy + fs * 0.32)}" text-anchor="middle" style="font-size:${fs}px;font-weight:var(--_fw-medium);fill:var(--_text)">${all.length}</text>`;
-      if (showWord) g += `<text x="${cx}" y="${f1(cy + fs * 0.32 + 18)}" text-anchor="middle" style="font-size:var(--_fs-xs);letter-spacing:.12em;fill:var(--_muted)">FRONTS</text>`;
+      if (showWord) g += `<text data-px="12" data-word="1" x="${cx}" y="${f1(cy + fs * 0.32 + 18)}" text-anchor="middle" style="letter-spacing:.12em;fill:var(--_muted)">FRONTS</text>`;
     } else if (needs) {
       // lens 11 variant: the centre says what is his, in words, never a big number (language.md: no headline count of his)
       const fz = phone ? 11 : 15;
       g += `<text x="${cx}" y="${f1(cy - (phone ? 1 : 2))}" text-anchor="middle" style="font-size:${fz + (phone ? 3 : 5)}px;font-weight:var(--_fw-strong);fill:var(--_text)">${needs}</text>`;
-      g += `<text x="${cx}" y="${f1(cy + fz)}" text-anchor="middle" style="font-size:${fz - (phone ? 1 : 3)}px;font-weight:var(--_fw-medium);fill:var(--_muted)">for you</text>`;
+      g += `<text data-px="12" x="${cx}" y="${f1(cy + fz)}" text-anchor="middle" style="font-weight:var(--_fw-medium);fill:var(--_muted)">for you</text>`;
+    } else {
+      // nothing for him: the centre says the quiet count in words, never an empty hole (S5 lenses 3, 8)
+      g += `<text data-px="12" x="${cx}" y="${f1(cy + 4)}" text-anchor="middle" style="fill:var(--_muted)">${all.length} fronts</text>`;
     }
-    if (hidden) g += `<text x="${cx}" y="${f1(cy + R * 1.08)}" text-anchor="middle" style="font-size:var(--_fs-xs);fill:var(--_muted)">+${hidden}</text>`;
+    if (hidden) { const hs = all.filter((x) => !shown.includes(x)); const mix = ['done', 'rest', 'run'].map((s) => [s, hs.filter((x) => x.s === s).length]).filter(([, c]) => c).map(([s, c]) => `${c} ${label(s)}`).join(', ');
+      g += `<text data-px="12" x="${cx}" y="${f1(cy + R * 1.08)}" text-anchor="middle" style="fill:var(--_muted)"><title>${hidden} more: ${mix}</title>+${hidden}</text>`; }
     const H = R * 2 + 38;
     const svg = `<svg viewBox="0 0 ${W} ${f1(H)}" ${perSeg ? 'role="group"' : 'aria-hidden="true"'}${perSeg ? ` aria-label="${fdEsc(name)} fronts"` : ''}>${g}</svg>`;
     const parts = [`${all.length} fronts`, `${count('run')} running`, `${count('rest')} idle`];
@@ -211,7 +232,8 @@ class FdDial extends HTMLElement {
     if (needs) parts.push(`${needs} for you`);
     if (count('fault')) parts.push(`${count('fault')} Friday is fixing`);
     const aria = this.getAttribute('label') || `${name}: ${parts.join(', ')}.${href ? ' Opens the company page' : ''}`;
-    const forYou = needs && centre === 'count' ? `${phone ? '<br>' : ''}<b>${phone ? '' : ' · '}${needs} for you</b>` : '';
+    const forYouTxt = `${needs} for you${stale != null ? ` at ${fdEsc(stale)}` : ''}`;
+    const forYou = needs && centre === 'count' ? (phone ? `<br><b${stale != null ? ' class="st"' : ''}>${forYouTxt}</b>` : `<span class="sep">&nbsp;·&nbsp;</span><b${stale != null ? ' class="st"' : ''}>${forYouTxt}</b>`) : '';
     const nameHtml = `<span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${forYou}`;
     const note = this.getAttribute('note');
     const noteHtml = note ? `<div class="note" part="note">${note.split('·').map((x) => fdEsc(x.trim())).join('<br>')}</div>` : '';
@@ -224,6 +246,8 @@ class FdDial extends HTMLElement {
       html = `<div class="dial" part="dial" role="img" aria-label="${fdEsc(aria)}">${svg}<div class="name" part="name" aria-hidden="true">${nameHtml}</div>${noteHtml}</div>`;
     }
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${DIAL_CSS}</style>${html}`;
+    this._W = W; this._fit();
+    if (!this._ro && typeof ResizeObserver === 'function') { this._ro = new ResizeObserver(() => this._fit()); this._ro.observe(this); }
     if (perSeg) {
       const emit = (id) => this.dispatchEvent(new CustomEvent('fd-front-hover', { detail: { id }, bubbles: true, composed: true }));
       this.shadowRoot.querySelectorAll('svg a').forEach((a) => {

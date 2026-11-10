@@ -75,6 +75,11 @@
    "$value": 0.16,
    "$description": "the segment that needs him, × dial radius"
   },
+  "segment-done": {
+   "$type": "number",
+   "$value": 0.05,
+   "$description": "a front done today: a thread, thinner than idle, so done vs idle never rests on colour alone (S5 lenses 2, 3, 8)"
+  },
   "segment-gap": {
    "$type": "dimension",
    "$value": {
