@@ -12,7 +12,7 @@
 const DATA = ['weekly', 'session', 'pace', 'reset-minutes', 'status'];
 const LOOK = ['monogram', 'monogram-position', 'size', 'sweep', 'ring-width', 'ring-gap',
   'theme', 'show-tick', 'show-dots', 'warn-at', 'label'];
-const COLORS = ['weekly-color', 'session-color', 'tick-color', 'tick-ahead-color', 'dot-color',
+const COLORS = ['weekly-color', 'session-color', 'tick-color', 'tick-ahead-color', 'dot-color', 'stale-color',
   'dot-empty-color', 'track-color', 'warn-color', 'critical-color', 'critical-track-color',
   'idle-color', 'monogram-color', 'monogram-muted-color', 'background'];
 
@@ -21,7 +21,7 @@ const COLORS = ['weekly-color', 'session-color', 'tick-color', 'tick-ahead-color
 const PALETTE = {
   dark: {
     'weekly-color': '#F4F4F2', 'session-color': '#F4F4F2', 'tick-color': '#8E8E89',
-    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#F4F4F2',
+    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#F4F4F2', 'stale-color': 'var(--_warn-color)',
     'dot-empty-color': 'rgba(244,244,242,0.22)', 'track-color': 'rgba(244,244,242,0.16)',
     'warn-color': '#F5A524', 'critical-color': '#FF6B5A', 'critical-track-color': 'rgba(255,107,90,0.38)',
     'idle-color': '#6CB4FF', 'monogram-color': '#F4F4F2', 'monogram-muted-color': '#8E8E89',
@@ -29,7 +29,7 @@ const PALETTE = {
   },
   light: {
     'weekly-color': '#26262B', 'session-color': '#26262B', 'tick-color': '#7A7A73',
-    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#26262B',
+    'tick-ahead-color': 'var(--_warn-color)', 'dot-color': '#26262B', 'stale-color': 'var(--_warn-color)',
     'dot-empty-color': 'rgba(38,38,43,0.22)', 'track-color': 'rgba(38,38,43,0.11)',
     'warn-color': '#C96A00', 'critical-color': '#D63A2B', 'critical-track-color': 'rgba(214,58,43,0.26)',
     'idle-color': '#2B7DE9', 'monogram-color': '#26262B', 'monogram-muted-color': '#7A7A73',
@@ -63,7 +63,7 @@ path, circle { fill: none; }
 .dot { fill: var(--_dot-color); }
 .dot.idle { fill: var(--_idle-color); stroke: none; }
 .badge { stroke: var(--_background); stroke-width: 2; }
-.badge.stale { fill: var(--_warn-color); }
+.badge.stale { fill: var(--_stale-color); }
 .badge.error { fill: var(--_critical-color); }
 .badge-mark { stroke: var(--_background); stroke-linecap: round; }
 .badge-dot { fill: var(--_background); }
@@ -195,9 +195,11 @@ class UsageGauge extends HTMLElement {
 
     let badge = '';
     if (stale || err) {
+      // stale = old data, not an error: a clock (a time-based mark for time-based data); error keeps the "!"
       badge = `<circle class="badge ${err ? 'error' : 'stale'}" cx="40" cy="8" r="6"/>`
-        + `<path class="badge-mark" d="M 40 5.2 L 40 8.6" stroke-width="1.7"/>`
-        + `<circle class="badge-dot" cx="40" cy="11" r="0.95"/>`;
+        + (err
+          ? `<path class="badge-mark" d="M 40 5.2 L 40 8.6" stroke-width="1.7"/><circle class="badge-dot" cx="40" cy="11" r="0.95"/>`
+          : `<path class="badge-mark" d="M 40 5 L 40 8.2 L 42.3 9.4" stroke-width="1.4" fill="none" stroke-linejoin="round"/>`);
     }
 
     const monoCls = `mono${err ? ' muted' : ''}${stale ? ' dim' : ''}`;

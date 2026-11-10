@@ -26,7 +26,7 @@ Pass percentages **used**, the way usage numbers usually come in. The gauge draw
 | `session` | 0–100 | Current 5-hour window used. Inner ring. |
 | `pace` | 0–100 | How much of the week has passed, as a %. Draws the pace tick; leave it out for no tick. |
 | `reset-minutes` | 0–300 | Minutes until the 5h window resets. Lights the dots, one per hour. `0` = no window running (idle, blue). |
-| `status` | `ok` · `stale` · `error` | `stale` = last refresh failed, older values dimmed with an amber badge. `error` = no data, dashed rings and a red badge. |
+| `status` | `ok` · `stale` · `error` | `stale` = last refresh failed, older values dimmed with a clock badge (`stale-color`, amber by default). `error` = no data, dashed rings and a red badge. |
 
 ## Look
 
@@ -57,7 +57,8 @@ Every colour has a default for dark and for light (the current design). Override
 | `dot-color` | `--ug-dot-color` | Lit hour dots |
 | `dot-empty-color` | `--ug-dot-empty-color` | Spent hour dots |
 | `track-color` | `--ug-track-color` | Empty part of both rings |
-| `warn-color` | `--ug-warn-color` | Low (≤ `warn-at` left), stale badge |
+| `warn-color` | `--ug-warn-color` | Low (≤ `warn-at` left) |
+| `stale-color` | `--ug-stale-color` | Stale badge (a clock). Defaults to `warn-color`. |
 | `critical-color` | `--ug-critical-color` | Empty ring, error badge |
 | `critical-track-color` | `--ug-critical-track-color` | Track of an empty ring |
 | `idle-color` | `--ug-idle-color` | Inner ring and dots when no window is running |
