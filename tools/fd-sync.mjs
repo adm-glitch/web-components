@@ -72,12 +72,13 @@ fs.writeFileSync(path.join(ROOT, 'fd-tokens/fd-tokens.css'), `@import url('https
 /* usage-gauge in the Friday language (S5 component 7e): its own colour hooks fed from the tokens. Amber is the one attention
    colour, so only 'near the limit, slow down' is amber (he can still act); at the limit there is nothing to do until the reset, so
    it is drawn in the text colour on a spent grey track: plain and readable, not an alarm and not faint (S5 r2 lenses 2, 3, 4,
-   6, 8, 11); never red; idle is never a company colour (L4). The gauge's own stale badge is still its "!": a later patch. */
+   6, 8, 11); never red; idle is never a company colour (L4). Its stale badge is a clock in the muted colour: old data is not his
+   to act on, so never amber (S6 hand-off follow-up, slice 7b). */
 usage-gauge {
   --ug-weekly-color: var(--fd-text); --ug-session-color: var(--fd-text); --ug-tick-color: var(--fd-muted);
   --ug-tick-ahead-color: var(--fd-amb); --ug-dot-color: var(--fd-text); --ug-dot-empty-color: var(--fd-text-dim);
   --ug-track-color: var(--fd-line); --ug-warn-color: var(--fd-amb); --ug-critical-color: var(--fd-text);
-  --ug-critical-track-color: var(--fd-text-dim); --ug-idle-color: var(--fd-muted);
+  --ug-critical-track-color: var(--fd-text-dim); --ug-idle-color: var(--fd-muted); --ug-stale-color: var(--fd-muted);
   --ug-monogram-color: var(--fd-text); --ug-monogram-muted-color: var(--fd-muted); --ug-background: var(--fd-surface);
   font-family: var(--fd-ff);
 }
