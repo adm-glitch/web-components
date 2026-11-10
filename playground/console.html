@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Friday · Console screens</title>
+<!-- standalone:note -->
+<!-- Friday DS S6 · Concept 5: the Console screens composed from the S5 components only (state/ds/s6/console-breakdown.md).
+     Hash {"th":"light"} opens paper light. Sample data; one data list per screen so glance = read. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../fd-tokens/fd-tokens.css">
+<link rel="manifest" href="../fd-app/manifest.webmanifest"><link rel="icon" href="../fd-app/icon.svg">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fd-ff);font-size:var(--fd-fs-base);line-height:var(--fd-lh-text);color:var(--fd-text);background:var(--fd-field-deep) linear-gradient(180deg,var(--fd-field),var(--fd-field-deep)) no-repeat;min-height:100vh;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--fd-grid-max);margin:0 auto;padding:var(--fd-sp-6) var(--fd-grid-gutter) var(--fd-sp-9)}
+@media(min-width:900px){.wrap{padding:var(--fd-sp-7) var(--fd-sp-7) var(--fd-sp-9)}}
+.g{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--fd-grid-gap)}
+@media(min-width:900px){.g{grid-template-columns:repeat(12,1fr);gap:var(--fd-sp-6)}}
+.s12{grid-column:1/-1}
+@media(min-width:900px){.s7{grid-column:span 7}.s5{grid-column:span 5}.s4{grid-column:span 4}.s8{grid-column:span 8}.s3{grid-column:span 3}.s6{grid-column:span 6}}
+@media(max-width:899px){.s7,.s5,.s4,.s8,.s3,.s6{grid-column:1/-1}}
+.stack>*+*{margin-top:var(--fd-sp-6)}
+.lbl{font-size:var(--fd-fs-xs);letter-spacing:var(--fd-tr-label);text-transform:uppercase;color:var(--fd-muted);font-weight:var(--fd-fw-medium);margin-bottom:var(--fd-sp-2)}
+h1{font-size:var(--fd-fs-2xl);font-weight:var(--fd-fw-strong);line-height:var(--fd-lh-tight)}
+h2{font-size:var(--fd-fs-xl);font-weight:var(--fd-fw-strong);line-height:var(--fd-lh-tight);margin-bottom:var(--fd-sp-2)}
+section{margin-top:var(--fd-sp-9)}
+.intro{color:var(--fd-muted);font-size:var(--fd-fs-md);max-width:66ch;margin-bottom:var(--fd-sp-6)}
+.meta{font-size:var(--fd-fs-xs);color:var(--fd-muted);margin-top:var(--fd-sp-2)}
+.gap{display:inline-block;font-size:var(--fd-fs-xs);color:var(--fd-muted);border:1px dashed var(--fd-muted);border-radius:var(--fd-r-sm);padding:0 var(--fd-sp-2);margin-left:var(--fd-sp-2);vertical-align:2px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:var(--fd-sp-4);flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--fd-line);border-radius:var(--fd-r-md);overflow:hidden}
+.seg button{font:var(--fd-fw-medium) var(--fd-fs-sm) var(--fd-ff);color:var(--fd-muted);background:transparent;border:0;min-height:var(--fd-sz-target);padding:0 var(--fd-sp-5);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--fd-raised);color:var(--fd-text)}
+.seg button:focus-visible{outline:2px dashed var(--fd-text);outline-offset:-3px}
+.tabs{display:flex;gap:var(--fd-sp-2);flex-wrap:wrap;margin-top:var(--fd-sp-5)}
+.tabs a{color:var(--fd-muted);text-decoration:none;font-size:var(--fd-fs-sm);min-height:var(--fd-sz-target);display:inline-flex;align-items:center;padding:0 var(--fd-sp-4);border-radius:var(--fd-r-md);border:1px solid transparent}
+.tabs a:hover{color:var(--fd-text);border-color:var(--fd-line)}
+.fronthead{display:flex;align-items:center;gap:var(--fd-sp-5);flex-wrap:wrap}
+.fronthead b{font-size:var(--fd-fs-xl);font-weight:var(--fd-fw-strong)}
+.fronthead .st{font-size:var(--fd-fs-sm);color:var(--fd-muted)}
+.board{display:grid;grid-template-columns:1fr;gap:var(--fd-sp-5)}
+@media(min-width:900px){.board{grid-template-columns:repeat(4,1fr)}}
+.dot{display:inline-block;width:8px;height:8px;border-radius:999px;margin-right:var(--fd-sp-2);vertical-align:1px}
+</style></head><body>
+<div class="wrap">
+ <header class="top">
+  <div><div class="lbl">Friday · design system v0.3 · S6 · the Console in the components</div><h1>The Console, screen by screen</h1></div>
+  <div class="seg" role="group" aria-label="Theme"><button type="button" data-th="dark">Dark</button><button type="button" data-th="light">Paper</button></div>
+ </header>
+ <p class="mu" style="margin-top:var(--fd-sp-3);max-width:66ch;font-size:var(--fd-fs-md);color:var(--fd-muted)">Every screen here is built only from the components you saw. A dashed tag marks a piece that is still missing; the plan names it. The data are examples.</p>
+ <nav class="tabs" aria-label="Screens"><a href="standalone.html#%7B%7D">Home (the panel)</a><a href="#front">A front's page</a><a href="#decide">Decide</a><a href="#records">Records</a><a href="#health">Friday's services</a><a href="#numbers">Numbers</a><a href="#board">Week board</a></nav>
+
+ <section id="front" aria-labelledby="h-front"><h2 id="h-front">A front's page</h2><p class="intro">Opened from a dial segment or a row. Only this front: its timeline (your words, steps, hand-offs, what it produced), the box to steer it, and what it needs from you.</p>
+  <div class="g">
+   <div class="s12"><fd-panel pad="none" heading-level="3" label="Marquatica · front"><div class="fronthead" style="padding:var(--fd-sp-5)">
+    <fd-dial company="mq" size="phone" style="width:120px" id="front-dial"></fd-dial>
+    <div><b>Lead research</b><div class="st"><span class="dot" style="background:var(--fd-mq)"></span>Marquatica · running · on the VPS · 14 of 30 leads · next: score the last 16</div></div>
+   </div></fd-panel></div>
+   <div class="s7 stack">
+    <fd-panel heading-level="3" label="Timeline"><fd-rail id="front-rail" max="12" label="Lead research timeline"></fd-rail></fd-panel>
+    <fd-panel heading-level="3" label="Produced"><fd-ledger id="front-made" label="Produced by this front"></fd-ledger></fd-panel>
+   </div>
+   <div class="s5 stack">
+    <fd-panel heading-level="3" label="Needs you here"><fd-decision company="mq" question="Score Belém leads above São Paulo this week?" why="Belém answered 3× more last month. Friday would rank them first until Friday." minutes="1" options='["No","Yes"]' suggest="Yes"><a slot="doc" href="#front">Last month by city · 1 page</a></fd-decision></fd-panel>
+    <fd-panel heading-level="3" label="Steer this front"><fd-steer company="mq" front="Lead research"></fd-steer></fd-panel>
+   </div>
+  </div></section>
+
+ <section id="decide" aria-labelledby="h-decide"><h2 id="h-decide">Decide</h2><p class="intro">Today's "Decide" tab: at most five things, each with the first action, what to read and equal answers. When it is empty, it says so as a reward.</p>
+  <div class="g">
+   <div class="s7 stack">
+    <fd-panel heading-level="3" label="Needs you · 2"><div class="stack">
+     <fd-decision company="mq" question="Which CRM for the AI Systems pilot?" why="It sets the next three months of work for the pilot client." minutes="3" options='["GoHighLevel","HubSpot"]' suggest="GoHighLevel" note-box><a slot="doc" href="#decide">Comparison · 2 pages</a><a slot="doc" href="#decide">Field map for the lead relay · 1 page</a></fd-decision>
+    </div></fd-panel>
+    <fd-panel heading-level="3" label="Look and react" pad="row"><fd-ask-row company="ps" question="The panel in its components: what do you see?" note="1 tap · 4 images" options='["Open"]' href="#decide"></fd-ask-row></fd-panel>
+    <p class="meta">Image cards (the "look" cards you answer now) open full size in the Console; here they are a row with one door. <span class="gap">gap G6: image look card</span></p>
+   </div>
+   <div class="s5 stack">
+    <fd-panel heading-level="3" label="After the last answer"><fd-state kind="empty" note="Done today has the rest."></fd-state></fd-panel>
+    <fd-panel heading-level="3" label="Done today" pad="row"><fd-ledger reward id="decide-done"></fd-ledger></fd-panel>
+   </div>
+  </div></section>
+
+ <section id="records" aria-labelledby="h-records"><h2 id="h-records">Records</h2><p class="intro">What "mostra asks / recibos / incidentes" opens: one owner at a time, newest first, a table on the computer and cards on the phone.</p>
+  <fd-panel heading-level="3" label="Asks"><div style="display:flex;gap:var(--fd-sp-4);align-items:center;flex-wrap:wrap;margin-bottom:var(--fd-sp-4)">
+   <div class="seg" role="group" aria-label="Owner" id="owner-seg"><button type="button" aria-pressed="true">Personal</button><button type="button">Marquatica</button><button type="button">Atípica</button><button type="button">All</button></div>
+   <span class="gap">gap G3: owner filter as a component</span></div>
+   <fd-table id="rec-table"></fd-table></fd-panel></section>
+
+ <section id="health" aria-labelledby="h-health"><h2 id="h-health">Friday's services</h2><p class="intro">Friday's own jobs. Not yours: when one stops, it shows as "Friday fixing it", never in amber.</p>
+  <div class="g">
+   <div class="s5 stack">
+    <fd-panel heading-level="3" label="Friday fixing it" pad="row"><fd-state kind="fixing" company="ps" text="Backup stopped at 3 am" note="not yours · Friday is on it since 03:10"></fd-state></fd-panel>
+    <fd-panel heading-level="3" label="Morning brief" stale="09:58"><fd-state kind="stale" since="09:58"></fd-state></fd-panel>
+   </div>
+   <div class="s7"><fd-panel heading-level="3" label="All services"><fd-table id="svc-table"></fd-table>
+    <p class="meta">The state column is words today. <span class="gap">gap G4: a state mark for table cells</span></p></fd-panel></div>
+  </div></section>
+
+ <section id="numbers" aria-labelledby="h-numbers"><h2 id="h-numbers">Numbers</h2><p class="intro">The R-numbers, how the system is doing (never a count of anything you missed). Today as a table; each number with its target and the week before.</p>
+  <div class="g">
+   <div class="s8"><fd-panel heading-level="3" label="This week"><fd-table id="r-table"></fd-table>
+    <p class="meta"><span class="gap">gap G5: a number tile (value, target, last week) in the dial language</span></p></fd-panel></div>
+   <div class="s4"><fd-panel heading-level="3" label="Claude usage"><div style="display:flex;gap:var(--fd-sp-5);align-items:center"><usage-gauge weekly="41" session="30" pace="57" reset-minutes="110" monogram="M" size="72"></usage-gauge><span style="font-size:var(--fd-fs-sm);color:var(--fd-muted)">59 % of the week left · window resets in 2 h</span></div></fd-panel></div>
+  </div></section>
+
+ <section id="board" aria-labelledby="h-board"><h2 id="h-board">Week board</h2><p class="intro">The second tab for the weekly review: every front by state, in dial order inside each column. Not the home screen (everything at one weight is what the home avoids).</p>
+  <div class="board" id="board-cols"></div>
+  <p class="meta">Columns are a layout of panels and rows. <span class="gap">gap G7: drag between columns (not planned: moves are his words to Friday)</span></p></section>
+
+ <p class="meta" style="margin-top:var(--fd-sp-9);border-top:1px solid var(--fd-line);padding-top:var(--fd-sp-5)">Friday DS v0.3 · S6 Concept 5 · built only from adm-glitch/web-components fd-* and usage-gauge.</p>
+</div>
+<script type="module" src="../fd-panel/fd-panel.js"></script>
+<script type="module" src="../fd-dial/fd-dial.js"></script>
+<script type="module" src="../fd-ask-row/fd-ask-row.js"></script>
+<script type="module" src="../fd-run-row/fd-run-row.js"></script>
+<script type="module" src="../fd-ledger/fd-ledger.js"></script>
+<script type="module" src="../fd-rail/fd-rail.js"></script>
+<script type="module" src="../fd-state/fd-state.js"></script>
+<script type="module" src="../fd-button/fd-button.js"></script>
+<script type="module" src="../fd-steer/fd-steer.js"></script>
+<script type="module" src="../fd-decision/fd-decision.js"></script>
+<script type="module" src="../fd-table/fd-table.js"></script>
+<script type="module" src="../fd-spotlight/fd-spotlight.js"></script>
+<script type="module" src="../usage-gauge/usage-gauge.js"></script>
+<script type="module">
+const P = Object.assign({ th: 'dark' }, JSON.parse(decodeURIComponent((location.hash.slice(1).startsWith('%7B') || location.hash.slice(1).startsWith('{')) ? location.hash.slice(1) : '%7B%7D')));
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+const setTheme = (t) => { document.documentElement.dataset.theme = t; $$('.seg[aria-label=Theme] button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.th === t)); };
+$$('.seg[aria-label=Theme] button').forEach((b) => (b.onclick = () => setTheme(b.dataset.th)));
+setTheme(P.th === 'light' ? 'light' : 'dark');
+$$('#owner-seg button').forEach((b) => (b.onclick = () => $$('#owner-seg button').forEach((x) => x.setAttribute('aria-pressed', x === b))));
+// the same Marquatica fronts as the home panel (one data list)
+$('#front-dial').fronts = [{ id: 'm1', t: 'Monthly report', s: 'run' }, { id: 'm2', t: 'CRM check', s: 'done' }, { id: 'm3', t: 'Client rotation', s: 'need' }, { id: 'm4', t: 'Lead research', s: 'run' }, { id: 'm5', t: 'New proposal', s: 'rest' }];
+$('#front-dial').setAttribute('highlight', 'm4');
+$('#front-rail').items = [
+  { at: 'Mon 09:02', text: '“find 30 leads in Belém and São Paulo, AI Systems fit”', you: true },
+  { at: 'Mon 09:05', text: 'plan written', kind: 'step', href: '#front' },
+  { at: 'Mon 14:40', text: 'laptop → VPS (the scrape runs at night)', kind: 'hand-off' },
+  { at: 'Tue 07:10', text: '14 leads found, 6 scored', kind: 'step' },
+  { at: 'Tue 07:12', text: 'leads-2026-11-10.csv', kind: 'artifact', href: '#front' },
+  { at: 'Tue 09:58', text: 'asked you: Belém first?', kind: 'step' }];
+$('#front-made').items = [{ company: 'mq', text: 'leads-2026-11-10.csv', meta: '14 rows', href: '#front' }, { company: 'mq', text: 'Scoring rules', meta: '1 page', href: '#front' }];
+$('#decide-done').items = [{ company: 'mq', text: 'CRM check', meta: '12 clients' }, { company: 'at', text: 'Management report', meta: 'page' }, { company: 'ps', text: 'Receipts', meta: '3 photos' }];
+const rt = $('#rec-table');
+rt.columns = [{ key: 'id', label: 'Ask' }, { key: 'state', label: 'State' }, { key: 'proof', label: 'Proof' }, { key: 'when', label: 'Since' }];
+rt.rows = [{ id: 'friday-ds-5', company: 'ps', state: 'running', proof: 'PR #1 · tests 45/45', when: 'today 01:00', href: '#records' }, { id: 'receipts-nov', company: 'ps', state: 'done', proof: '3 photos read', when: 'today 09:12', href: '#records' }, { id: 'backup-nightly', company: 'ps', state: 'Friday fixing it', proof: 'timer: friday-backup', when: 'today 03:10', href: '#records' }];
+const st = $('#svc-table');
+st.columns = [{ key: 'name', label: 'Service' }, { key: 'state', label: 'State' }, { key: 'last', label: 'Last good run' }, { key: 'watch', label: 'Watched by' }];
+st.rows = [{ name: 'Backup', company: 'ps', state: 'Friday fixing it', last: 'yesterday 03:00', watch: 'self-heal' }, { name: 'Receipts', company: 'ps', state: 'running', last: 'today 09:12', watch: 'self-heal' }, { name: 'Morning brief', company: 'ps', state: 'running', last: 'today 06:30', watch: 'timer + receipt' }, { name: 'Console sweep', company: 'ps', state: 'running', last: 'today 10:00', watch: 'service' }];
+const r = $('#r-table');
+r.columns = [{ key: 'r', label: 'Number' }, { key: 'what', label: 'What it measures' }, { key: 'v', label: 'This week', num: true }, { key: 't', label: 'Target', num: true }, { key: 'p', label: 'Last week', num: true }];
+r.rows = [{ r: 'R3', what: 'decisions on one screen', v: '2', t: '≤ 5', p: '4' }, { r: 'R9', what: 'answers in one tap', v: '86 %', t: '≥ 80 %', p: '71 %' }, { r: 'R10', what: 'jobs reporting on time', v: '97 %', t: '≥ 95 %', p: '93 %' }, { r: 'R11', what: 'pushes outside 06:30–20:00', v: '0', t: '0', p: '0' }];
+// week board: every front by state, dial order inside each column
+const FR = { mq: [['Monthly report', 'run'], ['CRM check', 'done'], ['Client rotation', 'need'], ['Lead research', 'run'], ['New proposal', 'rest']], at: [['November plan', 'rest'], ['Management report', 'done'], ['New contract', 'rest'], ['Post approvals', 'run']], ps: [['Design System', 'need'], ['Receipts', 'done'], ['Backup', 'fault'], ['Brain map', 'run'], ['Lab tests', 'rest'], ['Training', 'rest']] };
+const COLS = [['need', 'Needs you'], ['run', 'Running'], ['rest', 'Idle'], ['done', 'Done this week']];
+$('#board-cols').innerHTML = COLS.map(([s, n]) => `<fd-panel pad="row" heading-level="3" label="${n}">${['mq', 'at', 'ps'].flatMap((k) => FR[k].filter((f) => f[1] === s || (s === 'rest' && f[1] === 'fault')).map(([t, x]) => `<fd-run-row company="${k}" text="${t}" status="${x === 'fault' ? 'Friday fixing it' : ''}" href="#board"${s !== 'run' ? ' paused' : ''}></fd-run-row>`)).join('') || '<fd-state kind="empty" text="Nothing here."></fd-state>'}</fd-panel>`).join('');
+await customElements.whenDefined('fd-dial');
+document.fonts.ready.then(() => { document.body.dataset.ready = '1'; document.body.dataset.face = document.fonts.check('16px Figtree') ? 'figtree' : 'missing'; });
+</script>
+</body></html>

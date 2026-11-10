@@ -18,6 +18,12 @@ This repo holds dependency-free Web Components, served to projects through jsDel
 - Never put the literal text `</script>` in a component file: `example.html` inlines the file inside a `<script>` tag, and that text would end it early.
 - `example.html` inlines a copy of the component so it works from disk. After changing a component, regenerate its example's inlined copy so the two stay identical.
 
+## The fd-* family (Friday design system)
+
+- Same rules as above, plus: the code shared by every `fd-*` component (tokens, base styles, icons) lives in `tools/fd-shared.js` and is pasted between the `fd-shared` markers of each component by `node tools/fd-sync.mjs`. Never edit inside the markers; edit `tools/fd-shared.js` or the tokens and re-run the sync (it also refreshes each `example.html` and `playground/standalone.html`).
+- Tokens (`fd-tokens/tokens/*.json`) are copied from Friday's design system with `--from`; they are not edited here.
+- Before a release: `node tools/fd-test.mjs` (browser tests, Playwright via `PLAYWRIGHT_CORE`) must pass.
+
 ## Using a component in a project
 
 - Load it from `https://cdn.jsdelivr.net/gh/adm-glitch/web-components@<tag>/<name>/<name>.js`, pinned to a tag, or copy the `.js` file in.

@@ -8,6 +8,28 @@ Small, dependency-free Web Components. Each folder is one component: a single `.
 |---|---|
 | [`usage-gauge`](usage-gauge/) | Claude account usage glyph: weekly limit, 5-hour window, hours to reset and pace, in one gauge. |
 
+### Friday design system (`fd-*`, v0.3)
+
+One family on shared tokens ([`fd-tokens`](fd-tokens/)). See them together in [`playground/standalone.html`](playground/standalone.html) (opens from disk).
+
+| Component | What it is |
+|---|---|
+| [`fd-panel`](fd-panel/) | The one card component of the panel; `stale` turns everything inside grey with the time in words. |
+| [`fd-dial`](fd-dial/) | Company dial: one segment per front (working, idle, done, needs you, Friday fixing it). |
+| [`fd-ask-row`](fd-ask-row/) | A "needs you" row with equal answers, Friday's suggestion as an outline, Undo. |
+| [`fd-run-row`](fd-run-row/) | An "in progress" row; a meter only with a real count. |
+| [`fd-ledger`](fd-ledger/) | "Done today", quiet or as the reward. |
+| [`fd-rail`](fd-rail/) | "Just now", with his own answers as "You: …". |
+| [`fd-state`](fd-state/) | Empty, loading, stale, fixing. |
+| [`fd-button`](fd-button/) | Plain, suggest, primary (amber), quiet; every state from tokens. |
+| [`fd-steer`](fd-steer/) | The steer box on a front's page: he says what to change; Ctrl + Enter sends. |
+| [`fd-decision`](fd-decision/) | A decision card with doc slots, equal options, Friday's suggestion as an outline, a note. |
+| [`fd-table`](fd-table/) | A table that becomes cards on a narrow screen. |
+| [`fd-spotlight`](fd-spotlight/) | Points at one thing: ring with a gap, caption, one entrance, ends by itself. |
+| [`fd-app`](fd-app/) | App icon, PWA manifest and start screen from the dial mark. |
+
+`usage-gauge` takes the Friday colours when the page loads `fd-tokens/fd-tokens.css` (its `--ug-*` hooks; amber for warn and critical, never red).
+
 ## Using a component
 
 **From the CDN** (recommended): pin a release tag so updates never change a project by surprise.
