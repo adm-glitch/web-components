@@ -92,9 +92,10 @@ const RAIL_CSS = `
 :host{display:block}
 ol{list-style:none;margin:0;padding:0;font-size:var(--_fs-sm);color:var(--_muted);display:flex;flex-direction:column;gap:var(--_sp-2)}
 li{display:flex;gap:var(--_sp-3);line-height:1.35}
-time{color:var(--_text);width:44px;flex:none}
+time{color:var(--_text);min-width:44px;white-space:nowrap;flex:none}
 li.you{color:var(--_text)}
 li.you b{font-weight:var(--_fw-strong)}
+li a{color:var(--_text);text-underline-offset:3px;text-decoration-color:var(--_muted)}li small{font-size:var(--_fs-xs)}
 `;
 
 class FdRail extends HTMLElement {
@@ -108,7 +109,8 @@ class FdRail extends HTMLElement {
     const max = parseInt(this.getAttribute('max') || '6', 10);
     const it = (this.items || []).slice(-max);
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${RAIL_CSS}</style><ol part="list" aria-label="${fdEsc(this.getAttribute('label') || 'Just now')}">`
-      + it.map((x) => `<li${x.you ? ' class="you"' : ''}><time>${fdEsc(x.at)}</time><span>${x.you ? '<b>You:</b> ' : ''}${fdEsc(x.text)}</span></li>`).join('')
+      // S6: an item may carry href (an artifact or a step to open) and kind (step · handoff · artifact · you); the front page timeline uses it
+      + it.map((x) => `<li${x.you ? ' class="you"' : ''}><time>${fdEsc(x.at)}</time><span>${x.you ? '<b>You:</b> ' : ''}${x.href ? `<a href="${fdEsc(x.href)}">${fdEsc(x.text)}</a>` : fdEsc(x.text)}${x.kind && x.kind !== 'you' ? ` <small>· ${fdEsc(x.kind)}</small>` : ''}</span></li>`).join('')
       + '</ol>';
   }
 }

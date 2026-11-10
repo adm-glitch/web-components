@@ -12,8 +12,9 @@ fs.mkdirSync(OUT, { recursive: true });
 const trough = process.argv.includes('--trough');   // the breath at its faintest (t = half the breath): S5 lens 9
 const motion = process.argv.includes('--motion') || trough;
 const only = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
-const SECS = ['home', 'dial', 'ask', 'run', 'done', 'states', 'buttons', 'steer', 'decision', 'table', 'gauge', 'spotlight', 'app', 'open'];
-const url = 'file://' + path.join(ROOT, 'playground/standalone.html');
+const PAGE = process.argv.includes('--page') ? process.argv[process.argv.indexOf('--page') + 1] : 'index';   // console = S6 screens
+const SECS = PAGE === 'console' ? ['front', 'decide', 'records', 'health', 'numbers', 'board'] : ['home', 'dial', 'ask', 'run', 'done', 'states', 'buttons', 'steer', 'decision', 'table', 'gauge', 'spotlight', 'app', 'open'];
+const url = 'file://' + path.join(ROOT, PAGE === 'index' ? 'playground/standalone.html' : `playground/${PAGE}-standalone.html`);
 const b = await chromium.launch();
 const shot = async (th, dev) => {
   const [w, h, dpr] = dev === 'phone' ? [390, 844, 2] : [1440, 900, 1];
@@ -29,11 +30,11 @@ const shot = async (th, dev) => {
   for (const s of SECS) {
     if (only && !only.includes(s)) continue;
     await p.evaluate(() => scrollTo(0, 0)); const el = await p.$('#' + s); const bb = await el.boundingBox(), m = 24;
-    const f = path.join(OUT, `s5-${s}-${t}-${dev}${tag}.png`);
+    const f = path.join(OUT, `${PAGE === 'index' ? 's5' : 's6'}-${s}-${t}-${dev}${tag}.png`);
     await p.screenshot({ path: f, fullPage: true, clip: { x: Math.max(0, bb.x - m), y: Math.max(0, bb.y - m), width: Math.min(w, bb.width + 2 * m), height: bb.height + 2 * m } });
     console.log(f);
   }
-  if (!only) { const f = path.join(OUT, `s5-page-${t}-${dev}${tag}.png`); await p.screenshot({ path: f, fullPage: true }); console.log(f); }
+  if (!only) { const f = path.join(OUT, `${PAGE === 'index' ? 's5' : 's6'}-page-${t}-${dev}${tag}.png`); await p.screenshot({ path: f, fullPage: true }); console.log(f); }
   if (errs.length) { console.error('page errors:', errs.join(' | ')); process.exitCode = 1; }
   await p.close();
 };

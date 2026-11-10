@@ -1078,7 +1078,8 @@ function fdProps(Cls, attrs, json = []) {
 const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
 // fd-shared:end
 
-const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme'];
+// S6 (7b workstream rows, console-parallel-ui §4): next step and carrier under the text; paused = idle mark, resume line
+const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused'];
 
 const RUN_CSS = `
 :host{display:block}
@@ -1114,7 +1115,7 @@ class FdRunRow extends HTMLElement {
       ? `<span class="bar" role="meter" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${Math.min(c, t)}" aria-label="${fdEsc(text)}: ${c} of ${t}" part="meter"><i style="width:${(Math.min(c, t) / t * 100).toFixed(1)}%"></i></span>`
       : '<span></span>';
     const tag = href ? 'a' : 'div';
-    const inner = `${this.getAttribute('icon') && this.getAttribute('icon') !== 'run' ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : `<span class="ic arc" style="width:20px;height:20px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:var(--_${k});stroke-width:3px"/></svg></span>`}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
+    const inner = `${this.getAttribute('icon') && this.getAttribute('icon') !== 'run' ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : `<span class="ic arc" style="width:20px;height:20px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:var(--_${k}${this.hasAttribute('paused') ? '-dim' : ''});stroke-width:${this.hasAttribute('paused') ? 2 : 3}px"/></svg></span>`}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · next: ${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${RUN_CSS}</style><${tag} class="run" part="row"${href ? ` href="${fdEsc(href)}"` : ''}>${inner}</${tag}>`;
     const el = this.shadowRoot.querySelector('.run'), id = this.getAttribute('front');
     if (id != null) {
@@ -1354,9 +1355,10 @@ const RAIL_CSS = `
 :host{display:block}
 ol{list-style:none;margin:0;padding:0;font-size:var(--_fs-sm);color:var(--_muted);display:flex;flex-direction:column;gap:var(--_sp-2)}
 li{display:flex;gap:var(--_sp-3);line-height:1.35}
-time{color:var(--_text);width:44px;flex:none}
+time{color:var(--_text);min-width:44px;white-space:nowrap;flex:none}
 li.you{color:var(--_text)}
 li.you b{font-weight:var(--_fw-strong)}
+li a{color:var(--_text);text-underline-offset:3px;text-decoration-color:var(--_muted)}li small{font-size:var(--_fs-xs)}
 `;
 
 class FdRail extends HTMLElement {
@@ -1370,7 +1372,8 @@ class FdRail extends HTMLElement {
     const max = parseInt(this.getAttribute('max') || '6', 10);
     const it = (this.items || []).slice(-max);
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${RAIL_CSS}</style><ol part="list" aria-label="${fdEsc(this.getAttribute('label') || 'Just now')}">`
-      + it.map((x) => `<li${x.you ? ' class="you"' : ''}><time>${fdEsc(x.at)}</time><span>${x.you ? '<b>You:</b> ' : ''}${fdEsc(x.text)}</span></li>`).join('')
+      // S6: an item may carry href (an artifact or a step to open) and kind (step · handoff · artifact · you); the front page timeline uses it
+      + it.map((x) => `<li${x.you ? ' class="you"' : ''}><time>${fdEsc(x.at)}</time><span>${x.you ? '<b>You:</b> ' : ''}${x.href ? `<a href="${fdEsc(x.href)}">${fdEsc(x.text)}</a>` : fdEsc(x.text)}${x.kind && x.kind !== 'you' ? ` <small>· ${fdEsc(x.kind)}</small>` : ''}</span></li>`).join('')
       + '</ol>';
   }
 }
@@ -2112,7 +2115,7 @@ th{font-weight:var(--_fw-medium);color:var(--_muted);text-align:left;font-size:v
 td{padding:var(--_sp-3);border-bottom:var(--_st-hair) solid var(--_line-soft);vertical-align:baseline}
 tr:last-child td{border-bottom:0}
 th.n,td.n{text-align:right;white-space:nowrap}
-td a{color:inherit}
+th a,td a{color:inherit;text-underline-offset:3px;text-decoration-color:var(--_muted)}
 tbody tr.go:hover{background:var(--_hover-bg)}
 th.rh{font-weight:var(--_fw-medium);color:var(--_text);font-size:var(--_fs-sm);border-bottom:var(--_st-hair) solid var(--_line-soft);padding:var(--_sp-3)}
 tr:last-child th.rh{border-bottom:0}

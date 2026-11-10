@@ -89,7 +89,8 @@ function fdProps(Cls, attrs, json = []) {
 const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
 // fd-shared:end
 
-const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme'];
+// S6 (7b workstream rows, console-parallel-ui §4): next step and carrier under the text; paused = idle mark, resume line
+const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused'];
 
 const RUN_CSS = `
 :host{display:block}
@@ -125,7 +126,7 @@ class FdRunRow extends HTMLElement {
       ? `<span class="bar" role="meter" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${Math.min(c, t)}" aria-label="${fdEsc(text)}: ${c} of ${t}" part="meter"><i style="width:${(Math.min(c, t) / t * 100).toFixed(1)}%"></i></span>`
       : '<span></span>';
     const tag = href ? 'a' : 'div';
-    const inner = `${this.getAttribute('icon') && this.getAttribute('icon') !== 'run' ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : `<span class="ic arc" style="width:20px;height:20px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:var(--_${k});stroke-width:3px"/></svg></span>`}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
+    const inner = `${this.getAttribute('icon') && this.getAttribute('icon') !== 'run' ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : `<span class="ic arc" style="width:20px;height:20px"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="${FD_ICONS.run}" style="stroke:var(--_${k}${this.hasAttribute('paused') ? '-dim' : ''});stroke-width:${this.hasAttribute('paused') ? 2 : 3}px"/></svg></span>`}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · next: ${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${RUN_CSS}</style><${tag} class="run" part="row"${href ? ` href="${fdEsc(href)}"` : ''}>${inner}</${tag}>`;
     const el = this.shadowRoot.querySelector('.run'), id = this.getAttribute('front');
     if (id != null) {
