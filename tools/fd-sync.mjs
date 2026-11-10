@@ -41,7 +41,7 @@ const colour = (th) => {
   } else {
     v['shadow-panel'] = `0 1px 0 ${v.raised} inset,0 6px 16px rgba(60,45,25,.08)`;
     v['btn-glow'] = `0 0 0 2px color-mix(in srgb,${v.amb} 30%,transparent)`;
-    Object.assign(v, { 'halo-o': '.35', 'halo-blur': '1.5px', paper: String(elev.texture['paper-fibre'].$value), grain: '0' });
+    Object.assign(v, { 'halo-o': '.6', 'halo-blur': '1.5px', paper: String(elev.texture['paper-fibre'].$value), grain: '0' });
   }
   return v;
 };
@@ -70,12 +70,14 @@ fs.writeFileSync(path.join(ROOT, 'fd-tokens/fd-tokens.css'), `@import url('https
 :root, [data-theme=dark] {\n${decl(base)}\n${decl(T.dark)}\n  color-scheme: dark;\n}
 [data-theme=light] {\n${decl(T.light)}\n  color-scheme: light;\n}
 /* usage-gauge in the Friday language (S5 component 7e): its own colour hooks fed from the tokens. Amber is the one attention
-   colour, so the gauge's warn and its critical are both amber (never red, never a company colour for idle: L4). */
+   colour, so only 'near the limit, slow down' is amber (he can still act); at the limit there is nothing to do until the reset, so
+   it is drawn in the text colour on a spent grey track: plain and readable, not an alarm and not faint (S5 r2 lenses 2, 3, 4,
+   6, 8, 11); never red; idle is never a company colour (L4). The gauge's own stale badge is still its "!": a later patch. */
 usage-gauge {
   --ug-weekly-color: var(--fd-text); --ug-session-color: var(--fd-text); --ug-tick-color: var(--fd-muted);
   --ug-tick-ahead-color: var(--fd-amb); --ug-dot-color: var(--fd-text); --ug-dot-empty-color: var(--fd-text-dim);
-  --ug-track-color: var(--fd-line); --ug-warn-color: var(--fd-amb); --ug-critical-color: var(--fd-amb);
-  --ug-critical-track-color: color-mix(in srgb, var(--fd-amb) 35%, transparent); --ug-idle-color: var(--fd-muted);
+  --ug-track-color: var(--fd-line); --ug-warn-color: var(--fd-amb); --ug-critical-color: var(--fd-text);
+  --ug-critical-track-color: var(--fd-text-dim); --ug-idle-color: var(--fd-muted);
   --ug-monogram-color: var(--fd-text); --ug-monogram-muted-color: var(--fd-muted); --ug-background: var(--fd-surface);
   font-family: var(--fd-ff);
 }

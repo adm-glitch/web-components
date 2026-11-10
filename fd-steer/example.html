@@ -13,7 +13,7 @@
  * <fd-steer>: the steer box on a front's page (Friday DS v0.3, S5 component 7a). He writes, in his own words, what Friday
  * should change on that front; Friday answers in the rail. One box, one Send. Never a chat log here.
  *   states: empty → typing → sending (still, no spinner; slow line after slow-after ms) → sent ("Friday has it · 10:05",
- *   the text stays readable above an empty box) · unsent ("not sent; send again", his text kept)
+ *   the text stays readable above an empty box) · unsent ("not sent", his text kept)
  *
  *   <fd-steer company="mq" front="Lead research" placeholder="What should Friday change here?"></fd-steer>
  *
@@ -24,7 +24,7 @@
 // Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
 // between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
 // step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
-const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".6","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
 // Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
 // sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
 const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
@@ -63,6 +63,8 @@ const FD_CSS = FD_TOKENS + `
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+/* one entrance for a result of his own tap (receipt, answer): d-enter, ease-out, once (S5 r2 lens 9) */
+@keyframes fdin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
 `;
 // thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
@@ -99,14 +101,14 @@ function fdProps(Cls, attrs, json = []) {
 const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
 // fd-shared:end
 
-const STEER_ATTRS = ['company', 'name', 'front', 'placeholder', 'state', 'sent-at', 'confirm', 'slow-after', 'theme', 'label'];
+const STEER_ATTRS = ['company', 'name', 'front', 'placeholder', 'state', 'sent-at', 'confirm', 'slow-after', 'theme', 'label', 'reply', 'reply-at', 'stale'];
 
 const STEER_CSS = `
 :host{display:block}
 label{display:block;font-size:var(--_fs-sm);color:var(--_muted);margin-bottom:var(--_sp-3)}
 label b{color:var(--_text);font-weight:var(--_fw-medium)}
 textarea{display:block;width:100%;min-height:96px;resize:vertical;font:var(--_fw-regular) var(--_fs-base)/var(--_lh-text) var(--_ff);
- color:var(--_text);background:var(--_field-deep);border:var(--_st-hair) solid var(--_line);border-radius:var(--_r-md);padding:var(--_sp-4)}
+ color:var(--_text);background:var(--_field-deep);border:var(--_st-hair) solid var(--_hover-line);border-radius:var(--_r-md);padding:var(--_sp-4)}
 textarea::placeholder{color:var(--_muted)}
 textarea:hover{border-color:var(--_hover-line)}
 textarea:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
@@ -114,8 +116,12 @@ textarea:disabled{color:var(--_muted)}
 .bar{display:flex;align-items:center;gap:var(--_sp-4);margin-top:var(--_sp-3)}
 .bar small{flex:1;font-size:var(--_fs-sm);color:var(--_muted)}
 .sent{font-size:var(--_fs-sm);color:var(--_text);background:var(--_raised);border-radius:var(--_r-md);padding:var(--_sp-3) var(--_sp-4);margin-bottom:var(--_sp-3);white-space:pre-wrap}
-.sent small{display:block;color:var(--_muted);margin-top:var(--_sp-1)}
+.sent small{display:block;color:var(--_muted);margin-top:var(--_sp-1);font-size:var(--_fs-xs)}
+.sent{animation:fdin var(--_d-enter) var(--_e-out) both}
+/* the reply comes back where he steered (S5 r2 lens 7), not only in Just now on the home */
+.reply{margin-top:var(--_sp-3);padding-top:var(--_sp-3);border-top:var(--_st-hair) solid var(--_line-soft)}.reply b{font-weight:var(--_fw-strong)}
 .slow{display:none}:host([data-slow]) .slow{display:inline}
+@media (pointer:coarse){.hint{display:none}}
 `;
 
 class FdSteer extends HTMLElement {
@@ -140,15 +146,17 @@ class FdSteer extends HTMLElement {
     const name = this.getAttribute('name') || FD_NAME[k];
     const front = this.getAttribute('front') || '';
     const st = this.getAttribute('state') || 'open';
-    if (st === 'sent' && this._prev === 'sending') this._text = '';
+    if (st === 'sent' && this._prev === 'sending') { this._text = ''; this._confirmed = true; }
+    if (st === 'open' || st === 'sending') this._confirmed = st === 'sending' ? false : this._confirmed;
+    const hadFocus = this.shadowRoot.activeElement?.tagName === 'TEXTAREA';
     this._prev = st;
     const sending = st === 'sending';
     clearTimeout(this._slow); this.removeAttribute('data-slow');
     const note = sending ? 'sending to Friday<span class="slow"> · taking longer than usual; Friday keeps trying</span>'
-      : st === 'unsent' ? 'not sent; your text is still here, send again' : 'Ctrl + Enter sends';
+      : st === 'unsent' ? 'not sent; your text is kept here, press Send when ready' : (this.getAttribute('stale') ? `data from ${fdEsc(this.getAttribute('stale'))}; Friday reads it when the connection is back` : '<span class="hint">Ctrl + Enter sends</span>');
     const lab = this.getAttribute('label') || `Steer <b>${fdEsc(front)}</b>`;
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${STEER_CSS}</style>`
-      + (st === 'sent' && this._last ? `<div class="sent" part="sent" role="status">${fdEsc(this._last)}<small>Friday has it · ${fdEsc(this.getAttribute('sent-at') || '')} · the answer comes in Just now</small></div>` : '')
+      + (st === 'sent' && this._last ? `<div class="sent" part="sent" role="status">${fdEsc(this._last)}<small>${this._confirmed ? 'Friday has it' : 'Sent'} · ${fdEsc(this.getAttribute('sent-at') || '')} · ${this.getAttribute('reply') ? '' : 'Friday’s reply will appear here'}</small>${this.getAttribute('reply') ? `<div class="reply"><b>Friday</b> · ${fdEsc(this.getAttribute('reply-at') || '')}<br>${fdEsc(this.getAttribute('reply'))}</div>` : ''}</div>` : '')
       + `<label for="t"><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)} · ${lab}</label>`
       + `<textarea id="t" part="input" placeholder="${fdEsc(this.getAttribute('placeholder') || 'What should Friday change here?')}"${sending ? ' disabled' : ''}></textarea>`
       + `<div class="bar"><small aria-live="polite">${note}</small><button type="button" class="btn send" part="send">Send</button></div>`;
@@ -158,6 +166,7 @@ class FdSteer extends HTMLElement {
     t.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); this.send(); } });
     this.shadowRoot.querySelector('button.send').addEventListener('click', () => this.send());
     this._sync();
+    if (hadFocus && !sending) t.focus({ preventScroll: true });   // a second note needs no new tap (S5 r2 lens 1)
     if (sending) this._slow = setTimeout(() => this.setAttribute('data-slow', ''), parseInt(this.getAttribute('slow-after') || '4000', 10));
   }
 }

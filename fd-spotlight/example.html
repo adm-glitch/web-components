@@ -24,7 +24,7 @@
 // Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
 // between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
 // step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
-const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".6","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
 // Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
 // sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
 const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
@@ -63,6 +63,8 @@ const FD_CSS = FD_TOKENS + `
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+/* one entrance for a result of his own tap (receipt, answer): d-enter, ease-out, once (S5 r2 lens 9) */
+@keyframes fdin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
 `;
 // thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
@@ -104,14 +106,16 @@ const SPOT_ATTRS = ['active', 'label', 'for', 'tone', 'theme'];
 const SPOT_CSS = `
 :host{display:block;position:relative}
 .wrap{position:relative;border-radius:var(--_r-lg)}
-:host([active]) .wrap{box-shadow:0 0 0 3px var(--_field),0 0 0 5px var(--_text)}
-:host([active][tone=need]) .wrap{box-shadow:0 0 0 3px var(--_field),0 0 0 5px var(--_amb),0 0 var(--_glow-blur,14px) 4px color-mix(in srgb,var(--_glow) 55%,transparent)}
-.cap{display:none;align-items:center;gap:var(--_sp-3);font-size:var(--_fs-xs);font-weight:var(--_fw-strong);color:var(--_text);margin:0 0 var(--_sp-3) 2px}
+/* its own form: a dotted ring with a wide gap, never the suggestion's solid outline nor the focus dash (S5 r2 lenses 1, 10, 11) */
+:host([active]) .wrap{outline:2px dotted var(--_text);outline-offset:5px}
+.wrap:focus{outline-style:dotted}
+:host([active][tone=need]) .wrap{outline-color:var(--_amb);box-shadow:0 0 14px 2px color-mix(in srgb,var(--_glow) 45%,transparent)}
+.cap{display:none;align-items:center;gap:var(--_sp-3);font-size:var(--_fs-xs);font-weight:var(--_fw-strong);color:var(--_text);margin:0 0 var(--_sp-4) 2px}
 :host([active]) .cap{display:flex}
-.cap button{font:inherit;color:var(--_muted);background:none;border:0;cursor:pointer;min-height:var(--_sz-target);min-width:var(--_sz-target);padding:0 var(--_sp-3);font-weight:var(--_fw-medium)}
-.cap button:hover{color:var(--_text)}.cap button:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:2px}
+.cap .btn{min-height:var(--_sz-target);font-size:var(--_fs-xs)}
+@media (min-width:900px) and (pointer:fine){.cap .btn{min-height:var(--_sz-target-dense)}}
 .in{animation:enter var(--_d-enter) var(--_e-out) both}
-@keyframes enter{from{box-shadow:0 0 0 3px var(--_field),0 0 0 12px transparent}}
+@keyframes enter{from{outline-offset:14px;outline-color:transparent}}
 `;
 
 class FdSpotlight extends HTMLElement {
@@ -120,16 +124,22 @@ class FdSpotlight extends HTMLElement {
   connectedCallback() { this.render(); }
   disconnectedCallback() { clearTimeout(this._t); }
   attributeChangedCallback(n, o, v) { if (!this.isConnected) return; this.render(n === 'active' && v != null && o == null); }
-  end(reason) { clearTimeout(this._t); this.removeAttribute('active'); this.dispatchEvent(new CustomEvent('fd-spotlight-end', { detail: { reason }, bubbles: true, composed: true })); }
+  end(reason) { const had = this.shadowRoot.activeElement; clearTimeout(this._t); this.removeAttribute('active'); if (had) this.shadowRoot.querySelector('.wrap')?.focus({ preventScroll: true }); this.dispatchEvent(new CustomEvent('fd-spotlight-end', { detail: { reason }, bubbles: true, composed: true })); }
   render(entering = this.hasAttribute('active')) {
     const label = this.getAttribute('label') || '';
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${SPOT_CSS}</style>`
-      + `<div class="cap" part="caption"><span>${fdEsc(label)}</span><button type="button" part="dismiss" aria-label="Dismiss: ${fdEsc(label)}">Got it</button></div>`
-      + `<div class="wrap${entering ? ' in' : ''}" part="ring" role="group"${this.hasAttribute('active') && label ? ` aria-label="${fdEsc(label)}"` : ''}><slot></slot></div>`;
+      + `<div class="cap" part="caption"><span>${fdEsc(label)}</span><button type="button" class="btn" part="dismiss" aria-label="Got it: ${fdEsc(label)}">Got it</button></div>`
+      + `<div class="wrap${entering ? ' in' : ''}" part="ring" role="group" tabindex="-1"${this.hasAttribute('active') && label ? ` aria-label="${fdEsc(label)}"` : ''}><slot></slot></div>`;
     this.shadowRoot.querySelector('button').addEventListener('click', () => this.end('dismiss'));
     clearTimeout(this._t);
     const ms = parseInt(this.getAttribute('for') || '0', 10);
-    if (this.hasAttribute('active') && ms > 0) this._t = setTimeout(() => this.end('time'), ms);
+    // the clock runs only while he can see it and is not inside it (S5 r2 lens 1)
+    if (this.hasAttribute('active') && ms > 0) {
+      let left = ms, t0 = 0; const run = () => { if (document.hidden || this.matches(':hover') || this.matches(':focus-within')) return; t0 = Date.now(); this._t = setTimeout(() => this.end('time'), left); };
+      const hold = () => { if (t0) { left = Math.max(0, left - (Date.now() - t0)); t0 = 0; } clearTimeout(this._t); };
+      if (!this._wired) { this._wired = true; for (const [ev, fn] of [['pointerenter', () => this._hold?.()], ['pointerleave', () => this._run?.()], ['focusin', () => this._hold?.()], ['focusout', () => this._run?.()]]) this.addEventListener(ev, fn); document.addEventListener('visibilitychange', () => (document.hidden ? this._hold?.() : this._run?.())); }
+      this._hold = hold; this._run = run; run();
+    }
   }
 }
 fdProps(FdSpotlight, SPOT_ATTRS);

@@ -125,7 +125,7 @@ section{margin-top:var(--fd-sp-9)}
    <div class="s5"><fd-panel label="The running mark"><div style="display:grid;gap:var(--fd-sp-3)">
     <fd-run-row company="ps" text="Brain map" status="drawing" icon="run"></fd-run-row>
     <fd-run-row company="ps" text="Brain map (S4 mark)" status="drawing" icon="run-s4"></fd-run-row></div>
-    <p class="meta">The S4 mark read as "refresh"; the new one is a stroke moving forward on a track.</p></fd-panel></div>
+    <p class="meta">The S4 mark read as "refresh". The mark now is the dial’s own short arc, in the company’s colour: the row and its segment are one sign.</p></fd-panel></div>
   </div></section>
 
  <section id="done"><h2>Done today and just now</h2><p class="intro">When nothing needs you, Done today takes the full weight: it is the reward. Your own answers come back in Just now as "You: …".</p>
@@ -148,7 +148,7 @@ section{margin-top:var(--fd-sp-9)}
  <section id="buttons"><h2>Buttons</h2><p class="intro">Plain for ordinary actions, an outline for Friday's suggestion, amber only for a single action on something that needs you. Every state from the tokens.</p>
   <fd-panel label="Kinds and states"><div class="btns" id="btns"></div></fd-panel></section>
 
- <section id="steer"><h2>Steer</h2><p class="intro">On a front's page: you say, in your words, what Friday should change. Ctrl + Enter sends; Enter is a new line. What you sent stays readable; the answer comes in Just now.</p>
+ <section id="steer"><h2>Steer</h2><p class="intro">On a front's page: you say, in your words, what Friday should change. Ctrl + Enter sends; Enter is a new line. What you sent stays readable, and Friday’s reply appears right under it.</p>
   <div class="g">
    <div class="s6"><fd-panel label="Lead research" heading-level="3"><fd-steer company="mq" front="Lead research"></fd-steer></fd-panel></div>
    <div class="s6"><fd-panel label="Brain map" heading-level="3"><fd-steer id="steer-sent" company="ps" front="Brain map" confirm></fd-steer></fd-panel>
@@ -157,7 +157,7 @@ section{margin-top:var(--fd-sp-9)}
 
  <section id="decision"><h2>Decisions</h2><p class="intro">For a decision that needs more than a row: why it is yours, about how long it takes, what to read first, the options (equal; Friday's suggestion has the outline) and an optional note.</p>
   <div class="g">
-   <div class="s7"><fd-panel label="Needs you" heading-level="3"><fd-decision company="mq" question="Which CRM for the AI Systems pilot?" why="It sets the next three months of work for the pilot client. Friday compared both on the fields the relay needs." minutes="3" options='["GoHighLevel","HubSpot"]' suggest="GoHighLevel" note-box>
+   <div class="s7"><fd-panel label="Needs you" heading-level="3"><fd-decision company="mq" front="m4" href="#mq-m4" question="Which CRM for the AI Systems pilot?" why="It sets the next three months of work for the pilot client. Friday compared both on the fields the relay needs." minutes="3" options='["GoHighLevel","HubSpot"]' suggest="GoHighLevel" note-box>
      <a slot="doc" href="#decision">Comparison · 2 pages</a><a slot="doc" href="#decision">Field map for the lead relay · 1 page</a></fd-decision></fd-panel></div>
    <div class="s5"><fd-panel label="Answered" heading-level="3"><fd-decision id="dec-done" company="ps" question="Which morning for the lab tests?" minutes="1" options='["Tuesday","Thursday"]'></fd-decision></fd-panel>
    <p class="meta">After you choose: what you chose, when, your note, and Change.</p></div>
@@ -169,7 +169,7 @@ section{margin-top:var(--fd-sp-9)}
    <div class="s4"><fd-panel heading-level="3" label="The same, narrow"><fd-table class="tbl"></fd-table></fd-panel></div>
   </div></section>
 
- <section id="gauge"><h2>Usage</h2><p class="intro">Your usage gauge, in the Friday colours: what is left in the week (outer) and in the 5-hour window (inner), the hours to reset as dots. Near the limit it turns amber, never red.</p>
+ <section id="gauge"><h2>Usage</h2><p class="intro">Your usage gauge, in the Friday colours: what is left in the week (outer) and in the 5-hour window (inner), the hours to reset as dots. Near the limit it turns amber (you can slow down); at the limit it is drawn plainly in the text colour until the reset. Never red.</p>
   <fd-panel heading-level="3" label="Claude usage"><div style="display:flex;gap:var(--fd-sp-7);flex-wrap:wrap;align-items:center;font-size:var(--fd-fs-sm)">
    <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="41" session="30" pace="57" reset-minutes="110" monogram="M" size="64"></usage-gauge>plenty left</span>
    <span style="display:inline-flex;gap:var(--fd-sp-3);align-items:center"><usage-gauge weekly="72" session="88" pace="57" reset-minutes="40" monogram="M" size="64"></usage-gauge>window almost used</span>
@@ -246,7 +246,7 @@ $('#d-many').fronts = Array.from({ length: 16 }, (_, i) => ({ id: 'n' + i, t: 'F
 const NEED = [['mq', 'm3', 'OK to rotate 6 clients?', '6 clients · 1 tap', ['No', 'Yes'], 'Yes'], ['ps', 'p1', 'Which of these looks like Friday?', '1 tap · 4 images', ['Open'], null]];
 const pNeed = $('#p-need');
 NEED.forEach(([k, id, q, note, opts, sug]) => {
-  const r = document.createElement('fd-ask-row'); r.setAttribute('company', k); r.setAttribute('question', q); r.setAttribute('note', note); r.options = opts; if (sug) r.setAttribute('suggest', sug); r.dataset.front = id; r.dataset.k = k; r.setAttribute('front', id); pNeed.append(r);
+  const r = document.createElement('fd-ask-row'); r.setAttribute('company', k); r.setAttribute('question', q); r.setAttribute('note', note); r.options = opts; if (sug) r.setAttribute('suggest', sug); r.dataset.front = id; r.dataset.k = k; r.setAttribute('front', id); if (opts.length === 1) r.setAttribute('href', '#' + k + '-' + id); pNeed.append(r);   // a single action is a door to its front (r2 lens 7)
 });
 const RAIL = [{ at: '09:12', text: 'receipt read' }, { at: '09:30', text: 'CRM check done' }, { at: '09:41', text: 'backup stopped · Friday fixing it' }, { at: '09:58', text: '2 new cards' }];
 const rail = $('#rail'); rail.items = RAIL;
@@ -276,7 +276,7 @@ $('#btns').innerHTML = '<span></span>' + ST.map(([, n]) => `<span>${n}</span>`).
 // component 7: sample data
 const RCPT = [{ item: 'Groceries', where: 'Market', company: 'ps', value: '412.00', when: 'Mon' }, { item: 'Pharmacy', where: 'Drugstore', company: 'ps', value: '38.90', when: 'Tue' }, { item: 'Market', where: 'Fair', company: 'ps', value: '121.50', when: 'Thu' }];
 $$('.tbl').forEach((t) => { t.columns = [{ key: 'item', label: 'Item' }, { key: 'where', label: 'Where' }, { key: 'when', label: 'Day' }, { key: 'value', label: 'R$', num: true }]; t.rows = RCPT; });
-{ const st = $('#steer-sent'); st.value = 'Draw the Qompass cluster closer to Marquatica, and keep the labels on hover only.'; st.send(); st.setAttribute('state', 'sent'); st.setAttribute('sent-at', '10:02'); }
+{ const st = $('#steer-sent'); st.value = 'Draw the Qompass cluster closer to Marquatica, and keep the labels on hover only.'; st.send(); st.setAttribute('state', 'sent'); st.setAttribute('sent-at', '10:02'); st.setAttribute('reply', 'Done: Qompass now sits next to Marquatica; labels show on hover.'); st.setAttribute('reply-at', '10:06'); }
 { const d = $('#dec-done'); d.setAttribute('answered-at', '09:47'); d.choose('Thursday'); }
 if (P.sec) document.getElementById(P.sec)?.scrollIntoView();
 await customElements.whenDefined('fd-dial');

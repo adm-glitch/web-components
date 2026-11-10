@@ -40,6 +40,8 @@ const FD_CSS = FD_TOKENS + `
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+/* one entrance for a result of his own tap (receipt, answer): d-enter, ease-out, once (S5 r2 lens 9) */
+@keyframes fdin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
 `;
 // thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as

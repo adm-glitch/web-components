@@ -16,7 +16,7 @@
 // Shared code for every fd-* component (Friday DS). tools/fd-sync.mjs pastes this file, with the token table filled in,
 // between the fd-shared markers of each component, so every component stays one standalone file (no imports, no build
 // step for whoever uses it). Edit this file or the tokens (fd-tokens/tokens/*.json), then run `node tools/fd-sync.mjs`.
-const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".35","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
+const FD_T = {"base":{"ff":"'Figtree',sans-serif","fs-xs":"12px","fs-sm":"13px","fs-md":"15px","fs-base":"16px","fs-lg":"19px","fs-xl":"23px","fs-2xl":"28px","fs-dial":"34px","fw-regular":"400","fw-medium":"500","fw-strong":"600","lh-tight":"1.15","lh-text":"1.45","lh-loose":"1.6","tr-label":"0.13em","sp-1":"2px","sp-2":"4px","sp-3":"8px","sp-4":"12px","sp-5":"16px","sp-6":"24px","sp-7":"32px","sp-8":"48px","sp-9":"64px","r-sm":"6px","r-md":"9px","r-lg":"12px","r-xl":"14px","r-round":"999px","st-hair":"1px","st-icon":"1.6px","st-tick":"1px","st-segment-lit":"0.13","st-segment-rest":"0.085","st-segment-need":"0.16","st-segment-done":"0.05","st-segment-gap":"3px","sz-focus-ring":"2px","sz-focus-offset":"2px","sz-target":"44px","sz-target-dense":"36px","sz-icon":"24px","sz-icon-sm":"20px","sz-dial-phone":"36px","sz-dial-desktop":"64px","d-enter":"200ms","d-change":"250ms","d-leave":"160ms","d-breath":"4500ms","d-reduced-fade":"150ms","e-out":"cubic-bezier(0.2,0,0,1)","e-in":"cubic-bezier(0.4,0,1,1)","e-breath":"cubic-bezier(0.45,0,0.55,1)","rule-max-flashes-per-second":"3","rule-breath-min-brightness":"0.62","rule-loops-allowed":"1","rule-sound":"off","d-answered-leave":"160ms","d-undo-window":"6000ms","grid-max":"1320px","grid-gutter":"16px","grid-gap":"16px"},"dark":{"field":"#141619","field-deep":"#0E1012","surface":"#1A1D21","raised":"#202428","line":"#2C3035","line-soft":"#24282C","text":"#ECE8E1","muted":"#9A968F","amber-ink":"#1B1205","mq":"#4287EB","at":"#CF84BD","ps":"#86EB8A","amb":"#E9880B","mq-dim":"#37598C","at-dim":"#724D69","ps-dim":"#336336","text-dim":"#5A5955","hover-bg":"#202428","pressed-bg":"#2F3134","hover-line":"#9A968F","amber-pressed":"#E99425","disabled-text":"#5A5955","disabled-line":"#24282C","focus":"#ECE8E1","glow":"#FEAA59","fault":"#9A968F","shadow-panel":"0px 10px 24px 0px #0000005A,inset 0px 1px 0px 0px #FFFFFF0B","btn-glow":"0 0 14px color-mix(in srgb,#FEAA59 70%,transparent)","halo-o":".8","halo-blur":"3px","paper":"0","grain":"0.035"},"light":{"field":"#EFEAE1","field-deep":"#ECE7DD","surface":"#FBF9F5","raised":"#FFFFFF","line":"#D6D0C6","line-soft":"#E4DFD6","text":"#1C1E21","muted":"#5C5852","amber-ink":"#140C02","mq":"#134299","at":"#AE69A1","ps":"#249661","amb":"#C76A13","mq-dim":"#9BACC8","at-dim":"#BAA5B5","ps-dim":"#96B1A0","text-dim":"#AAAAAC","hover-bg":"#FFFFFF","pressed-bg":"#EBEAE6","hover-line":"#5C5852","amber-pressed":"#CE7C2F","disabled-text":"#AAAAAC","disabled-line":"#E4DFD6","focus":"#1C1E21","glow":"#C76A13","fault":"#5C5852","shadow-panel":"0 1px 0 #FFFFFF inset,0 6px 16px rgba(60,45,25,.08)","btn-glow":"0 0 0 2px color-mix(in srgb,#C76A13 30%,transparent)","halo-o":".6","halo-blur":"1.5px","paper":"0.16","grain":"0"}};
 // Every token becomes --_<name> inside the shadow root. A page themes all components at once with --fd-<name> (fd-tokens.css
 // sets them for dark and for [data-theme=light]); theme="dark|light" on one element pins its own values.
 const FD_V = (o, pinned) => Object.entries(o).map(([k, v]) => `--_${k}:${pinned ? v : `var(--fd-${k},${v})`};`).join('');
@@ -55,6 +55,8 @@ const FD_CSS = FD_TOKENS + `
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+/* one entrance for a result of his own tap (receipt, answer): d-enter, ease-out, once (S5 r2 lens 9) */
+@keyframes fdin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{transition-duration:var(--_d-reduced-fade)!important;animation:none!important}}
 `;
 // thin outline icons, 1.6 px on a 24 grid (his S3 pick B). "run" was redrawn twice in S5: the S4 circle-arrow read as
@@ -91,7 +93,7 @@ function fdProps(Cls, attrs, json = []) {
 const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !customElements.get(name)) customElements.define(name, Cls); };
 // fd-shared:end
 
-const DEC_ATTRS = ['company', 'name', 'question', 'why', 'minutes', 'options', 'suggest', 'state', 'answer', 'note-box', 'confirm', 'theme', 'answered-at'];
+const DEC_ATTRS = ['company', 'name', 'question', 'why', 'minutes', 'options', 'suggest', 'state', 'answer', 'note-box', 'confirm', 'theme', 'answered-at', 'href', 'front', 'stale'];
 
 const DEC_CSS = `
 :host{display:block;container-type:inline-size}
@@ -102,18 +104,19 @@ h3{font-size:var(--_fs-lg);font-weight:var(--_fw-strong);line-height:var(--_lh-t
 .docs{margin-top:var(--_sp-5)}
 .docs[hidden]{display:none}
 ::slotted(a){display:flex!important;align-items:center;gap:var(--_sp-3);min-height:var(--_sz-target);color:var(--_text)!important;text-decoration:none!important;font-size:var(--_fs-sm)}
-::slotted(a:hover){text-decoration:underline!important}
+::slotted(a){text-decoration:underline!important;text-underline-offset:3px;text-decoration-color:var(--_muted)!important}
+::slotted(a:hover){text-decoration-color:var(--_text)!important}
 @media (min-width:900px) and (pointer:fine){::slotted(a){min-height:var(--_sz-target-dense)}}
 .docs .ic{margin-right:var(--_sp-3)}
-.dl{display:grid;grid-template-columns:24px 1fr;align-items:start;gap:0 var(--_sp-3)}.dl>.ic{margin-top:10px}
+.dl{display:grid;grid-template-columns:24px 1fr;align-items:center;gap:0 var(--_sp-3)}
 textarea{display:block;width:100%;min-height:72px;margin-top:var(--_sp-5);font:var(--_fw-regular) var(--_fs-md)/var(--_lh-text) var(--_ff);color:var(--_text);
- background:var(--_field-deep);border:var(--_st-hair) solid var(--_line);border-radius:var(--_r-md);padding:var(--_sp-3) var(--_sp-4);resize:vertical}
+ background:var(--_field-deep);border:var(--_st-hair) solid var(--_hover-line);border-radius:var(--_r-md);padding:var(--_sp-3) var(--_sp-4);resize:vertical}
 textarea:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
-.opts{display:flex;flex-wrap:wrap;gap:var(--_sp-3);margin-top:var(--_sp-5)}
+.opts{display:flex;flex-wrap:wrap;gap:var(--_sp-3);margin-top:var(--_sp-5)}.opts:focus{outline:none}
 @container (max-width: 480px){.opts .btn{flex:1 1 40%}}
 .btn.chosen:disabled{color:var(--_text);border-color:var(--_muted)}
 .done{display:flex;align-items:center;gap:var(--_sp-4);margin-top:var(--_sp-5);font-size:var(--_fs-md)}
-.done span{flex:1}
+.done span{flex:1}.done{animation:fdin var(--_d-enter) var(--_e-out) both}.done:focus{outline:none}
 `;
 
 class FdDecision extends HTMLElement {
@@ -127,10 +130,13 @@ class FdDecision extends HTMLElement {
   choose(value) {
     const note = this.shadowRoot.querySelector('textarea')?.value.trim() || '';
     if (!this.dispatchEvent(new CustomEvent('fd-answer', { detail: { value, note }, bubbles: true, composed: true, cancelable: true }))) return;
+    const wait = this.hasAttribute('confirm') || this.hasAttribute('stale');
     this._note = note;
     const n = new Date(); this._at = String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0');
-    this._set({ state: this.hasAttribute('confirm') ? 'busy' : 'answered', answer: value });
-    if (!this.hasAttribute('confirm')) this.shadowRoot.querySelector('[data-change]')?.focus({ preventScroll: true });
+    this._set({ state: wait ? 'busy' : 'answered', answer: value });
+    if (wait) this.shadowRoot.querySelector('.opts')?.focus({ preventScroll: true });
+    // focus lands on the closed result, not on Change: the loudest mark on a closed decision must not invite reopening it (S5 r2 lens 3)
+    if (!wait) this.shadowRoot.querySelector('.done')?.focus({ preventScroll: true });
   }
   change() { const value = this.getAttribute('answer'); this._set({ state: 'open', answer: null }); this.dispatchEvent(new CustomEvent('fd-undo', { detail: { value }, bubbles: true, composed: true })); this.shadowRoot.querySelector(`button[data-v="${CSS.escape(value || '')}"]`)?.focus(); }
   render() {
@@ -141,27 +147,35 @@ class FdDecision extends HTMLElement {
     const min = this.getAttribute('minutes');
     const busy = st === 'busy';
     const meta = [`<span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}`, min ? `about ${fdEsc(min)} min` : null,
-      sug && opts.length > 1 && st !== 'answered' ? `<span style="white-space:nowrap">Friday suggests ${fdEsc(sug)}</span>` : null].filter(Boolean).join(' · ');
+      sug && opts.length > 1 && st !== 'answered' ? `<span style="white-space:nowrap">Friday suggests ${fdEsc(sug)}</span>` : null,
+      st === 'unsent' ? 'not sent; tap your choice to send it' : null,
+      this.getAttribute('stale') && st !== 'answered' ? `data from ${fdEsc(this.getAttribute('stale'))}; Friday checks before sending` : null].filter(Boolean).join(' · ');
     const why = this.getAttribute('why');
-    const hasDocs = !!this.querySelector('[slot=doc]');
+    const docs = [...this.children].filter((c) => c.slot === 'doc' || /^doc-\d+$/.test(c.slot));
+    docs.forEach((c, i) => { c.slot = 'doc-' + i; });
+    const hasDocs = docs.length > 0;
     let foot;
     if (st === 'answered') {
       const at = this.getAttribute('answered-at') || this._at;
-      foot = `<div class="done" role="status"><span>You chose <b>${fdEsc(ans)}</b>${at ? ` · ${fdEsc(at)}` : ''}${this._note ? ` · “${fdEsc(this._note)}”` : ''}</span><button type="button" class="btn" data-change>Change</button></div>`;
+      foot = `<div class="done" role="status" tabindex="-1"><span>You chose <b>${fdEsc(ans)}</b>${at ? ` · ${fdEsc(at)}` : ''}${this._note ? ` · “${fdEsc(this._note)}”` : ''}</span><button type="button" class="btn" data-change>Change</button></div>`;
     } else {
       foot = (this.hasAttribute('note-box') ? `<textarea part="note" aria-label="A note for Friday (optional)" placeholder="A note for Friday (optional)"${busy ? ' disabled' : ''}>${fdEsc(this._note || '')}</textarea>` : '')
-        + `<div class="opts" role="group" aria-label="${fdEsc(this.getAttribute('question') || '')}">`
+        + `<div class="opts" tabindex="-1" role="group"${busy ? ' aria-busy="true"' : ''} aria-label="${fdEsc(this.getAttribute('question') || '')}">`
         + opts.map((o) => `<button type="button" class="btn${opts.length === 1 ? ' primary' : sug === o ? ' suggest' : ''}${busy && ans === o ? ' chosen' : ''}" data-v="${fdEsc(o)}"${busy ? ' disabled' : ''}>${busy && ans === o ? `${fdEsc(o)} · sending` : fdEsc(o)}</button>`).join('')
         + `</div>`;
     }
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${DEC_CSS}</style>`
-      + `<div class="head">${fdIcon('ask', st === 'answered' ? 'var(--_text)' : 'var(--_amb)', 24)}<div><h3 part="question">${fdEsc(this.getAttribute('question') || '')}</h3><div class="meta">${meta}</div></div></div>`
+      + `<div class="head">${fdIcon('ask', st === 'answered' ? 'var(--_text)' : 'var(--_amb)', 24)}<div><h3 part="question">${this.getAttribute('href') ? `<a href="${fdEsc(this.getAttribute('href'))}" style="color:inherit;text-decoration:none">${fdEsc(this.getAttribute('question') || '')}</a>` : fdEsc(this.getAttribute('question') || '')}</h3><div class="meta">${meta}</div></div></div>`
       + (why ? `<p class="why" part="why">${fdEsc(why)}</p>` : '')
-      + `<div class="docs" part="docs"${hasDocs ? '' : ' hidden'}><div class="lbl">To read</div><div class="dl">${fdIcon('doc', 'var(--_text)', 20)}<div><slot name="doc"></slot></div></div></div>`
+      // one doc mark per document: each slotted link gets its own named slot and its own row (S5 r2 lenses 1, 2)
+      + `<div class="docs" part="docs"${hasDocs ? '' : ' hidden'}><div class="lbl">To read</div>${docs.map((_, i) => `<div class="dl">${fdIcon('doc', 'var(--_text)', 20)}<slot name="doc-${i}"></slot></div>`).join('')}<slot name="doc" hidden></slot></div>`
       + foot;
     this.shadowRoot.querySelectorAll('button[data-v]').forEach((b) => b.addEventListener('click', () => this.choose(b.dataset.v)));
     this.shadowRoot.querySelector('[data-change]')?.addEventListener('click', () => this.change());
-    this.shadowRoot.querySelector('slot[name=doc]')?.addEventListener('slotchange', () => { const d = this.shadowRoot.querySelector('.docs'); d.hidden = !this.querySelector('[slot=doc]'); });
+    const front = this.getAttribute('front');
+    if (front != null) { const emit = (v) => this.dispatchEvent(new CustomEvent('fd-front-hover', { detail: { id: v }, bubbles: true, composed: true })); this.addEventListener('pointerenter', () => emit(front)); this.addEventListener('pointerleave', () => emit(null)); }
+    this.shadowRoot.querySelector('slot[name=doc]')?.addEventListener('slotchange', (e) => { if (e.target.assignedElements().length) this.render(); });
+    const ta = this.shadowRoot.querySelector('textarea'); ta?.addEventListener('input', () => { this._note = ta.value; });   // his note survives any re-render (r2 lens 1)
   }
 }
 fdProps(FdDecision, DEC_ATTRS.filter((a) => a !== 'options'));

@@ -22,7 +22,9 @@ const shot = async (th, dev) => {
   await p.goto(url + '#' + encodeURIComponent(JSON.stringify({ th })));
   await p.waitForSelector('body[data-ready="1"]', { timeout: 20000 }); await p.waitForTimeout(400);
   if ((await p.evaluate(() => document.body.dataset.face)) === 'missing') throw new Error('Figtree not loaded');
-  if (trough) await p.evaluate(() => { const walk = (r) => r.querySelectorAll('*').forEach((el) => { if (el.classList?.contains('halo')) el.getAnimations().forEach((a) => { a.pause(); a.currentTime = 2250; }); if (el.shadowRoot) walk(el.shadowRoot); }); walk(document); });
+  // --motion = the breath at its brightest (t = 0), --trough = at its faintest (t = half): two different frames (r2 lens 9)
+  if (motion) await p.evaluate((tt) => { const walk = (r) => r.querySelectorAll('*').forEach((el) => { if (el.classList?.contains('halo')) el.getAnimations().forEach((a) => { a.pause(); a.currentTime = tt; }); if (el.shadowRoot) walk(el.shadowRoot); }); walk(document); }, trough ? 2250 : 0);
+  if (false) await p.evaluate(() => { const walk = (r) => r.querySelectorAll('*').forEach((el) => { if (el.classList?.contains('halo')) el.getAnimations().forEach((a) => { a.pause(); a.currentTime = 2250; }); if (el.shadowRoot) walk(el.shadowRoot); }); walk(document); });
   const t = th === 'light' ? 'papel' : 'dark', tag = trough ? '-trough' : motion ? '-motion' : '';
   for (const s of SECS) {
     if (only && !only.includes(s)) continue;
