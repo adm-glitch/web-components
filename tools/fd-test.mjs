@@ -154,11 +154,24 @@ for (const th of ['dark', 'light']) {
   ok(loops.every((c) => c === 'halo'), `console ${th}: only the breath loops`, JSON.stringify(loops));
   const front = await p.evaluate(() => { const d = document.querySelector('#front-dial'); const need = [...d.shadowRoot.querySelectorAll('path.seg[data-s=need]')].map((x) => x.dataset.id); return [need, d.getAttribute('highlight')]; });
   ok(front[0].includes(front[1]), `console ${th}: the front page's dial lights the front the page is about`, JSON.stringify(front));
+  // G1 fd-nav and G6 fd-look
+  const nav = await p.evaluate(() => { const n = document.querySelector('fd-nav'); const cur = n.shadowRoot.querySelector('[aria-current=page]'); const need = n.shadowRoot.querySelector('.tab .need'); return [cur?.textContent, !!need, getComputedStyle(cur, '::after').backgroundColor !== getComputedStyle(n).getPropertyValue('--fd-amb')]; });
+  ok(nav[0].startsWith('Decide') && nav[1] && nav[2], `console ${th}: nav marks the current tab (not amber) and a dot where something is his`, JSON.stringify(nav));
+  const look = await p.evaluate(async () => { const l = document.querySelector('fd-look'); const sr = l.shadowRoot; const send = sr.querySelector('.send .btn'); const d0 = send.disabled;
+    const imgs = [...sr.querySelectorAll('figure img')].map((i) => [i.naturalWidth, i.naturalHeight, Math.round(i.getBoundingClientRect().width), Math.round(i.getBoundingClientRect().height)]);
+    sr.querySelector('figure button').click(); const open = sr.querySelector('dialog').open; sr.querySelector('dialog .close').click(); const back = sr.activeElement === sr.querySelector('figure button');
+    sr.querySelector('[data-like="1"]').click(); const d1 = sr.querySelector('.send .btn').disabled; const ta = sr.querySelector('textarea'); const h = ta.getBoundingClientRect().height;
+    let got; l.addEventListener('fd-look', (e) => (got = e.detail), { once: true }); ta.value = 'good'; ta.dispatchEvent(new Event('input')); sr.querySelector('.send .btn').click();
+    return { d0, d1, open, back, h, got, done: sr.querySelector('.done')?.textContent, imgs }; });
+  const whole = look.imgs.every(([nw, nh, w, h]) => Math.abs(nw / nh - w / h) < 0.02);
+  ok(look.d0 && !look.d1 && look.open && look.back && look.h >= 140 && look.got?.like === true && look.got?.text === 'good' && /Sent · Like/.test(look.done) && whole, `console ${th}: look card: images whole, tap = full size and back, Send waits, box ≥ 140 px, sent`, JSON.stringify(look));
   await p.context().close();
   const q = await open({ url: PG6, th, w: 390, h: 844, dpr: 2, touch: true });
   const small = await q.evaluate(() => { const bad = []; const all = (root) => { root.querySelectorAll('button, a').forEach((el) => { const r = el.getBoundingClientRect(); if (r.width && r.height && (r.height < 43.5 || r.width < 43.5)) bad.push((el.textContent || '').trim().slice(0, 24) + ' ' + Math.round(r.width) + 'x' + Math.round(r.height)); }); root.querySelectorAll('*').forEach((el) => el.shadowRoot && all(el.shadowRoot)); }; all(document); return bad; });
   ok(small.length === 0, `console phone ${th}: every control ≥ 44 × 44`, JSON.stringify(small.slice(0, 6)));
   ok(await q.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `console phone ${th}: no sideways scroll`);
+  const bar = await q.evaluate(() => { const t = document.querySelector('fd-nav').shadowRoot.querySelector('.tabs'); const r = t.getBoundingClientRect(); return [getComputedStyle(t).position, Math.round(innerHeight - r.bottom)]; });
+  ok(bar[0] === 'fixed' && bar[1] <= 1, `console phone ${th}: tabs sit at the bottom, in thumb reach`, JSON.stringify(bar));
   await q.context().close();
 }
 // 3 · reduced motion: nothing moves

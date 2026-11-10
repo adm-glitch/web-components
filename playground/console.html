@@ -10,6 +10,7 @@
 <link rel="manifest" href="../fd-app/manifest.webmanifest"><link rel="icon" href="../fd-app/icon.svg">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+@media(max-width:899px){body{padding-bottom:72px}}   /* room for the tab bar at the bottom */
 body{font-family:var(--fd-ff);font-size:var(--fd-fs-base);line-height:var(--fd-lh-text);color:var(--fd-text);background:var(--fd-field-deep) linear-gradient(180deg,var(--fd-field),var(--fd-field-deep)) no-repeat;min-height:100vh;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 .wrap{max-width:var(--fd-grid-max);margin:0 auto;padding:var(--fd-sp-6) var(--fd-grid-gutter) var(--fd-sp-9)}
 @media(min-width:900px){.wrap{padding:var(--fd-sp-7) var(--fd-sp-7) var(--fd-sp-9)}}
@@ -45,12 +46,12 @@ section{margin-top:var(--fd-sp-9)}
 .dot{display:inline-block;width:8px;height:8px;border-radius:999px;margin-right:var(--fd-sp-2);vertical-align:1px}
 </style></head><body>
 <div class="wrap">
- <header class="top">
+ <fd-nav current="decide" id="nav"><div class="seg" role="group" aria-label="Theme" slot="end"><button type="button" data-th="dark">Dark</button><button type="button" data-th="light">Paper</button></div></fd-nav>
+ <header class="top" style="margin-top:var(--fd-sp-6)">
   <div><div class="lbl">Friday · design system v0.3 · S6 · the Console in the components</div><h1>The Console, screen by screen</h1></div>
-  <div class="seg" role="group" aria-label="Theme"><button type="button" data-th="dark">Dark</button><button type="button" data-th="light">Paper</button></div>
  </header>
  <p class="mu" style="margin-top:var(--fd-sp-3);max-width:66ch;font-size:var(--fd-fs-md);color:var(--fd-muted)">Every screen here is built only from the components you saw. A dashed tag marks a piece not built yet; the plan names it. The data are examples.</p>
- <nav class="tabs" aria-label="Screens"><a href="standalone.html#%7B%7D">Home (the panel)</a><a href="#work">Work</a><a href="#front">A front's page</a><a href="#decide">Decide</a><a href="#records">Records</a><a href="#health">Friday's services</a><a href="#numbers">Numbers</a><a href="#board">Week board</a></nav>
+ <nav class="tabs" aria-label="Screens on this page"><a href="standalone.html#%7B%7D">Home (the panel)</a><a href="#work">Work</a><a href="#front">A front's page</a><a href="#decide">Decide</a><a href="#records">Records</a><a href="#health">Friday's services</a><a href="#numbers">Numbers</a><a href="#board">Week board</a></nav>
 
  <section id="work" aria-labelledby="h-work"><h2 id="h-work">Work</h2><p class="intro">Every front, grouped by company in dial order: what it is doing, where it runs, the next step. A front that waits on you says so; one that is idle says how to pick it up again.</p>
   <div class="g"><div class="s8 stack" id="work-rows"></div>
@@ -78,8 +79,7 @@ section{margin-top:var(--fd-sp-9)}
     <fd-panel heading-level="3" label="Needs you · 2"><div class="stack">
      <fd-decision company="mq" question="OK to rotate 6 clients?" why="Six clients move to the new account owners on Monday. Friday checked each handover note." minutes="1" options='["No","Yes"]' suggest="Yes" note-box href="#front"><a slot="doc" href="#front">The 6 clients and their new owners · 1 page</a></fd-decision>
     </div></fd-panel>
-    <fd-panel heading-level="3" label="Look and react" pad="row"><fd-ask-row company="ps" question="Which of these looks like Friday?" note="1 tap · 4 images" options='["Open"]' href="#decide"></fd-ask-row></fd-panel>
-    <p class="meta">Image cards (the "look" cards you answer now) open full size in the Console; here they are a row with one door. <span class="gap">gap G6: image look card</span></p>
+    <fd-panel heading-level="3" label="Look and react"><fd-look id="look" company="ps" question="Which of these looks like Friday?" why="Tap an image to open it full size. Like, Don't like and the words are all optional." minutes="2"></fd-look></fd-panel>
    </div>
    <div class="s5 stack">
     <fd-panel heading-level="3" label="After the last answer"><fd-state kind="empty" note="Done today has the rest."></fd-state></fd-panel>
@@ -129,6 +129,8 @@ section{margin-top:var(--fd-sp-9)}
 <script type="module" src="../fd-table/fd-table.js"></script>
 <script type="module" src="../fd-spotlight/fd-spotlight.js"></script>
 <script type="module" src="../usage-gauge/usage-gauge.js"></script>
+<script type="module" src="../fd-nav/fd-nav.js"></script>
+<script type="module" src="../fd-look/fd-look.js"></script>
 <script type="module">
 const P = Object.assign({ th: 'dark' }, JSON.parse(decodeURIComponent((location.hash.slice(1).startsWith('%7B') || location.hash.slice(1).startsWith('{')) ? location.hash.slice(1) : '%7B%7D')));
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
@@ -166,6 +168,8 @@ const WORK = { mq: [['Monthly report', 'run', 'drafting · 10:02', 'charts', 'se
   ps: [['Design System', 'need', 'cards for you · 01:30', 'your look', 'server'], ['Backup', 'fault', 'stopped 03:00', 'Friday fixing it', 'server'], ['Brain map', 'run', 'drawing', 'labels', 'laptop'], ['Lab tests', 'rest', 'idle', 'Thursday 07:00', 'you'], ['Training', 'rest', 'today 6 pm', 'at the gym', 'you']] };
 $('#work-rows').innerHTML = ['mq', 'at', 'ps'].map((k) => `<fd-panel pad="row" heading-level="3" label="${{ mq: 'Marquatica', at: 'Atípica', ps: 'Personal' }[k]}">${WORK[k].map(([t, st, last, next, car]) => `<fd-run-row company="${k}" text="${t}" status="${last}" next="${next}" carrier="${car}" state="${st}" href="#front"></fd-run-row>`).join('')}</fd-panel>`).join('');
 $('#work-done').items = [{ company: 'mq', text: 'CRM check', meta: '12 clients' }, { company: 'at', text: 'Management report', meta: 'page' }, { company: 'ps', text: 'Receipts', meta: '3 photos' }];
+$('#nav').tabs = [{ id: 'panel', label: 'Panel', href: 'standalone.html#%7B%7D' }, { id: 'decide', label: 'Decide', href: '#decide', need: true }, { id: 'work', label: 'Work', href: '#work' }, { id: 'did', label: 'Friday did', href: '#records' }, { id: 'map', label: 'Map', href: '#board' }];
+$('#look').imgs = [{ src: 'img/panel-dark-desktop.webp', alt: 'The panel, dark, computer', label: 'Dark · computer' }, { src: 'img/panel-papel-phone.webp', alt: 'The panel, paper, phone', label: 'Paper · phone' }];
 await customElements.whenDefined('fd-dial');
 document.fonts.ready.then(() => { document.body.dataset.ready = '1'; document.body.dataset.face = document.fonts.check('16px Figtree') ? 'figtree' : 'missing'; });
 </script>
