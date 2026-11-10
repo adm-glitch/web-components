@@ -30,6 +30,7 @@ Every attribute is also a camelCase property.
 | `note` | text | — | One line under the dial (e.g. `backup stopped · Friday fixing it`; `·` breaks the line). |
 | `per-segment` | boolean | off | With a fine pointer on desktop, each segment is its own link to its front (`href` per front); the name stays the company link. |
 | `highlight` | front id | — | Lights that segment (row → dial). |
+| `unit` | word | fronts | The word under the centre number on desktop (`unit=""` = the number alone, e.g. when a segment is a piece of work). |
 | `label` | string | generated | Overrides the generated accessible name ("Marquatica: 5 fronts, 2 running, …"). |
 | `theme` | dark · light | page / OS | Pins the theme. |
 

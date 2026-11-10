@@ -54,16 +54,16 @@ const FD_CSS = FD_TOKENS + `
  align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}

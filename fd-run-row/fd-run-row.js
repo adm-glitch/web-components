@@ -38,16 +38,16 @@ const FD_CSS = FD_TOKENS + `
  align-items:center;justify-content:center;gap:var(--_sp-2);cursor:pointer;white-space:nowrap;text-decoration:none;
  transition:background-color var(--_d-change) var(--_e-out),border-color var(--_d-change) var(--_e-out)}
 @media (min-width:900px) and (pointer:fine){.btn{min-height:var(--_sz-target-dense)}}
-.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}
+@media (hover:hover){.btn:hover{background:var(--_hover-bg);border-color:var(--_hover-line)}}   /* touch screens keep no hover look after a tap (his 11-10) */
 .btn:active{background:var(--_pressed-bg)}
 /* focus is dashed with a gap, so it never reads as Friday's solid suggestion outline (S5 lenses 3, 4, 11) */
 .btn:focus-visible{outline:var(--_sz-focus-ring) dashed var(--_focus);outline-offset:3px}
 .btn.primary{background:var(--_amb);border-color:var(--_amb);color:var(--_amber-ink);box-shadow:var(--_btn-glow)}
-.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}
+@media (hover:hover){.btn.primary:hover{background:var(--_amb);border-color:var(--_amber-ink)}}
 .btn.primary:active{background:var(--_amber-pressed);border-color:var(--_amber-pressed)}
 .btn.suggest{border:2px solid var(--_text);padding:0 calc(var(--_sp-5) - 1px)}
 .btn.plain{border-color:transparent}
-.btn.plain:hover{border-color:var(--_line)}
+@media (hover:hover){.btn.plain:hover{border-color:var(--_line)}}
 .btn:disabled,.btn[aria-disabled=true]{cursor:default;color:var(--_disabled-text);border-color:var(--_disabled-line);background:transparent;box-shadow:none}
 .btn.primary:disabled{background:transparent;border-color:var(--_disabled-line)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -100,7 +100,7 @@ const fdDefine = (name, Cls) => { if (typeof customElements !== 'undefined' && !
 // fd-shared:end
 
 // S6 (7b workstream rows, console-parallel-ui §4): next step and carrier under the text; paused = idle mark, resume line
-const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused', 'need', 'state'];
+const RUN_ATTRS = ['company', 'name', 'text', 'href', 'status', 'count', 'total', 'highlight', 'front', 'icon', 'theme', 'next', 'carrier', 'paused', 'need', 'state', 'next-prefix'];
 
 const RUN_CSS = `
 :host{display:block}
@@ -139,7 +139,7 @@ class FdRunRow extends HTMLElement {
       ? `<span class="bar" role="meter" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${Math.min(c, t)}" aria-label="${fdEsc(text)}: ${c} of ${t}" part="meter"><i style="width:${(Math.min(c, t) / t * 100).toFixed(1)}%"></i></span>`
       : '<span></span>';
     const tag = href ? 'a' : 'div';
-    const inner = `${this.getAttribute('icon') && !['run', 'ask'].includes(this.getAttribute('icon')) ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : fdSign(this.getAttribute('state') || (this.hasAttribute('need') ? 'need' : this.hasAttribute('paused') ? 'rest' : 'run'), k, 20)}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · next: ${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
+    const inner = `${this.getAttribute('icon') && !['run', 'ask'].includes(this.getAttribute('icon')) ? fdIcon(this.getAttribute('icon'), 'var(--_text)', 20) : fdSign(this.getAttribute('state') || (this.hasAttribute('need') ? 'need' : this.hasAttribute('paused') ? 'rest' : 'run'), k, 20)}<span class="tt"><span>${fdEsc(text)}</span><small><span class="dot" style="background:var(--_${k})"></span>${fdEsc(name)}${this.getAttribute('carrier') ? ` · on ${fdEsc(this.getAttribute('carrier'))}` : ''}${this.getAttribute('next') ? ` · ${fdEsc(this.hasAttribute('next-prefix') ? this.getAttribute('next-prefix') : 'next: ')}${fdEsc(this.getAttribute('next'))}` : ''}</small></span><span class="n">${fdEsc(status)}</span>${meter}`;
     this.shadowRoot.innerHTML = `<style>${FD_CSS}${RUN_CSS}</style><${tag} class="run" part="row"${href ? ` href="${fdEsc(href)}"` : ''}>${inner}</${tag}>`;
     const el = this.shadowRoot.querySelector('.run'), id = this.getAttribute('front');
     if (id != null) {
