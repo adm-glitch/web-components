@@ -10,6 +10,16 @@ const { chromium } = await import(process.env.PLAYWRIGHT_CORE || 'playwright-cor
 const PG = 'file://' + path.join(ROOT, 'playground/standalone.html');
 let fails = 0, n = 0;
 const ok = (cond, name, extra = '') => { n++; if (cond) console.log('ok  ', name); else { fails++; console.log('FAIL', name, extra); } };
+// 0 · surface lint (tools/fd-lint.mjs: U17-U20 against fd-tokens; no browser): the components are clean, the rules bite
+{
+  const { run, lint } = await import('./fd-lint.mjs');
+  const r = run(ROOT);
+  ok(r.found.length === 0, 'fd-lint: no gradient, hand-typed glow, off-scale spacing, 800/900, transition:all or moving hover', r.found.map((f) => `${f.file}:${f.line} [${f.rule}]`).join(' | '));
+  ok(r.stale.length === 0, 'fd-lint: every allow entry still matches', JSON.stringify(r.stale));
+  const bad = lint('.a{background:linear-gradient(90deg,#f0f,#0ff)} .b{box-shadow:0 0 24px #E9880B} .c{padding:10px 18px} .d{font-weight:800} .e{transition:all .3s} .f:hover{transform:scale(1.05)}').map((x) => x.rule).sort();
+  ok(JSON.stringify(bad) === JSON.stringify(['glow', 'gradient', 'heavy', 'hover-move', 'off-scale', 'transition']), 'fd-lint: each rule catches its tell', JSON.stringify(bad));
+  ok(lint('.h{background:repeating-linear-gradient(135deg,transparent 0 6px,red 6px 7px)} .i{gap:8px} .m{box-shadow:var(--_btn-glow)} .l:hover{text-decoration:underline}').length === 0, 'fd-lint: hatch, scale values, the glow token and a plain hover pass');
+}
 const b = await chromium.launch();
 const PG6 = 'file://' + path.join(ROOT, 'playground/console-standalone.html');
 const open = async ({ w = 1440, h = 900, dpr = 1, th = 'dark', reduced = 'no-preference', touch = false, url = PG } = {}) => {

@@ -1,0 +1,12 @@
+{
+  "allow": [
+    { "file": "fd-panel/fd-panel.js", "rule": "gradient", "match": "linear-gradient(180deg,var(--_raised),var(--_surface))", "why": "tonal ramp between two surface tokens of the same family: the panel's depth, not a colour gradient (S5 look)" },
+    { "file": "fd-nav/fd-nav.js", "rule": "glow", "match": "box-shadow:0 0 6px color-mix(in srgb,var(--_glow) 60%", "why": "the nav dot marks a real pending item (his 10/11 like); real state, glow token colour" },
+    { "file": "fd-spotlight/fd-spotlight.js", "rule": "glow", "match": "box-shadow:0 0 14px 2px color-mix(in srgb,var(--_glow) 45%", "why": "active need only ([active][tone=need]): real state, glow token colour" },
+    { "file": "fd-dial/fd-dial.js", "rule": "glow", "match": "drop-shadow(0 0 2px var(--_text)", "why": ".hl: the segment pointed at from its row (segment-row link), 2 px, text colour" },
+    { "file": "fd-ask-row/fd-ask-row.js", "rule": "off-scale", "match": "padding:13px 0", "why": "inline link: 13 + line height = the 44 px hit area without moving the meta line (S6 lens 5)" },
+    { "file": "fd-table/fd-table.js", "rule": "off-scale", "match": "padding:13px 0", "why": "same 44 px hit area on the phone card link" },
+    { "file": "fd-rail/fd-rail.js", "rule": "off-scale", "match": "padding:15px 0", "why": "inline: 44 px hit area on the rail link" },
+    { "file": "fd-decision/fd-decision.js", "rule": "off-scale", "match": "padding:11px 0", "why": "inline question link: 44 px hit area" }
+  ]
+}
