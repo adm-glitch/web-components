@@ -54,6 +54,9 @@
   --fd-d-leave: 160ms;
   --fd-d-breath: 4500ms;
   --fd-d-reduced-fade: 150ms;
+  --fd-d-press: 150ms;
+  --fd-d-menu: 180ms;
+  --fd-d-panel: 340ms;
   --fd-e-out: cubic-bezier(0.2,0,0,1);
   --fd-e-in: cubic-bezier(0.4,0,1,1);
   --fd-e-breath: cubic-bezier(0.45,0,0.55,1);
