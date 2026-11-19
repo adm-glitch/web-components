@@ -36,6 +36,30 @@
     "value": 150,
     "unit": "ms"
    }
+  },
+  "press": {
+   "$type": "duration",
+   "$value": {
+    "value": 150,
+    "unit": "ms"
+   },
+   "$description": "a press or tap answer (120-180 ms)"
+  },
+  "menu": {
+   "$type": "duration",
+   "$value": {
+    "value": 180,
+    "unit": "ms"
+   },
+   "$description": "a menu opening from its button (160-220 ms)"
+  },
+  "panel": {
+   "$type": "duration",
+   "$value": {
+    "value": 340,
+    "unit": "ms"
+   },
+   "$description": "a panel opening or closing: container first, text after (300-400 ms)"
   }
  },
  "easing": {
