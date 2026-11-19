@@ -22,7 +22,7 @@ This repo holds dependency-free Web Components, served to projects through jsDel
 
 - Same rules as above, plus: the code shared by every `fd-*` component (tokens, base styles, icons) lives in `tools/fd-shared.js` and is pasted between the `fd-shared` markers of each component by `node tools/fd-sync.mjs`. Never edit inside the markers; edit `tools/fd-shared.js` or the tokens and re-run the sync (it also refreshes each `example.html` and `playground/standalone.html`).
 - Tokens (`fd-tokens/tokens/*.json`) are copied from Friday's design system with `--from`; they are not edited here.
-- Before a release: `node tools/fd-test.mjs` (browser tests, Playwright via `PLAYWRIGHT_CORE`) must pass.
+- Before a release: `node tools/fd-test.mjs` (browser tests, Playwright via `PLAYWRIGHT_CORE`) must pass. It runs `node tools/fd-lint.mjs` first: no colour gradient, hand-typed glow, spacing off the `--fd-sp-*` scale, weight 800/900, `transition: all` or a hover that moves anything. A deliberate exception goes in `tools/fd-lint-allow.json` with its reason.
 
 ## Using a component in a project
 
